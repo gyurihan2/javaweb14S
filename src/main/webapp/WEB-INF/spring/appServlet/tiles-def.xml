@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+  
+	<tiles-definitions>
+	<!-- 레이아웃 적용하지 않는 화면(ex 로그인 화면)  -->
+	<definition name="layoutNo" template="/WEB-INF/views/tiles/layout/noLayout.jsp"/>
+	<definition name="memberMsg/*" extends="layoutNo">
+	</definition>
+	<definition name="include/message" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/include/message.jsp"/>
+	</definition>
+	
+	<!-- 레이아웃 적용하는 화면(인증 완료 후 처리되는 화면)  -->
+	<definition name="layoutYes" template="/WEB-INF/views/tiles/layout/baseLayout.jsp">
+		<put-attribute name="header" value="/WEB-INF/views/tiles/header_nav.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/footer.jsp" />
+	</definition>
+	<definition name="*" extends="layoutYes">
+		<put-attribute name="body" value="/WEB-INF/views/{1}.jsp" />
+	</definition>
+	<definition name="*/*" extends="layoutYes">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp" />
+	</definition>
+	<definition name="*/*/*" extends="layoutYes">
+		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
+	</definition>
+	
+</tiles-definitions>
