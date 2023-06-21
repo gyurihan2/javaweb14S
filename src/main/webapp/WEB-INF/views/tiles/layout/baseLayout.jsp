@@ -25,6 +25,7 @@
 <p><br/></P>
 <tiles:insertAttribute name="body"/>
 <p><br/></P>
+<p><br/></p>
 <tiles:insertAttribute name="footer"/>
 </body>
 </html>

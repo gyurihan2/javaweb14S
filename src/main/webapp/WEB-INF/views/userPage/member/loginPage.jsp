@@ -29,7 +29,7 @@
 		    </div>
 		    <div class="form-group text-center">
 		    	<button type="submit" class="btn btn-primary mr-1">로그인</button>
-		    	<button type="button" onclick="location.href='${ctp}/SignUpPage.mem';" class="btn btn-success">회원가입</button>
+		    	<button type="button" onclick="location.href='${ctp}/member/signUpPage';" class="btn btn-success">회원가입</button>
 		    </div>
 		    <div class="row text-center" style="font-size:12px">
 		      <span class="col"><input type="checkbox" name="idSave" id="idSave" ${cIdSave=="on" ? "checked":""}/>아이디 저장</span>

@@ -1,4 +1,4 @@
-package com.spring.javaweb14S.service;
+package com.spring.javaweb14S.service.member;
 
 import com.spring.javaweb14S.vo.MemberVO;
 

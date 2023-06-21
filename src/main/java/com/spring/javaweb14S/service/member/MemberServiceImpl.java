@@ -1,4 +1,4 @@
-package com.spring.javaweb14S.service;
+package com.spring.javaweb14S.service.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

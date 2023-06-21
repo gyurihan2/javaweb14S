@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.spring.javaweb14S.service.MemberService;
+import com.spring.javaweb14S.service.member.MemberService;
 import com.spring.javaweb14S.vo.MemberVO;
 
 @Controller
@@ -87,6 +87,13 @@ public class MemberController {
 		// 로그인 실패
 		else return "redirect:/memberMsg/loginNo";
 		
+	}
+	
+	
+	// 회원 가입 페이지
+	@RequestMapping(value = "signUpPage", method = RequestMethod.GET)
+	public String signUpPageGet() {
+		return "userPage/member/signUpPage";
 	}
 	
 	
