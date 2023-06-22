@@ -96,5 +96,37 @@ public class MemberController {
 		return "userPage/member/signUpPage";
 	}
 	
+	// 회원가입 페이지 아이디 중복 처리 페이지
+	@RequestMapping(value = "signUpIdChk", method = RequestMethod.GET)
+	public String signUpIdChkGet(Model model,
+			@RequestParam(name = "mid", defaultValue = "", required = false) String mid) {
+		
+		// 0: 아이디 중복 1:아이디 사용가능
+		int res = memberService.getMemberMidSearch(mid);
+		model.addAttribute("mid", mid);
+		model.addAttribute("res", res);
+		
+		return "userPage/member/signUpIdChk";
+	}
+	
+	// 회원가입 페이지 닉네임 중복 처리 페이지
+	@RequestMapping(value = "signUpNickNameChk", method = RequestMethod.GET)
+	public String signUpNickNameChkGet(Model model,
+			@RequestParam(name = "nickName", defaultValue = "", required = false) String nickName) {
+		
+		// 0: 닉네임 중복 1:닉네임 사용가능
+		int res = memberService.getMemberNickNameSearch(nickName);
+		model.addAttribute("nickName", nickName);
+		model.addAttribute("res", res);
+		
+		return "userPage/member/signUpNickNameChk";
+	}
+	
+	//회원 가입 처리
+	@RequestMapping(value = "signUpPage", method = RequestMethod.POST)
+	public String signUpPagePost(MemberVO vo) {
+			System.out.println(vo.toString());
+		return "userPage/member/signUpPage";
+	}
 	
 }

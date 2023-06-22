@@ -10,4 +10,8 @@ public interface MemberDAO {
 
 	public void setMemberLastLogin(@Param("mid") String mid);
 
+	public MemberVO getMemberNickNameChk(@Param("nickName") String nickName);
+
+	
+
 }

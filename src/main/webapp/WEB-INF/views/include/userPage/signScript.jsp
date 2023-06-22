@@ -27,37 +27,17 @@ function numberMaxLength(e){
 // 아이디 유효성 처리
 function regMid(mid){
     const regExp = /^[\w]{5,19}$/g; //영어 대/소문자, 숫자, '_' 입력 가능
-    let status=document.getElementById("regMid");
-   
+    let status=document.getElementById("regMid");   
     
-    if(mid.value == "" || regExp.test(mid.value)){
-      status.innerText="";
-    }
-    else if(!regExp.test(mid.value)){
-      status.style.color="red";
-      status.style.fontWeight="bold";
-      status.innerText="사용 불가합니다.(최소5~15문자(영문자, 숫자, '_'))";
-      return false;
-    }
-    
+    if(!regExp.test(mid.value)) return false;  
     return true;
 }
 //닉네임 유효성
 function regNickName(nickName){
-    const regExp = /^[\w가-힣]{5,19}$/g; //한글,영어 대/소문자, 숫자, '_' 입력 가능
+    const regExp = /^[\w가-힣]{3,19}$/g; //한글,영어 대/소문자, 숫자, '_' 입력 가능
     let status=document.getElementById("regNickName");
-   
-    if(nickName.value == "" || regExp.test(nickName.value)){
-      status.innerText="";
-    }
-    else if(!regExp.test(nickName.value)){
-    	
-      status.style.color="red";
-      status.style.fontWeight="bold";
-      status.innerHtml="사용 불가합니다.(최소5~15문자(한글,영문자, 숫자, '_'))";
-      return false;
-    }
     
+    if(!regExp.test(nickName.value)) return false;
     return true;
 }
 

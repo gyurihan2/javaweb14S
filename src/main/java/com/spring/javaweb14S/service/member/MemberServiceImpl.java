@@ -32,6 +32,24 @@ public class MemberServiceImpl implements MemberService {
 
 	}
 
+	// 아이디 중복 체크
+	@Override
+	public int getMemberMidSearch(String mid) {
+		MemberVO vo =memberDAO.getMemberMidChk(mid);
+		
+		if(vo == null) return 1;
+		else return 0;
+	}
+
+	//닉네임 중복 체크
+	@Override
+	public int getMemberNickNameSearch(String nickName) {
+		MemberVO vo =memberDAO.getMemberNickNameChk(nickName);
+		
+		if(vo == null) return 1;
+		else return 0;
+	}
+
 	
 	
 }

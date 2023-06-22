@@ -8,6 +8,11 @@
 		select * from member where mid=#{mid};
 	</select>
 	
+	<!-- 맴버 검색( Member nickName - > memberVo) -->
+	<select id="getMemberNickNameChk" resultType="memberVO">
+		select * from member where nickName=#{nickName};
+	</select>
+	
 <!-- Insert -->
 
 <!-- Update -->
