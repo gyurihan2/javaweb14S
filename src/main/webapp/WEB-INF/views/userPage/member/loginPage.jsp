@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>로그인페이지</title>
 </head>
-<body>
+<body id="wrapper">
 <p><br/></p>
 <div class="container">
 	 <div class="modal-dialog">
@@ -34,8 +34,8 @@
 		    <div class="row text-center" style="font-size:12px">
 		      <span class="col"><input type="checkbox" name="idSave" id="idSave" ${cIdSave=="on" ? "checked":""}/>아이디 저장</span>
 		      <span class="col">
-		        [<a href="${ctp}/IdSearchPage.mem" onclick="window.open(this.href,'nWin','width=580px,height=450px'); return false;">아이디찾기</a>] /
-		        [<a href="${ctp}/PwdSearchPage.mem" onclick="window.open(this.href,'nWin','width=580px,height=450px'); return false;">비밀번호찾기</a>]
+		        [<a href="${ctp}/member/idSearchPage" onclick="window.open(this.href,'nWin','width=580px,height=450px'); return false;">아이디찾기</a>] /
+		        [<a href="${ctp}/member/pwdSearchPage" onclick="window.open(this.href,'nWin','width=580px,height=450px'); return false;">비밀번호찾기</a>]
 		      </span>
 		    </div>
 		  </form>

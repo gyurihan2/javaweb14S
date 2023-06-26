@@ -17,6 +17,9 @@
 	<definition name="userPage/member/signUpNickNameChk" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/userPage/member/signUpNickNameChk.jsp"/>
 	</definition>
+	<definition name="userPage/member/idSearchPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/userPage/member/idSearchPage.jsp"/>
+	</definition>
 		
 	
 	<!-- 레이아웃 적용하는 화면(인증 완료 후 처리되는 화면)  -->

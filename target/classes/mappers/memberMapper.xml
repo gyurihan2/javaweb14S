@@ -3,21 +3,31 @@
 <mapper namespace="com.spring.javaweb14S.dao.MemberDAO">
 <!-- Select -->
 	
-	<!-- 맴버 검색( Member Mid - > memberVo) -->
+	<!-- 맴버 검색( Member Mid -> memberVo) -->
 	<select id="getMemberMidChk" resultType="memberVO">
 		select * from member where mid=#{mid};
 	</select>
 	
-	<!-- 맴버 검색( Member nickName - > memberVo) -->
+	<!-- 맴버 검색( Member nickName -> memberVo) -->
 	<select id="getMemberNickNameChk" resultType="memberVO">
 		select * from member where nickName=#{nickName};
 	</select>
 	
+	<!-- 맴버 검색 (Member Email -> memberVO) -->
+	<select id="getMemberIdSearch" resultType="memberVO">
+		select * from member where email=#{email};
+	</select>
+	
 <!-- Insert -->
-
+	<insert id="setMemberInput">
+		insert into member values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.birthday},#{vo.nickName},#{vo.identiNum},#{vo.gender},#{vo.phone},#{vo.address},#{vo.email},default,default,default,default,default,default,default);
+	</insert>
 <!-- Update -->
 	<update id="setMemberLastLogin">
 		update member set lastLogin=now() where mid=#{mid};
 	</update>
+	
 <!-- Delete -->
+
+
 </mapper>

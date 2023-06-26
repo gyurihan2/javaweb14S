@@ -50,14 +50,31 @@
 	</beans:bean>
 	
 	<!-- Interceptor -->
+	<beans:bean id="LoginInterceptor" class="com.spring.javaweb14S.interceptor.LoginInterceptor"/>
+	<beans:bean id="GuestInterceptor" class="com.spring.javaweb14S.interceptor.GuestInterceptor"/>
 	
-	
-
-	
-<!-- 	<interceptors>
+	<interceptors>
+	<!-- 로그인하여 guestPage(로그인페이지, 회원가입 페이지 등)접근 X -->
 		<interceptor>
+			<mapping path="/member/loginPage"/>
+			<mapping path="/member/signUpPage"/>
+			<beans:ref bean="GuestInterceptor"/>
 		</interceptor>
-	</interceptors> -->
+		
+		<!-- 로그인 처리 -->
+		<interceptor>
+			<mapping path="/**"/>
+			<exclude-mapping path="/"/>
+			<exclude-mapping path="/memberMsg/*"/>
+			<exclude-mapping path="/member/loginPage"/>
+			<exclude-mapping path="/member/signUpPage"/>
+			<exclude-mapping path="/member/signUpIdChk"/>
+			<exclude-mapping path="/member/signUpNickNameChk"/>
+			<exclude-mapping path="/member/idSearchPage"/>
+			<exclude-mapping path="/member/pwdSearchPage"/>
+			<beans:ref bean="LoginInterceptor"/>
+		</interceptor>	
+	</interceptors>
 	
 	
 </beans:beans>

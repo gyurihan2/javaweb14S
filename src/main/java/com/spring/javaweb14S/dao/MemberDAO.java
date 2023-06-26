@@ -12,6 +12,10 @@ public interface MemberDAO {
 
 	public MemberVO getMemberNickNameChk(@Param("nickName") String nickName);
 
+	public int setMemberInput(@Param("vo")MemberVO vo);
+
+	public MemberVO getMemberIdSearch(@Param("email")String email);
+
 	
 
 }

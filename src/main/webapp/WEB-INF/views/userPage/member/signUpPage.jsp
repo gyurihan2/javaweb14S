@@ -54,12 +54,13 @@
 				myform.nickName.focus();
 				return false;
 			}
-		
+			/*
 			else if(!statusPwd){
 				alert("비밀번호를 확인하세요");
 				$("#pwd").focus();
 				return false;
 			}
+			*/
 			else if(statusNickName == ""){
 				alert("닉네임을 확인하세요")
 				$("#nickName").focus();
@@ -94,11 +95,13 @@
 				myform.mid.focus();
 				return false;
 			}
+			/*
 			else if(mid.value.indexOf("admin")==0){
 				alert("사용할수없는 아이디 입니다.");
 				myform.mid.focus();
 				return false;
 			}
+			*/
 			else if(!regMid(mid)){
 				alert(mid.value+"아이디 입력 형식을 확인하세요!");
 				myform.mid.focus();
@@ -157,7 +160,6 @@
 				nickNameCheck(myform.nickName);
 			});
 			
-			
 		});
  
 	</script>
@@ -190,8 +192,8 @@
 	    <div class="input-group mt-2">
 	      <div class="input-group-prepend">
 	      	<span class="input-group-text bg-white text-dark" style="border:0 solid black; width: 90px;">
-	      		<i class="fa-solid fa-check ml-3" id="dupulNickName" style="color: #55c37f; display:none"></i>
-	      		<b>닉네임</b>
+	      		<i class="fa-solid fa-check" id="dupulNickName" style="color: #55c37f; display:none"></i>
+	      		<b>&nbsp;&nbsp;닉네임</b>
 	      	</span>
 	      </div>
 	      <input type="text" class="form-control" id="nickName" name="nickName" placeholder="닉네임을 입력하세요."  required />
@@ -199,10 +201,9 @@
 	      	<input type="button" class="btn btn-info btn-sm " id="nickNameCheck"  value="닉네임 중복체크" style="border-radius: 10px;"/>
     		</div>
 	    </div>
-	    <span class="ml-3" id="regNickName"></span>
 	    <div class="input-group mt-2">
 	      <div class="input-group-prepend">
-	      	<span class="input-group-text bg-white text-dark" style="border:0 solid black; width: 90px;"><b>&nbsp;&nbsp;성명</b></span>
+	      	<span class="input-group-text bg-white text-dark" style="border:0 solid black; width: 90px;"><b>&nbsp;&nbsp;&nbsp;성명</b></span>
 	      </div>
 	      <input type="text" class="form-control" id="name" name="name" placeholder="성명을 입력하세요."  required />
 	    </div>
@@ -261,13 +262,12 @@
 	            </select>
 	          </div>
 	    </div>
-
 	    <div class="form-group mt-4">
 	      <b>&nbsp;&nbsp;주소</b>
 	      <div class="input-group mb-1 mt-2">
 	        <input type="text" class="form-control" name="postcode" id="sample6_postcode"  placeholder="우편번호" readonly>
 	        <div class="input-group-append">
-	          <input type="button" class="btn btn-info" value="우편번호 찾기"  onclick="sample6_execDaumPostcode()">
+	          <input type="button" class="btn btn-info" value="우편번호 검색"  onclick="searchPostNum()">
 	        </div>
 	      </div>
 	      <input type="text" class="form-control mb-1" name="roadAddress" id="sample6_address" size="50" placeholder="주소" readonly>
@@ -280,12 +280,11 @@
 	    </div>
 	    <div class="text-center">
 		    <button type="button" class="btn btn-success" id="memberJoin" onclick="submitOk()">회원가입</button> &nbsp;
-		    <button type="button" class="btn btn-secondary" onclick="">돌아가기</button>
+		    <button type="button" class="btn btn-secondary" onclick="location.href='${ctp}/member/loginPage';">돌아가기</button>
 	    </div>
       <input type="hidden" name="address">
 	    <input type="hidden" name="phone"/>
 	    <input type="hidden" name="email"/>
-	    <input type="hidden" name="address1"/>
 	    <input type="hidden" name="identiNum"/>
 	  </form>
 	</div>

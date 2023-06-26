@@ -3,8 +3,7 @@ show tables;
 create table member (
   idx      	int not null auto_increment, 	/* 회원 고유번호 */
   mid      	varchar(20) not null,					/* 회원 아이디(중복불허) */
-  pwd     	varchar(100) not null,					/* 회원 비밀번호(SHA256 암호화 처리) */
-  salt			char(8) not null,								/* 비밀번호 보안을 위한 해시키 */
+  pwd     	varchar(100) not null,					/* 회원 비밀번호(BCryptPasswordEncoder 암호화 처리) */
   name     	varchar(20) not null,					/* 회원 성명 */
   birthday	varchar(15),
   nickName 	varchar(20) not null,
@@ -16,6 +15,7 @@ create table member (
   startDate	datetime not null default now(),
   lastLogin		datetime not null default now(),
   userDel		char(5) default 'NO',
+  levelUpDate	datetime default now(),
   level			int(5) default 1,
   point			int(10) default 1000,
   totPoint	int(15) default 0,

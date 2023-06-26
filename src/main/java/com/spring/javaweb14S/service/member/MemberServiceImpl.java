@@ -1,5 +1,7 @@
 package com.spring.javaweb14S.service.member;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,6 +50,26 @@ public class MemberServiceImpl implements MemberService {
 		
 		if(vo == null) return 1;
 		else return 0;
+	}
+
+	// 회원 가입 처리(비밀번호 BCryptPasswordEncoder / 이메일 하나당 하나 ID생성 가능)
+	@Override
+	public int setMemberInput(MemberVO vo) {
+
+		if(memberDAO.getMemberIdSearch(vo.getEmail()) == null && memberDAO.getMemberMidChk(vo.getMid()) == null && memberDAO.getMemberNickNameChk(vo.getNickName()) == null) {
+			vo.setPwd(passwordEncoder.encode(vo.getPwd()));
+			return memberDAO.setMemberInput(vo);
+		}
+		else return 0;
+
+	}
+
+	@Override
+	public MemberVO getMemberIdSearch(String name, String identiNum, String email) {
+		MemberVO memberVO = memberDAO.getMemberIdSearch(email);
+		
+		if( memberVO != null && memberVO.getName().equals(name) && memberVO.getIdentiNum().equals(identiNum)) return memberVO;
+		else return null;
 	}
 
 	

@@ -1,5 +1,7 @@
 package com.spring.javaweb14S.controller;
 
+import java.util.List;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,6 +10,9 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -89,6 +94,12 @@ public class MemberController {
 		
 	}
 	
+	// 로그아웃 처리
+	@RequestMapping(value = "loginOutOk", method = RequestMethod.GET)
+	public String loginOutOkGet(HttpSession session) {
+		session.invalidate();
+		return "redirect:/memberMsg/loginOutOk";
+	}
 	
 	// 회원 가입 페이지
 	@RequestMapping(value = "signUpPage", method = RequestMethod.GET)
@@ -124,9 +135,49 @@ public class MemberController {
 	
 	//회원 가입 처리
 	@RequestMapping(value = "signUpPage", method = RequestMethod.POST)
-	public String signUpPagePost(MemberVO vo) {
-			System.out.println(vo.toString());
-		return "userPage/member/signUpPage";
+	public String signUpPagePost(@Validated MemberVO vo, BindingResult bindingResult,Model model) {
+		
+		// mid nickName email null 유효성 처리(null 값)
+		if(bindingResult.hasFieldErrors()) {
+			List<ObjectError> list = bindingResult.getAllErrors();
+			String validateFlag="";
+			for(ObjectError e : list) {
+				validateFlag=e.getDefaultMessage();
+				break;
+			}
+			model.addAttribute("validateFlag", validateFlag);
+			model.addAttribute("redircetPath", "/member/signUpPage");
+			
+			return "redirect:/memberMsg/validatorNo";
+		}
+	
+		int res = memberService.setMemberInput(vo);
+		
+		if(res == 1)  return "redirect:/memberMsg/memberInputOk";
+		else return "redirect:/memberMsg/memberInputNo";
 	}
+	
+	// 아이디찾기 폼
+	@RequestMapping(value = "idSearchPage", method = RequestMethod.GET)
+	public String idSearchPageGet() {
+		return "userPage/member/idSearchPage";
+	}
+	// 아이디찾기 처리
+	@RequestMapping(value = "idSearchPage", method = RequestMethod.POST)
+	public String idSearchPagePost(Model model,
+			@RequestParam(name ="name", defaultValue = "", required = false ) String name, 
+			@RequestParam(name ="identiNum", defaultValue = "", required = false ) String identiNum, 
+			@RequestParam(name ="email", defaultValue = "", required = false ) String email) {
+		
+		MemberVO vo = memberService.getMemberIdSearch(name,identiNum,email);
+		
+		if(vo != null) model.addAttribute("mid", vo.getMid());
+			
+		else model.addAttribute("sw", "1");
+		
+		return "userPage/member/idSearchPage";
+	}
+	
+	
 	
 }
