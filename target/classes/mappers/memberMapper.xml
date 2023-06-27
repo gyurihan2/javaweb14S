@@ -13,18 +13,24 @@
 		select * from member where nickName=#{nickName};
 	</select>
 	
-	<!-- 맴버 검색 (Member Email -> memberVO) -->
+	<!-- 맴버 검색(아이디 찾기) (Member name,identiNum,email -> memberVO) -->
 	<select id="getMemberIdSearch" resultType="memberVO">
-		select * from member where email=#{email};
+		select * from member where email=#{email} and identiNum=#{identiNum} and name=#{name};
 	</select>
 	
 <!-- Insert -->
+	<!-- 회원가입 -->
 	<insert id="setMemberInput">
 		insert into member values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.birthday},#{vo.nickName},#{vo.identiNum},#{vo.gender},#{vo.phone},#{vo.address},#{vo.email},default,default,default,default,default,default,default);
 	</insert>
 <!-- Update -->
+	<!-- 로그인 시 마지막 로그인일 수정 -->
 	<update id="setMemberLastLogin">
 		update member set lastLogin=now() where mid=#{mid};
+	</update>
+	<!-- 패스워드 변경 -->
+	<update id="setMemberPwdUpdate">
+		update member set pwd=#{pwd} where mid=#{mid};
 	</update>
 	
 <!-- Delete -->

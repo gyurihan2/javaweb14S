@@ -6,7 +6,6 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>noLayout</title>
   <jsp:include page="/WEB-INF/views/include/bs4.jsp"/>
 </head>
 <body>

@@ -1,5 +1,7 @@
 package com.spring.javaweb14S.dao;
 
+import java.util.ArrayList;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaweb14S.vo.MemberVO;
@@ -14,8 +16,10 @@ public interface MemberDAO {
 
 	public int setMemberInput(@Param("vo")MemberVO vo);
 
-	public MemberVO getMemberIdSearch(@Param("email")String email);
+	public int setMemberPwdUpdate(@Param("mid")String mid, @Param("pwd")String pwd);
 
-	
+	public ArrayList<MemberVO> getMemberIdSearch(@Param("name")String name, @Param("identiNum")String identiNum, @Param("email")String email);
+
+
 
 }

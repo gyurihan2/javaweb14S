@@ -56,7 +56,7 @@
 
 
 	jQuery(function(){
-		if(${!empty mid}){
+		if(${!empty vos}){
 			$("#searchRes").css("display","block");
 			$("#searchRes").html("<font color='green'>아이디 검색 성공 : <b>${mid}</b></font>");
 		}
@@ -108,13 +108,18 @@
 			    	<button type="button" class="btn btn-primary mr-1" onclick="searchMid()">아이디 찾기</button>
 		    	</c:if>
 		    	<c:if test="${!empty mid}">
-			    	<button type="button" class="btn btn-info mr-1" onclick="location.href='${ctp}/PwdSearchPage.mem'">비밀번호 찾기</button>
+			    	<button type="button" class="btn btn-info mr-1" onclick="location.href='${ctp}/member/pwdSearchPage'">비밀번호 찾기</button>
 		    	</c:if>
 		    	<button type="reset" class="btn btn-warning mr-1">다시입력</button>
 		    </div>
 		    <input type="hidden" name="identiNum"/>
 		  </form>
-		  <div id="searchRes" style="display:none"></div>
+		  <div id="searchRes" style="display:none"> </div>
+		  <c:if test="${!empty vos}">
+		  	<c:forEach var="vo" items="${vos}">
+		  		<div>${vo.mid}</div>
+		  	</c:forEach>
+		  </c:if>
 	  </div>
   </div>
 </div>

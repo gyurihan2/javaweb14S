@@ -44,6 +44,25 @@ public class MemberMsg {
 			model.addAttribute("msg", "로그인이 필요합니다.");
 			model.addAttribute("url", "/member/loginPage");
 		}
+		else if(msgFlag.equals("pwdChangeNo")) {
+			model.addAttribute("msg", "인증번호가 일치하지않습니다.");
+			model.addAttribute("url", "/member/pwdSearchPage");
+		}
+		else if(msgFlag.equals("pwdUpdateOk")) {
+			model.addAttribute("msg", "패스워드가 변경 되었습니다.");
+			model.addAttribute("url", "/member/pwdSearchPage");
+		}
+		else if(msgFlag.equals("pwdUpdateNo")) {
+			model.addAttribute("msg", "패스워드가 변경 실패.");
+			model.addAttribute("url", "/member/pwdSearchPage");
+		}
+		else if(msgFlag.equals("wrongAccess")) {
+			model.addAttribute("msg", "잘못된 접근입니다.");
+			
+			String redircetPath = request.getParameter("redirectPath") == null ? "/member/loginPage" : request.getParameter("redirectPath");
+			model.addAttribute("url", redircetPath);
+		}
+		// validator 에러
 		else if(msgFlag.equals("validatorNo")) {
 			if(request.getParameter("validatorFlag").equals("NotNull")) {
 				model.addAttribute("msg", "필수 입력값을 입력하세요");

@@ -1,8 +1,14 @@
 package com.spring.javaweb14S.service.member;
 
 import java.util.ArrayList;
+import java.util.UUID;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +23,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
+	
+	@Autowired
+	JavaMailSender mailSender;
 
 	// 로그인 아이디 패스워드 체크
 	@Override
@@ -52,11 +61,11 @@ public class MemberServiceImpl implements MemberService {
 		else return 0;
 	}
 
-	// 회원 가입 처리(비밀번호 BCryptPasswordEncoder / 이메일 하나당 하나 ID생성 가능)
+	// 회원 가입 처리(비밀번호 BCryptPasswordEncoder)
 	@Override
 	public int setMemberInput(MemberVO vo) {
 
-		if(memberDAO.getMemberIdSearch(vo.getEmail()) == null && memberDAO.getMemberMidChk(vo.getMid()) == null && memberDAO.getMemberNickNameChk(vo.getNickName()) == null) {
+		if(memberDAO.getMemberMidChk(vo.getMid()) == null && memberDAO.getMemberNickNameChk(vo.getNickName()) == null) {
 			vo.setPwd(passwordEncoder.encode(vo.getPwd()));
 			return memberDAO.setMemberInput(vo);
 		}
@@ -64,12 +73,65 @@ public class MemberServiceImpl implements MemberService {
 
 	}
 
+	// 아이디 찾기
 	@Override
-	public MemberVO getMemberIdSearch(String name, String identiNum, String email) {
-		MemberVO memberVO = memberDAO.getMemberIdSearch(email);
+	public ArrayList<MemberVO> getMemberIdSearch(String name, String identiNum, String email) {
+		ArrayList<MemberVO> vos = memberDAO.getMemberIdSearch(name, identiNum,email);
 		
-		if( memberVO != null && memberVO.getName().equals(name) && memberVO.getIdentiNum().equals(identiNum)) return memberVO;
+		
+		if(!vos.isEmpty()) return vos;
 		else return null;
+	}
+
+	// 비밀번호 찾기(인증 번호 발송)
+	@Override
+	public String authCkeckMail(String mid, String identiNum, String email) {
+		
+		
+		MemberVO memberVO = memberDAO.getMemberMidChk(mid);
+		// 계정 정보가 일치할 경우
+		if( memberVO != null && memberVO.getIdentiNum().equals(identiNum) && memberVO.getEmail().equals(email)) {
+			UUID uid = UUID.randomUUID();
+			String imsi = uid.toString().substring(0, 8);
+			
+			String toMail = email;
+			String title = "임시 인증 번호 발송";
+			String content = "";
+
+			try {
+				// 메일 전송을 위한 객체: MimeMessage(), MimeMessageHelper()
+				MimeMessage message =  mailSender.createMimeMessage();
+				
+				//보관함
+				MimeMessageHelper messageHelper = new MimeMessageHelper(message, true , "UTF-8");
+				
+				//메일 보관함에 회원이 보내온 메시지들의 정보를 모두 저장시킨 후 작업 
+				messageHelper.setTo(toMail);
+				messageHelper.setSubject(title);
+				
+				content += "<br><hr><h3>CGV Green에서 보냅니다.</h3><hr><br>";
+				content += "<p>아래의 인증 번호를 인증번호 입력창에 입력 해주세요</p>";
+				content += "<p>인증번호: "+imsi+"</p>";
+				
+				messageHelper.setText(content, true);
+				//mailSender.send(message);
+				System.out.println("imsi: " + imsi);
+			} catch (MessagingException e) {
+				e.printStackTrace();
+				return "-1";
+			}
+			
+			return imsi;
+		}
+		// 계정 정보가 일치하지 않을 경우
+		else return null;
+	}
+	
+	// 비밀번호 변경
+	@Override
+	public int setMemberPwdUpdate(String mid, String pwd1) {
+		String pwd = passwordEncoder.encode(pwd1);
+		return memberDAO.setMemberPwdUpdate(mid, pwd);
 	}
 
 	

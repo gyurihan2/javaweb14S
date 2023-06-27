@@ -267,7 +267,7 @@
 	      <div class="input-group mb-1 mt-2">
 	        <input type="text" class="form-control" name="postcode" id="sample6_postcode"  placeholder="우편번호" readonly>
 	        <div class="input-group-append">
-	          <input type="button" class="btn btn-info" value="우편번호 검색"  onclick="searchPostNum()">
+	          <input type="button" class="btn btn-info" value="우편번호 검색"  onclick="sample6_execDaumPostcode()">
 	        </div>
 	      </div>
 	      <input type="text" class="form-control mb-1" name="roadAddress" id="sample6_address" size="50" placeholder="주소" readonly>

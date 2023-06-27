@@ -1,5 +1,7 @@
 package com.spring.javaweb14S.service.member;
 
+import java.util.ArrayList;
+
 import com.spring.javaweb14S.vo.MemberVO;
 
 
@@ -18,7 +20,11 @@ public interface MemberService {
 	public int setMemberInput(MemberVO vo);
 
 	// 회원 아이디 찾기 처리
-	public MemberVO getMemberIdSearch(String name, String identiNum, String email);
+	public ArrayList<MemberVO> getMemberIdSearch(String name, String identiNum, String email);
+
+	public String authCkeckMail(String mid, String identiNum, String email);
+
+	public int setMemberPwdUpdate(String mid, String pwd);
 
 	
 

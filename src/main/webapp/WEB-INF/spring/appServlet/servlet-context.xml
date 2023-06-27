@@ -65,13 +65,19 @@
 		<interceptor>
 			<mapping path="/**"/>
 			<exclude-mapping path="/"/>
+			
+			<exclude-mapping path="/js/**"/>
 			<exclude-mapping path="/memberMsg/*"/>
+			<exclude-mapping path="/topMenu/**"/>
+			<exclude-mapping path="/theater/**"/>
 			<exclude-mapping path="/member/loginPage"/>
 			<exclude-mapping path="/member/signUpPage"/>
 			<exclude-mapping path="/member/signUpIdChk"/>
 			<exclude-mapping path="/member/signUpNickNameChk"/>
 			<exclude-mapping path="/member/idSearchPage"/>
 			<exclude-mapping path="/member/pwdSearchPage"/>
+			<exclude-mapping path="/member/authNumSend"/>
+			<exclude-mapping path="/member/pwdChangePage"/>
 			<beans:ref bean="LoginInterceptor"/>
 		</interceptor>	
 	</interceptors>
