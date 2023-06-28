@@ -11,7 +11,9 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.javaweb14S.common.FileUploadProvide;
 import com.spring.javaweb14S.dao.MemberDAO;
 import com.spring.javaweb14S.vo.MemberVO;
 
@@ -26,6 +28,9 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	JavaMailSender mailSender;
+	
+	@Autowired
+	FileUploadProvide provider;
 
 	// 로그인 아이디 패스워드 체크
 	@Override
@@ -127,13 +132,35 @@ public class MemberServiceImpl implements MemberService {
 		else return null;
 	}
 	
-	// 비밀번호 변경
+	// 비밀번호 변경 처리
 	@Override
 	public int setMemberPwdUpdate(String mid, String pwd1) {
 		String pwd = passwordEncoder.encode(pwd1);
 		return memberDAO.setMemberPwdUpdate(mid, pwd);
 	}
 
-	
-	
+	// 회원 정보 확인
+	@Override
+	public MemberVO getUserInfo(String mid) {
+		return memberDAO.getMemberMidChk(mid);
+	}
+
+	@Override
+	public int setMemberPhotoUpdate(MultipartFile file, String sMid, String realPath) {
+		MemberVO vo = memberDAO.getMemberMidChk(sMid);
+		
+		//이미지 저장
+		String saveFileName = provider.fileUploadUid(file, realPath);
+		
+		if(saveFileName != null) {
+			// 기존 이미지 삭제(기본 이미지 noImage.jpg 제외)
+			if(!vo.getPhoto().equals("noImage.jpg")) provider.deleteFile(realPath,vo.getPhoto());
+			
+			// 새로운 이미지 DB업데이트 
+			return memberDAO.setMemberPhotoUpdate(sMid,saveFileName);
+		}
+		
+		return 0;
+	}
+
 }

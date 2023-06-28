@@ -10,7 +10,8 @@ public class MemberVO {
 	private int idx,level,point,totPoint;
 	
 	private String  pwd, name, identiNum, gender,birthday,
-					phone, address, startDate, lastLogin, userDel, levelIUpDate;
+					phone, address, startDate, lastLogin, userDel, levelUpDate, photo;
+	
 	
 	@NotEmpty(message = "NotNull")
 	private String mid,nickName,email;

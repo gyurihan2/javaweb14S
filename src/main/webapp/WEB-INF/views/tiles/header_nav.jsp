@@ -89,7 +89,7 @@
 	      	</c:choose>
 	      </div>
 	      <div class="mr-3">
-	      	<a href="${ctp}/member/myPageMain" class="text-secondary"><img src="${ctp}/topMenu/mycgv.png" style="width:26px; height:26px;"><br/>MY CGV</a>
+	      	<a href="${ctp}/member/myPage" class="text-secondary"><img src="${ctp}/topMenu/mycgv.png" style="width:26px; height:26px;"><br/>MY CGV</a>
 	      </div>
        	<c:if test="${empty sMid }">
         	<div class="mr-3">

@@ -3,7 +3,6 @@ package com.spring.javaweb14S.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.mail.Session;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javaweb14S.service.member.MemberService;
 import com.spring.javaweb14S.vo.MemberVO;
@@ -62,6 +62,12 @@ public class MemberController {
 			session.setAttribute("sMid", vo.getMid());
 			session.setAttribute("sNickName", vo.getNickName());
 			session.setAttribute("sLevel", vo.getLevel());
+			
+			if(vo.getLevel() == 2) session.setAttribute("sStrLevel", "VIP");
+			else if(vo.getLevel() == 3) session.setAttribute("sStrLevel", "VVIP");
+			else if(vo.getLevel() == 4) session.setAttribute("sStrLevel", "SVIP");
+			else session.setAttribute("sStrLevel", "Nomal");
+			
 			
 			// 아이디 저장 쿠키 처리
 			// idSave 체크 되어있을경우 "on"
@@ -257,6 +263,49 @@ public class MemberController {
 		
 		if(res == 1) return "redirect:/memberMsg/pwdUpdateOk";
 		else return "redirect:/memberMsg/pwdUpdateNo";
+	}
+	
+	//회원 정보 페이지(myPage)
+	@RequestMapping(value = "/myPage",method = RequestMethod.GET)
+	public String myPagePost(HttpSession session, Model model) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		//회원 정보 가져오기
+		MemberVO vo = memberService.getUserInfo(sMid);
+		model.addAttribute("vo", vo);
+		
+		return "userPage/member/myPage";
+	}
+	// 회원 프로필 이미지 변경 페이지
+	@RequestMapping(value = "/photoChangePage",method = RequestMethod.GET)
+	public String photoChangeGet(HttpSession session,Model model) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		MemberVO vo = memberService.getUserInfo(sMid);
+		model.addAttribute("vo", vo);
+		
+		return "userPage/member/photoChangePage";
+	}
+	// 회원 프로필 이미지 변경 처리
+	@RequestMapping(value = "/photoChangePage",method = RequestMethod.POST)
+	public String photoChangePOST(HttpSession session,MultipartFile file) {
+		String sMid = (String)session.getAttribute("sMid");
+		String realPath = session.getServletContext().getRealPath("/resources/data/member/");
+		
+		int res = memberService.setMemberPhotoUpdate(file, sMid, realPath);
+		
+		if(res == 1) return "redirect:/memberMsg/photoUpdateOk";
+		else return "redirect:/memberMsg/photoUpdateNo";
+	}
+	//회원 닉네임 변경 페이지
+	@RequestMapping(value = "/nickNameChangePage",method = RequestMethod.GET)
+	public String NickNameChangePageGet(HttpSession session,Model model) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		MemberVO vo = memberService.getUserInfo(sMid);
+		model.addAttribute("vo", vo);
+		
+		return "userPage/member/nickNameChangePage";
 	}
 	 
 }

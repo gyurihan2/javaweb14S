@@ -9,10 +9,7 @@
   <jsp:include page="/WEB-INF/views/include/bs4.jsp"/>
 </head>
 <body>
-<p><br/></P>
-<div class="container">
-	<tiles:insertAttribute name="body"/>
-</div>
+<tiles:insertAttribute name="body"/>
 <p><br/></P>
 </body>
 </html>

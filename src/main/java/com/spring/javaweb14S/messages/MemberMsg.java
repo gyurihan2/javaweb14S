@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MemberMsg {
@@ -61,6 +60,14 @@ public class MemberMsg {
 			
 			String redircetPath = request.getParameter("redirectPath") == null ? "/member/loginPage" : request.getParameter("redirectPath");
 			model.addAttribute("url", redircetPath);
+		}
+		else if(msgFlag.equals("photoUpdateOk")) {
+			model.addAttribute("msg", "프로필 사진이 수정 되었습니다.");
+			model.addAttribute("url", "/member/photoChangePage");
+		}
+		else if(msgFlag.equals("photoUpdateNo")) {
+			model.addAttribute("msg", "프로필 사진이 수정 실패했습니다.");
+			model.addAttribute("url", "/member/photoChangePage");
 		}
 		// validator 에러
 		else if(msgFlag.equals("validatorNo")) {

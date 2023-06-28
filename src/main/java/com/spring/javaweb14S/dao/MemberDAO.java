@@ -20,6 +20,8 @@ public interface MemberDAO {
 
 	public ArrayList<MemberVO> getMemberIdSearch(@Param("name")String name, @Param("identiNum")String identiNum, @Param("email")String email);
 
+	public int setMemberPhotoUpdate(@Param("mid")String mid, @Param("saveFileName")String saveFileName);
+
 
 
 }

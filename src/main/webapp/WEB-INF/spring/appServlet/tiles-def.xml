@@ -26,6 +26,12 @@
 	<definition name="userPage/member/pwdChangePage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/userPage/member/pwdChangePage.jsp"/>
 	</definition>
+	<definition name="userPage/member/photoChangePage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/userPage/member/photoChangePage.jsp"/>
+	</definition>
+	<definition name="userPage/member/nickNameChangePage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/userPage/member/nickNameChangePage.jsp"/>
+	</definition>
 		
 	
 	<!-- 레이아웃 적용하는 화면(인증 완료 후 처리되는 화면)  -->

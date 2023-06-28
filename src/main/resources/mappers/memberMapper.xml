@@ -21,7 +21,7 @@
 <!-- Insert -->
 	<!-- 회원가입 -->
 	<insert id="setMemberInput">
-		insert into member values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.birthday},#{vo.nickName},#{vo.identiNum},#{vo.gender},#{vo.phone},#{vo.address},#{vo.email},default,default,default,default,default,default,default);
+		insert into member values(default,#{vo.mid},#{vo.pwd},#{vo.name},#{vo.birthday},#{vo.nickName},#{vo.identiNum},#{vo.gender},#{vo.phone},#{vo.address},#{vo.email},default,default,default,default,default,default,default,default);
 	</insert>
 <!-- Update -->
 	<!-- 로그인 시 마지막 로그인일 수정 -->
@@ -31,6 +31,10 @@
 	<!-- 패스워드 변경 -->
 	<update id="setMemberPwdUpdate">
 		update member set pwd=#{pwd} where mid=#{mid};
+	</update>
+	<!-- 프로필 이미지 변경 -->
+	<update id="setMemberPhotoUpdate">
+		update member set photo=#{saveFileName} where mid=#{mid};
 	</update>
 	
 <!-- Delete -->

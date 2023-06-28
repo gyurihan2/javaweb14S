@@ -2,6 +2,8 @@ package com.spring.javaweb14S.service.member;
 
 import java.util.ArrayList;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.spring.javaweb14S.vo.MemberVO;
 
 
@@ -22,9 +24,16 @@ public interface MemberService {
 	// 회원 아이디 찾기 처리
 	public ArrayList<MemberVO> getMemberIdSearch(String name, String identiNum, String email);
 
+	// 회원 비밀번호 찾기(회원 정보가 일치할 경우 인증 번호 발송)
 	public String authCkeckMail(String mid, String identiNum, String email);
 
+	// 비밀번호 찾기 후 비밀번호 변경
 	public int setMemberPwdUpdate(String mid, String pwd);
+
+	// Mid를 이용하여 회원 정보(myPage)
+	public MemberVO getUserInfo(String mid);
+
+	public int setMemberPhotoUpdate(MultipartFile file, String sMid, String realPath);
 
 	
 
