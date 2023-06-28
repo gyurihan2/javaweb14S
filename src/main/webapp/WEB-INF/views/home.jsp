@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <html>
@@ -12,7 +13,7 @@
 <body >
 <div class="container" id="wrapper">
 	<h1>
-		Hello world!  
+		Hello world! 집에서 테스트중
 	</h1>
 	<P>  The time on the server is ${serverTime}. </P>
 	<table class="table table-hover">
