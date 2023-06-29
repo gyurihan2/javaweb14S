@@ -54,6 +54,10 @@
 			else myform.submit();
 			
 		}
+		
+		window.addEventListener('beforeunload', function(event) {
+			  opener.location.reload();
+		});
   </script>
 </head>
 <body style="background-color:#faf4f4">

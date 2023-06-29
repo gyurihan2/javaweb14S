@@ -22,6 +22,15 @@ public interface MemberDAO {
 
 	public int setMemberPhotoUpdate(@Param("mid")String mid, @Param("saveFileName")String saveFileName);
 
+	public int setMemberNickNameUpdate(@Param("mid")String mid, @Param("nickName")String nickName);
+
+	public int setMemberNameUpdate(@Param("mid")String mid, @Param("name")String name);
+
+	public int setMemberGenderUpdate(@Param("mid")String mid, @Param("gender")String gender);
+
+	public int setMemberBirthdayUpdate(@Param("mid")String mid, @Param("birthday")String birthday);
+
+	
 
 
 }

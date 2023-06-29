@@ -69,6 +69,14 @@ public class MemberMsg {
 			model.addAttribute("msg", "프로필 사진이 수정 실패했습니다.");
 			model.addAttribute("url", "/member/photoChangePage");
 		}
+		else if(msgFlag.equals("nickNameUpdateOk")) {
+			model.addAttribute("msg", "닉네임 수정 완료했습니다.");
+			model.addAttribute("url", "/member/nickNameChangePage");
+		}
+		else if(msgFlag.equals("nickNameUpdateNo")) {
+			model.addAttribute("msg", "닉네임 수정 실패했습니다.");
+			model.addAttribute("url", "/member/nickNameChangePage");
+		}
 		// validator 에러
 		else if(msgFlag.equals("validatorNo")) {
 			if(request.getParameter("validatorFlag").equals("NotNull")) {

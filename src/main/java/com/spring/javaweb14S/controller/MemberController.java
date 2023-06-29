@@ -101,8 +101,7 @@ public class MemberController {
 		// 로그인 실패
 		else return "redirect:/memberMsg/loginNo";
 		
-	}
-	
+	}	
 	// 로그아웃 처리
 	@RequestMapping(value = "/loginOutOk", method = RequestMethod.GET)
 	public String loginOutOkGet(HttpSession session) {
@@ -110,6 +109,7 @@ public class MemberController {
 		return "redirect:/memberMsg/loginOutOk";
 	}
 	
+/////////////////////////////////		
 	// 회원 가입 페이지
 	@RequestMapping(value = "/signUpPage", method = RequestMethod.GET)
 	public String signUpPageGet() {
@@ -167,6 +167,7 @@ public class MemberController {
 		else return "redirect:/memberMsg/memberInputNo";
 	}
 	
+/////////////////////////////////		
 	// 아이디찾기 폼
 	@RequestMapping(value = "/idSearchPage", method = RequestMethod.GET)
 	public String idSearchPageGet() {
@@ -188,6 +189,7 @@ public class MemberController {
 		return "userPage/member/idSearchPage";
 	}
 	
+/////////////////////////////////		
 	//비밀번호 찾기 폼
 	@RequestMapping(value = "/pwdSearchPage", method = RequestMethod.GET)
 	public String pwdSearchPageGet(HttpSession session ) {
@@ -265,6 +267,7 @@ public class MemberController {
 		else return "redirect:/memberMsg/pwdUpdateNo";
 	}
 	
+/////////////////////////////////	
 	//회원 정보 페이지(myPage)
 	@RequestMapping(value = "/myPage",method = RequestMethod.GET)
 	public String myPagePost(HttpSession session, Model model) {
@@ -307,5 +310,105 @@ public class MemberController {
 		
 		return "userPage/member/nickNameChangePage";
 	}
-	 
+	// 회원 닉네임 중복 확인(Ajax)
+	@RequestMapping(value = "/nickNameChk",method = RequestMethod.POST)
+	@ResponseBody
+	public int NickNameChk(String nickName,HttpSession session) {
+		String sNickName = (String)session.getAttribute("sNickName");
+		
+		// 0: 닉네임 중복 1:닉네임 사용가능 2:사용하기전 닉네임과 동일
+		if(sNickName.equals(nickName)) return 2;
+		else return memberService.getMemberNickNameSearch(nickName);
+	}
+	//회원 닉네임 변경  처리
+	@RequestMapping(value = "/nickNameChangePage",method = RequestMethod.POST)
+	public String NickNameChangePagePost(String nickName,HttpSession session) {
+		int res = 0;
+		String sNickName = (String)session.getAttribute("sNickName");
+		String sMid = (String)session.getAttribute("sMid");
+		
+		if(!nickName.equals(sNickName)) res = memberService.setMemberNickNameUpdate(sMid,nickName);
+		
+		if(res == 1) {
+			session.setAttribute("sNickName", nickName);
+			return "redirect:/memberMsg/nickNameUpdateOk";
+		}
+		else return "redirect:/memberMsg/nickNameUpdateNo";
+	}
+	// 회원 정보 수정 전 회원 확인 페이지(비밀번호)
+	@RequestMapping(value = "/memberPwdChkPage",method = RequestMethod.GET)
+	public String memberPwdChkPageGet() {
+		return "userPage/member/memberPwdChkPage";
+	}
+	// 회원 정보 수정 전 회원 확인 페이지(비밀번호 확인 Ajax)
+	@RequestMapping(value = "/memberPwdChkPage",method = RequestMethod.POST)
+	@ResponseBody
+	public int memberPwdChkPageGet(HttpSession session,String pwd) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		MemberVO vo = memberService.getMemberLoginChk(sMid, pwd);
+		if(vo == null) return 0;
+		else {
+			session.setAttribute("loginChk", "OK");
+			return 1;
+		}
+	}
+	//회원정보 변경 페이지 
+	@RequestMapping(value = "/memberInfoPage",method = RequestMethod.GET)
+	public String memberInfoPageGet(HttpSession session, Model model) {
+		String loginChk = session.getAttribute("loginChk") == null ? "" : (String)session.getAttribute("loginChk");
+		String sMid = (String)session.getAttribute("sMid");
+		//session.removeAttribute("loginChk");
+		
+		if(loginChk.equals("OK")) {
+			MemberVO vo = memberService.getUserInfo(sMid);
+			model.addAttribute("vo", vo);
+			return "userPage/member/memberInfoPage";
+		}
+		else return "userPage/member/memberPwdChkPage";
+	}
+	//회원 정보 변경 페이지 ->  비밀번호 변경(Ajax)
+	@RequestMapping(value = "/memberPwdChange",method = RequestMethod.POST)
+	@ResponseBody
+	public int memberPwdChange(HttpSession session, String pwd) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		int res = memberService.setMemberPwdUpdate(sMid, pwd);
+		
+		if(res == 1) return 1;
+		else return 0;
+	}
+	//회원 정보 변경 페이지 ->  이름 변경(Ajax)
+	@RequestMapping(value = "/memberNameChange",method = RequestMethod.POST)
+	@ResponseBody
+	public int memberNameChange(HttpSession session, String name) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		int res = memberService.setmemberNameUpdate(sMid,name);
+		
+		if(res == 1) return 1;
+		else return 0;
+	}
+	//회원 정보 변경 페이지 ->  성별 변경(Ajax)
+	@RequestMapping(value = "/memberGenderChange",method = RequestMethod.POST)
+	@ResponseBody
+	public int memberGenderChange(HttpSession session, String gender) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		int res = memberService.setmemberGenderUpdate(sMid,gender);
+		
+		if(res == 1) return 1;
+		else return 0;
+	}
+	//회원 정보 변경 페이지 ->  성별 변경(Ajax)
+	@RequestMapping(value = "/memberBirthdayChange",method = RequestMethod.POST)
+	@ResponseBody
+	public int memberBirthdayChange(HttpSession session, String birthday) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		int res = memberService.setmemberBirthdayUpdate(sMid,birthday);
+		
+		if(res == 1) return 1;
+		else return 0;
+	}
 }

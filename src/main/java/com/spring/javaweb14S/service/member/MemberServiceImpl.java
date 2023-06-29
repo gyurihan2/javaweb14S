@@ -61,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int getMemberNickNameSearch(String nickName) {
 		MemberVO vo =memberDAO.getMemberNickNameChk(nickName);
-		
+		// 0: 닉네임 중복 1: 닉네임 중복 x
 		if(vo == null) return 1;
 		else return 0;
 	}
@@ -162,5 +162,31 @@ public class MemberServiceImpl implements MemberService {
 		
 		return 0;
 	}
+
+	// 회원 닉네임 수정
+	@Override
+	public int setMemberNickNameUpdate(String mid, String nickName) {
+		return memberDAO.setMemberNickNameUpdate(mid,nickName);
+	}
+	
+	//회원 이름 수정
+	@Override
+	public int setmemberNameUpdate(String mid, String name) {
+		return memberDAO.setMemberNameUpdate(mid,name);
+	}
+
+	//회원 성별 수정
+	@Override
+	public int setmemberGenderUpdate(String mid, String gender) {
+		return memberDAO.setMemberGenderUpdate(mid,gender);
+	}
+
+	//회원 생일 수정
+	@Override
+	public int setmemberBirthdayUpdate(String mid, String birthday) {
+		return memberDAO.setMemberBirthdayUpdate(mid,birthday);
+	}
+	
+	
 
 }

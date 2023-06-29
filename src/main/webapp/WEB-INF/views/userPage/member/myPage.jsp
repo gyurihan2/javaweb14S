@@ -61,6 +61,8 @@
 			window.open(url,"nWin","width=595px,height=280px");
 		}
 		
+		
+		
 	</script>
 </head>
 <body id="wrapper">
@@ -71,7 +73,7 @@
     <!-- 1row-->
     <div class="d-flex align-items-center">
     	<span style=" border-radius: 70%; overflow: hidden; cursor : pointer;" onclick="photoChange()">
-    		<img src="${ctp}/member/image/${vo.photo}" width="135px" height="135px"/>
+    		<img src="${ctp}/member/image/${vo.photo}" width="135px" height="135px" onerror=this.src="${ctp}/member/image/noImage.jpg"/>
     	</span>
       <div class="ml-5" style="display: inline-block;">
         <div>
@@ -86,7 +88,7 @@
           <p class="" style="margin-bottom:4px;color: #342929; font-size: 20px; line-height: 20px;">            
             고객님은  ${levelUpDates[0]}년 ${levelUpDates[1]}월 <strong class="txt-purple">${sStrLevel}</strong> 입니다.
           </p>
-          <button class="btn btn-info bnt-sm mt-4" onclick="#"><span>회원정보 수정</span></button>
+          <button class="btn btn-info bnt-sm mt-4" onclick="location.href='${ctp}/member/memberPwdChkPage';"><span>회원정보 수정</span></button>
         </div>
       </div>
       <div class="ml-2 text-cneter ml-3" style="display: inline-block;">

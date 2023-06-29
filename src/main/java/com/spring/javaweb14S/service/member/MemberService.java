@@ -33,7 +33,24 @@ public interface MemberService {
 	// Mid를 이용하여 회원 정보(myPage)
 	public MemberVO getUserInfo(String mid);
 
+	//회원 프로필 사진 수정
 	public int setMemberPhotoUpdate(MultipartFile file, String sMid, String realPath);
+
+	//회원 닉네임 수정
+	public int setMemberNickNameUpdate(String mid, String nickName);
+
+	// 회원 이름 수정
+	public int setmemberNameUpdate(String mid, String name);
+
+	// 회원 성별 수정
+	public int setmemberGenderUpdate(String mid, String gender);
+
+	// 회원 생일 수정
+	public int setmemberBirthdayUpdate(String mid, String birthday);
+
+	
+
+	
 
 	
 
