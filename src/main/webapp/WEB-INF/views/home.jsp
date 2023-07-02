@@ -13,7 +13,7 @@
 <body >
 <div class="container" id="wrapper">
 	<h1>
-		Hello world!
+		Hello world! test
 	</h1>
 	<P>  The time on the server is ${serverTime}. </P>
 	<table class="table table-hover">
