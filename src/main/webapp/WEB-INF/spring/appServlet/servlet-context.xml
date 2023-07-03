@@ -54,6 +54,7 @@
 	<!-- Interceptor -->
 	<beans:bean id="LoginInterceptor" class="com.spring.javaweb14S.interceptor.LoginInterceptor"/>
 	<beans:bean id="GuestInterceptor" class="com.spring.javaweb14S.interceptor.GuestInterceptor"/>
+	<beans:bean id="AdminInterceptor" class="com.spring.javaweb14S.interceptor.AdminInterceptor"/>
 	
 	<interceptors>
 	<!-- 로그인하여 guestPage(로그인페이지, 회원가입 페이지 등)접근 X -->
@@ -81,6 +82,13 @@
 			<exclude-mapping path="/member/authNumSend"/>
 			<exclude-mapping path="/member/pwdChangePage"/>
 			<beans:ref bean="LoginInterceptor"/>
+		</interceptor>
+		
+		<!-- 관리자 페이지 처리 -->
+		<interceptor>
+			<mapping path="/admin/**"/>
+			<mapping path="/theater/**"/>
+			<beans:ref bean="AdminInterceptor"/>
 		</interceptor>	
 	</interceptors>
 	

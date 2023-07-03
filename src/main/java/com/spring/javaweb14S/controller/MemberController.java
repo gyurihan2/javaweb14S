@@ -411,4 +411,19 @@ public class MemberController {
 		if(res == 1) return 1;
 		else return 0;
 	}
+	// 회원 정보 변경 페이지 - > email 변경(Ajax 인증 번호 발송)
+	@RequestMapping(value = "/myPageAuthNumSend",method = RequestMethod.POST)
+	@ResponseBody
+	public int myPageAuthNumSend(HttpSession session, String email,HttpServletRequest request) {
+		String sMid = (String)session.getAttribute("sMid");
+		
+		String imsiNum = memberService.myPageAuthSend(sMid,email);
+		
+		if(imsiNum != null) {
+		
+			return 1;
+		}
+		else return 0;
+		
+	}
 }

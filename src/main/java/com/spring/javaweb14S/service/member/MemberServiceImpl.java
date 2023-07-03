@@ -186,6 +186,44 @@ public class MemberServiceImpl implements MemberService {
 	public int setmemberBirthdayUpdate(String mid, String birthday) {
 		return memberDAO.setMemberBirthdayUpdate(mid,birthday);
 	}
+
+	// 회원 이메일 수정
+	@Override
+	public String myPageAuthSend(String sMid, String email) {
+		
+		UUID uid = UUID.randomUUID();
+		String imsi = uid.toString().substring(0, 8);
+		
+		String toMail = email;
+		String title = "임시 인증 번호 발송";
+		String content = "";
+
+		try {
+			// 메일 전송을 위한 객체: MimeMessage(), MimeMessageHelper()
+			MimeMessage message =  mailSender.createMimeMessage();
+			
+			//보관함
+			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true , "UTF-8");
+			
+			//메일 보관함에 회원이 보내온 메시지들의 정보를 모두 저장시킨 후 작업 
+			messageHelper.setTo(toMail);
+			messageHelper.setSubject(title);
+			
+			content += "<br><hr><h3>CGV Green에서 보냅니다.</h3><hr><br>";
+			content += "<p>아래의 인증 번호를 인증번호 입력창에 입력 해주세요</p>";
+			content += "<p>인증번호: "+imsi+"</p>";
+			
+			messageHelper.setText(content, true);
+			//mailSender.send(message);
+			System.out.println("imsi: " + imsi);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		return imsi;
+		
+	}
 	
 	
 

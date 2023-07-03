@@ -77,6 +77,37 @@
  			});
  		}
  		
+ 		// 이메일 변경 버튼
+ 		function emailChange(){
+ 			
+ 			let preEmail = "${vo.email}";
+ 			let email = $("#email").val();
+ 			
+ 			// 유효성 검사 필요
+ 			if(email == preEmail){
+ 				alert("이미 등록된 이메일 입니다.");
+ 				return false;
+ 			}
+ 			else if(email.trim() == ""){
+ 				alert("변경할 이메일을 입력하세요");
+ 			}
+ 			
+ 			$.ajax({
+ 				type:"post",
+ 				url:"${ctp}/member/myPageAuthNumSend",
+ 				data:{email:email},
+ 				success:function(res){
+ 					if(res == "1") alert("인증번호 발송 되었습니다.\n인증번호를 입력해주세요");
+ 					else alert("인증번호 발송 실패.");
+ 				},
+ 				error:function(){
+ 					alert("전송 실패");
+ 				}
+ 			});
+ 		}
+ 		
+ 		
+ 		
  		jQuery(function(){
  			
  			//성별 수정
@@ -186,12 +217,25 @@
 		      <input type="text" class="form-control" id="phone1" value="${phones[1]}">&nbsp;-&nbsp;
 		      <input type="text" class="form-control" id="phone2" value="${phones[2]}">
 		      <div class="input-group-append">
-		        <button class="btn btn-outline-info" type="button">변경하기</button>
+		        <button type="button" class="btn btn-outline-info" >변경하기</button>
 		      </div>
     		</div>
 			</div>
 			<div class="col-2 dth"><div class="mt-4">이메일</div></div>
-			<div class="col-4">${vo.email}&nbsp;&nbsp;<button type="button"></button></div>
+			<div class="col-4">
+				<div class="input-group">
+					<input type="text" class="form-control" id="email" value="${vo.email}"/>
+					<div class="input-group-append">
+		        <button type="button" class="btn btn-outline-info" onclick="emailChange()">변경하기</button>
+		      </div>
+		      <div class="input-group">
+		      	<input type="text" class="form-control" id="authNum" placeholder="인증번호를 입력 하세요"/>
+						<div class="input-group-append">
+		        <button type="button" class="btn btn-outline-success" >인증하기</button>
+		      	</div>
+		      </div>
+				</div>
+			</div>
 		</div>
 		<div class="row rows align-items-center" >
 		  	<c:set var="addresses" value="${fn:split(vo.address,'/')}"/>

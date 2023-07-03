@@ -11,6 +11,9 @@
 	<definition name="include/message" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/include/message.jsp"/>
 	</definition>
+	<definition name="include/messageClose" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/include/messageClose.jsp"/>
+	</definition>
 	<definition name="userPage/member/signUpIdChk" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/userPage/member/signUpIdChk.jsp"/>
 	</definition>
@@ -32,7 +35,20 @@
 	<definition name="userPage/member/nickNameChangePage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/userPage/member/nickNameChangePage.jsp"/>
 	</definition>
-		
+	<definition name="adminPage/theater/theaterDetailPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/theaterDetailPage.jsp"/>
+	</definition>
+	
+	<!-- Admin page 레이아웃 -->
+	<definition name="adminPage" template="/WEB-INF/views/tiles/layout/adminLayout.jsp">
+		<put-attribute name="side_nav" value="/WEB-INF/views/tiles/side_nav.jsp" />
+	</definition>
+	<definition name="adminPage/mainPage" extends="adminPage">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/mainPage.jsp" />
+	</definition>
+	<definition name="adminPage/*/*" extends="adminPage">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/{1}/{2}.jsp" />
+	</definition>
 	
 	<!-- 레이아웃 적용하는 화면(인증 완료 후 처리되는 화면)  -->
 	<definition name="layoutYes" template="/WEB-INF/views/tiles/layout/baseLayout.jsp">
@@ -48,5 +64,7 @@
 	<definition name="*/*/*" extends="layoutYes">
 		<put-attribute name="body" value="/WEB-INF/views/{1}/{2}/{3}.jsp" />
 	</definition>
+	
+	
 	
 </tiles-definitions>
