@@ -17,6 +17,8 @@
 	<resources mapping="/theater/**" location="/resources/images/theater/"/>
 	<resources mapping="/emoticon/**" location="/resources/images/emoticon/"/>
 	<resources mapping="/js/**" location="/resources/js/"/>
+	<resources mapping="/ckeditor/**" location="/resources/ckeditor/"/>
+	<resources mapping="/ckeditorUpload/**" location="/resources/data/ckeditor/"/>
 	<resources mapping="/member/image/**" location="/resources/data/member/"/>
 	<resources mapping="/resources/**" location="/resources/"/>
 	

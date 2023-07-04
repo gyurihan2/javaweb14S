@@ -38,6 +38,9 @@
 	<definition name="adminPage/theater/theaterDetailPage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/theaterDetailPage.jsp"/>
 	</definition>
+	<definition name="adminPage/theater/themaInputPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/themaInputPage.jsp"/>
+	</definition>
 	
 	<!-- Admin page 레이아웃 -->
 	<definition name="adminPage" template="/WEB-INF/views/tiles/layout/adminLayout.jsp">

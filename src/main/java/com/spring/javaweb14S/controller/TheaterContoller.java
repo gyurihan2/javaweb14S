@@ -40,4 +40,15 @@ public class TheaterContoller {
 		int res = theaterService.setTheaterChange(idx,work);
 		return res;
 	}
+	
+	
+	
+	
+	
+	// 테마 등록 페이지
+	@RequestMapping(value = "themaInputPage",method = RequestMethod.GET)
+	public String themaInputPageGet() {
+		return "adminPage/theater/themaInputPage";
+	}
+	
 }
