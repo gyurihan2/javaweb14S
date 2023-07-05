@@ -11,7 +11,7 @@
 <body>
 <p><br/></P>
 <div class="container">
-  <div class="text-center"><h2>${vo.name} 상영관 상세 보기</h2></div>
+  <div class="text-center"><h2>${vo.name} 상영관 테마 상세 보기</h2></div>
 </div>
 <p><br/></P>
 </body>

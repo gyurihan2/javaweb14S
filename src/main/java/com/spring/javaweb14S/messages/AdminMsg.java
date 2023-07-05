@@ -23,6 +23,14 @@ public class AdminMsg {
 			model.addAttribute("msg", "검색한 상영관 정보가 없습니다.");
 			return "include/messageClose";
 		}
+		else if(msgFlag.equals("themaInputOk")){
+			model.addAttribute("msg", "테마가 추가 되었습니다.");
+			model.addAttribute("url", "/theater/themaInputPage");
+		}
+		else if(msgFlag.equals("themaInputNo")){
+			model.addAttribute("msg", "테마가 추가 실패했습니다.");
+			model.addAttribute("url", "/theater/themaInputPage");
+		}
 		
 		return "include/message";
 	}

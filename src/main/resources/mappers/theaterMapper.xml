@@ -12,12 +12,29 @@
 		select * from theater where idx=#{idx};
 	</select>
 	
+	<!-- 상영관 테마 전체 리스트 -->
+	<select id="getThemaList" resultType="themaVO">
+		select * from thema;
+	</select>
+	<!-- 상영관 테마 전체 리스트 -->
+	<select id="getThemaDetail" resultType="themaVO">
+		select * from thema where idx=#{idx};
+	</select>
+	
 	
 <!-- Insert -->
+	<insert id="setThemaInput">
+		insert into thema values(default,#{vo.name},#{vo.price},#{vo.content},#{vo.hashTag},#{vo.display},#{vo.mainImg},#{vo.images},#{vo.imgFName},now(),now());
+	</insert>
 	
+		
 <!-- Update -->
 	<update id="getTheaterChange">
 		update theater set work=#{work} where idx=#{idx};
+	</update>
+	<!-- 상영관 테마 메인화면 표시여부 수정 -->
+	<update id="setThemaDisplayChange">
+		update thema set display=#{display} where idx=#{idx};
 	</update>
 	
 	

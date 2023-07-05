@@ -20,6 +20,7 @@
 	<resources mapping="/ckeditor/**" location="/resources/ckeditor/"/>
 	<resources mapping="/ckeditorUpload/**" location="/resources/data/ckeditor/"/>
 	<resources mapping="/member/image/**" location="/resources/data/member/"/>
+	<resources mapping="/thema/image/**" location="/resources/data/thema/"/>
 	<resources mapping="/resources/**" location="/resources/"/>
 	
 

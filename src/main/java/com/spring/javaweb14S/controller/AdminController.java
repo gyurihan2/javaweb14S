@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.javaweb14S.service.theater.TheaterService;
 import com.spring.javaweb14S.vo.TheaterVO;
+import com.spring.javaweb14S.vo.ThemaVO;
 
 @Controller
 @RequestMapping("/admin")
@@ -26,8 +27,11 @@ public class AdminController {
 	@RequestMapping(value = "/theater/mgmtPage", method = RequestMethod.GET)
 	public String theaterMgmtPage(Model model) {
 		
-		ArrayList<TheaterVO> vos = theaterService.getTheaterList();
-		model.addAttribute("vos", vos);
+		ArrayList<TheaterVO> theaterVOS = theaterService.getTheaterList();
+		ArrayList<ThemaVO> themaVOS = theaterService.getThemaList();
+		
+		model.addAttribute("theaterVOS", theaterVOS);
+		model.addAttribute("themaVOS", themaVOS);
 		
 		return "adminPage/theater/mgmtPage";
 	}

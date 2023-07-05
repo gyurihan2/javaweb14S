@@ -8,6 +8,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>상영관 관리 페이지</title>
 	<style>
+		 .theater{
+            overflow-y: scroll;
+        }
+        .theater::-webkit-scrollbar {
+          width: 15px;
+        }
+        .theater::-webkit-scrollbar-track {
+          background-color: transparent;
+        }
+        
 		.col{
 			margin-top : 5px;
 			height: 50px;
@@ -34,8 +44,7 @@
 		'use strict';
 		
 	function workChange(idx,name,obj){
-		let work = $("#work"+idx).val();
-		
+		let work = $(obj).val();
 		let chk = confirm(name+"상영관 작동 여부를 수정 하시겠습니까?");
 		
 		if(chk){
@@ -64,6 +73,36 @@
 		
 	} 
 	
+	function displayChange(idx,name,obj){
+		let display = $(obj).val();
+		let chk = confirm(name+"를 메인화면 출력 여부를 수정 하시겠습니까?");
+		
+		if(chk){
+			$.ajax({
+				type:"post",
+				url:"${ctp}/theater/themaChangeDisplay",
+				data:{
+					idx:idx,
+					display:display
+				},
+				success:function(res){
+					if(res =="1") alert("수정 되었습니다.");
+					else alert("수정 실패");	
+					
+					location.reload();
+				},
+				error:function(){
+					alert("전송 실패");
+					location.reload();
+				}
+			});
+		}
+		else{
+			location.reload();
+		}
+		
+	} 
+	
 	</script>
 </head>
 <body id="wrapper">
@@ -73,11 +112,11 @@
 	<p></p>
 	<div class="d-flex flex-row test">
 		<!-- 상영관 설정 -->
-		<div class="content mt-5 p-3 text-center" >
-			<div class="d-flex flex-row-reverse mb-3" style="width: 800px">
+		<div class="content mt-5 p-3 text-center theater" style="height: 700px;" >
+			<div class="d-flex flex-row-reverse mb-3" style="width: 750px">
 				<div class="p-2"><input type="button" value="상영관 추가" class="btn btn-info btn-sm"/></div>
 			</div>
-			<c:if test="${!empty vos}">
+			<c:if test="${!empty theaterVOS}">
 				<div class="row row_head ">
 					<div class="col"><b>이름</b></div>
 					<div class="col"><b>테마</b></div>
@@ -86,15 +125,15 @@
 					<div class="col"><b>상태</b></div>
 				</div>
 				<hr/>
-				<c:forEach var="vo" items="${vos}">
+				<c:forEach var="vo" items="${theaterVOS}">
 					<div class="row row_body align-items-center">
 						<div class="col" onclick="window.open('${ctp}/theater/theaterDetailPage?idx=${vo.idx}','nWin','width=800px,height=800px')">${vo.name} 상영관</div>
-						<div class="col" onclick="window.open('${ctp}/theater/theaterDetailPage?idx=${vo.idx}','nWin','width=800px,height=800px')">${vo.thema}</div>
-						<div class="col" onclick="window.open('${ctp}/theater/theaterDetailPage?idx=${vo.idx}','nWin','width=800px,height=800px')">${vo.seat}</div>
-						<div class="col" onclick="window.open('${ctp}/theater/theaterDetailPage?idx=${vo.idx}','nWin','width=800px,height=800px')">${vo.price}</div>
+						<div class="col" >${vo.thema}</div>
+						<div class="col" >${vo.seat}</div>
+						<div class="col" >${vo.price}</div>
 						<div class="col">
 							<div class="form-group">
-							  <select class="form-control workPre" id="work${vo.idx}" onchange="workChange('${vo.idx}','${vo.name}',this)">
+							  <select class="form-control workPre" id="display${vo.idx}" onchange="workChange('${vo.idx}','${vo.name}',this)">
 							    <option value="1" <c:if test="${vo.work==1 }">selected</c:if>>오픈</option>
 							    <option value="2" <c:if test="${vo.work==2 }">selected</c:if>>임시 중단</option>
 							    <option value="3" <c:if test="${vo.work==3 }">selected</c:if>>중지</option>
@@ -106,22 +145,43 @@
 					<hr class="mb-2 mt-2"/>
 				</c:forEach>
 			</c:if>
-			<c:if test="${empty vos}">
+			<c:if test="${empty theaterVOS}">
 				<div class="text-center"> 내역이 없습니다.</div>
 			</c:if>
 		</div>
-		<!-- 테마 설정 -->
-		<div class="d-flex flex-column mb-3">
-			<div class="content mt-5 ml-4 p-2" style="width: 600px; height: 300px">
-				<div class="mt-2">
-					<input type="button" value="테마 추가" class="btn btn-info btn-sm" onclick="window.open('${ctp}/theater/themaInputPage','nWin','width=800 height=1000')" style="float: right;"/>
-				</div>
+	</div>
+	<!-- 테마 설정 -->
+	<div class="d-flex flex-column mb-3 text-center">
+		<div class="content mt-5 ml-4 p-2" style="width: 650px; height: 500px">
+			<div class="mt-2">
+				<input type="button" value="테마 추가" class="btn btn-info btn-sm" onclick="window.open('${ctp}/theater/themaInputPage','nWin','width=800 height=1000')" style="float: right;"/>
 			</div>
-			<div class="content mt-5 ml-4 p-2" id="themaBriefing" style="width: 600px; height: 300px">
-				<div class="row">
-					<div class="col"></div>
+			<c:if test="${!empty themaVOS}">
+				<div class="row row_head mt-3">
+					<div class="col"><b>테마명</b></div>
+					<div class="col"><b>가격</b></div>
+					<div class="col"><b>메인화면 표시</b></div>
 				</div>
-			</div>
+				<hr/>
+				<c:forEach var="vo" items="${themaVOS}">
+					<div class="row row_body align-items-center">
+						<div class="col" onclick="window.open('${ctp}/theater/themaDetailPage?idx=${vo.idx}','nWin','width=800px,height=800px')">${vo.name}</div>
+						<div class="col">${vo.price}</div>
+						<div class="col">
+							<div class="form-group">
+							  <select class="form-control workPre" id="work${vo.idx}" onchange="displayChange('${vo.idx}','${vo.name}',this)">
+							    <option value="YES" <c:if test="${vo.display=='YES' }">selected</c:if>>YES</option>
+							    <option value="NO" <c:if test="${vo.display=='NO' }">selected</c:if>>NO</option>
+							  </select>
+							</div>
+						</div>
+					</div>
+					<hr class="mb-2 mt-2"/>
+				</c:forEach>
+			</c:if>
+			<c:if test="${empty themaVOS}">
+				<div class="text-center"> 내역이 없습니다.</div>
+			</c:if>
 		</div>
 	</div>
 <p><br/></p>

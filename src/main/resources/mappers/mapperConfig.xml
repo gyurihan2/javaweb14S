@@ -4,5 +4,6 @@
  	<typeAliases>
  		<typeAlias alias="memberVO" type="com.spring.javaweb14S.vo.MemberVO"/>
  		<typeAlias alias="theaterVO" type="com.spring.javaweb14S.vo.TheaterVO"/>
+ 		<typeAlias alias="themaVO" type="com.spring.javaweb14S.vo.ThemaVO"/>
  	</typeAliases>
 </configuration>

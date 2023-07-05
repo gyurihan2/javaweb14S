@@ -5,6 +5,7 @@ create table thema(
 	name varchar(20) not null,
 	price int(10) not null,
 	content text,
+	hashTag varchar(50),
 	display char(10) default 'NO',
 	mainImg varchar(50) not null,
 	images varchar(500) not null,

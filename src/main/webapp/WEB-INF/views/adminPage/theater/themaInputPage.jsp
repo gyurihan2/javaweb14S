@@ -18,6 +18,7 @@
 			font-weight: bold;
 			font-size:15px;
 			background-color: #f8f8f8;
+			/* border-right : 1px solid rgba(0, 0, 0, 0.1); */
 			height: 100%;
 		}
 		.row * {
@@ -59,12 +60,16 @@
   		
   		//size 확인
   		let fileSize = 0;
+  		let maxFileSize=1024*1024*5;
   		
   		let cnt = $('#images')[0].files.length;
   		for(let i=0; i<cnt; i++){
   			fileSize += document.getElementById("images").files[i].size;
   		}
-  		alert(fileSize);
+  		
+  		// 유효성 체크 필요
+  		
+  		myform.submit();
   	}
   </script>
   <script>
@@ -79,7 +84,8 @@
 </head>
 <body>
 <h3 class="text-center">테마 등록</h3>
-<form name="myform" method="post" enctype="multipart/form-data">
+<!-- enctype="multipart/form-data" -->
+<form name="myform"  method="post" action="${ctp}/theater/themaInputPage" enctype="multipart/form-data">
 	<div class="container">
 		<div class="row">
 			<div class="col-2 dth">테마 명</div>
@@ -88,7 +94,7 @@
 			</div>
 			<div class="col-2 dth">입장료</div>
 			<div class="col">
-				<input type="number" name="price" class="form-control"/>
+				<input type="number" name="price" class="form-control" value="15000" step="1000"/>
 			</div>
 		</div>
 		<div class="row align-items-center">
@@ -97,7 +103,7 @@
 			</div>
 			<div class="col" id="mainImgDemo"> 대표이미지를 업로드 하세요</div>
 			<div class="col-6">
-				<input type="file" class="form-control-file border" name="mainImg" onchange="previewImg(this)">
+				<input type="file" class="form-control-file border" name="file1" id="mainImg" onchange="previewImg(this)">
 			</div>
 		</div>
 		<div class="row align-items-center">
@@ -105,7 +111,24 @@
 				이미지
 			</div>
 			<div class="col">
-				<input type="file" class="form-control-file border" name="images" id="images" multiple>
+				<input type="file" class="form-control-file border" name="file2" id="images" multiple>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2 dth">해시태그</div>
+			<div class="col">
+				<input type="text" name="hashTag" class="form-control"/>
+			</div>
+			<div class="col-3 dth">메인페이지 출력 여부</div>
+			<div class="col">
+				<div class="custom-control custom-radio custom-control-inline">
+			    <input type="radio" class="custom-control-input" id="displayYes" name="display" value="YES">
+			    <label class="custom-control-label" for="displayYes">YES</label>
+  			</div>
+			  <div class="custom-control custom-radio custom-control-inline">
+			    <input type="radio" class="custom-control-input" id="displayNo" name="display" value="NO" checked>
+			    <label class="custom-control-label" for="displayNo">NO</label>
+			  </div>
 			</div>
 		</div>
 		<div class="row align-items-center">
@@ -115,11 +138,10 @@
 		</div>
 		</div>
 		<div>
-			<button type="button" class="btn btn-info" onclick="fCheck()">생성하기</button>
+			<button type="submit" class="btn btn-info" >생성하기</button>
 			<button type="button" class="btn btn-danger" onclick="window.close()">취소</button>
 		</div>
 	</div>
-		
 </form>
 	
 <p><br/></P>
