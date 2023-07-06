@@ -42,13 +42,13 @@ public class TheaterServiceImpl implements TheaterService {
 	
 	//상영관 테마 생성
 	@Override
-	public int setThemaInput(ThemaVO vo, MultipartFile file1, MultipartHttpServletRequest file2, String realPath) {
+	public int setThemaInput(ThemaVO vo, MultipartFile file1, MultipartHttpServletRequest file2, String realPath, String contextPath) {
 		String orgFName="";
 		String saveFName="";
 		
 		CkeditorUpload ckUpload= new CkeditorUpload();
 		
-		ckUpload.fileUploadPathChange("thema", vo.getContent());
+		ckUpload.fileUploadSavePathChange("thema", vo.getContent());
 		
 		List<MultipartFile> imagesList = file2.getFiles("file2");
 		imagesList.add(0,file1);
@@ -62,8 +62,8 @@ public class TheaterServiceImpl implements TheaterService {
 		
 		if(orgFName.equals("")) {
 			vo.setMainImg("noImage.jpg");
-			vo.setImages("noImage.jpg");
-			vo.setImgFName("noImage.jpg");
+			vo.setImages("");
+			vo.setImgFName("");
 		}
 		else {
 			String temp[] = saveFName.split("/");
@@ -72,10 +72,9 @@ public class TheaterServiceImpl implements TheaterService {
 			vo.setImgFName(saveFName);
 		}
 		
-		vo.setContent(vo.getContent().replace("/javaweb14S/ckeditorUpload", "/javaweb14S/thema/image"));
+		vo.setContent(vo.getContent().replace(contextPath+"/ckeditorUpload", contextPath+"/thema/image"));
 		
 		return theaterDAO.setThemaInput(vo);
-		
 	}
 
 	// 상영관 테마 전체 리스트
@@ -95,6 +94,110 @@ public class TheaterServiceImpl implements TheaterService {
 	public ThemaVO getThemaDetail(int idx) {
 		return theaterDAO.getThemaDetail(idx);
 	}
+	
+	// 상영관 테마 메인 이미지 수정
+	@Override
+	public int setThemaMainImgChange(int idx, String mainImg) {
+		return theaterDAO.setThemaMainImagChange(idx,mainImg);
+	}
 
+	// 상영관 테마 이미지 추가
+	@Override
+	public int setThemaImgInsert(int idx, MultipartHttpServletRequest imagesAddFile,String realPath) {
+		String orgFName="";
+		String saveFName="";
+		
+		List<MultipartFile> imagesList = imagesAddFile.getFiles("imagesAddFile");
+		
+		for(MultipartFile file : imagesList) {
+			if(!file.isEmpty()) {
+				orgFName += file.getOriginalFilename()+"/";
+				saveFName += fileProvide.fileUploadUid(file, realPath)+"/";
+				
+			}
+		}
+		
+		if(!orgFName.equals("")) {
+			return theaterDAO.setThemaImageAdd(idx,orgFName,saveFName);
+		}
+		
+		return 0;
+	}
+
+	// 상영관 테마 이미지 삭제
+	@Override
+	public int setThemaImgDelete(int idx, List<String> imgArr, String realPath) {
+		ThemaVO vo = theaterDAO.getThemaDetail(idx);
+		
+		String deleteFileName = "";
+		for(String fName:imgArr) deleteFileName += fName+"/";
+		
+		fileProvide.deleteFile(realPath, deleteFileName);
+		
+		String[] imagesArr = vo.getImages().split("/");
+		String[] imgFNameArr = vo.getImgFName().split("/");
+		
+		for(String fName:imgArr) {
+			for(int i=0; i<imgFNameArr.length; i++) {
+				if(fName.equals(imgFNameArr[i])) {
+					imgFNameArr[i] = null;
+					imagesArr[i] = null;
+				}
+			}
+		}
+		
+		String images="";
+		String imgFName="";
+		
+		for(int i=0; i<imgFNameArr.length;i++) {
+			if(imgFNameArr[i] != null) {
+				images += imagesArr[i]+"/";
+				imgFName += imgFNameArr[i]+"/";
+			}
+		}
+		
+		if(images.equals("")) theaterDAO.setThemaImageNoImage(idx);
+		return theaterDAO.setThemaImageUpdate(idx, images, imgFName);
+	}
+	
+	//테마 업로드 폴더 제외한 업데이트(테마명, 입장료, 해시태그, 메인페이지 출력 여부, 설명)
+	@Override
+	public int setThemMainContentUpdate(ThemaVO vo, String saved_Path) {
+		String flag="thema";
+		ThemaVO orgVO = theaterDAO.getThemaDetail(vo.getIdx());
+		
+		
+		CkeditorUpload ckUpload= new CkeditorUpload();
+		
+		//  설명(content)가  수정 될 경우
+		if(!orgVO.getContent().equals(vo.getContent())) {
+			// 저장된 파일 임시 폴더로 이동
+			ckUpload.fileUploadImsiPathChange(saved_Path, flag, vo.getContent());
+			
+			//저장된 파일 경로 변경
+			String contextPath = saved_Path.split("/")[0];
+			vo.setContent(vo.getContent().replace(contextPath+"/thema/image", contextPath+"/ckeditorUpload"));
+			
+			// 임시폴더 -> 저장폴더 이동
+			ckUpload.fileUploadSavePathChange(flag, vo.getContent());
+			
+			//저장된 파일 경로 변경
+			vo.setContent(vo.getContent().replace(contextPath+"/ckeditorUpload", contextPath+"/thema/image"));
+			
+		}
+		
+		return theaterDAO.setThemaMainContentUpdate(vo);
+	}
+
+	// 테마 삭제
+	@Override
+	public int setThemaDelete(String idx) {
+		return theaterDAO.setThemaDelete(idx);
+	}
+	
+	
+	
+	
+	
 	
 }

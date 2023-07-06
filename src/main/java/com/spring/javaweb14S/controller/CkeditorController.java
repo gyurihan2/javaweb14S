@@ -48,6 +48,7 @@ public class CkeditorController {
 		//서버 파일시스템에 저장(업로드한) 그림을 브라우저 에 보여준다.
 		PrintWriter out = response.getWriter();
 		String fileUrl =request.getContextPath()+"/ckeditorUpload/"+oFileName;
+		
 
 		// 키는 고정 ckeditor 제공하는 예약어를 사용해야됨
 		out.println("{\"originalFilename\":\""+oFileName+"\","

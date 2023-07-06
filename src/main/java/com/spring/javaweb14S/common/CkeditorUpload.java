@@ -12,39 +12,38 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class CkeditorUpload {
+	private HttpServletRequest request =((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+	final String REALPATH = request.getSession().getServletContext().getRealPath("/resources/data/");
 
-	public int fileUploadPathChange(String savePath, String content) {
+	// 임시폴더 -> 저장폴더
+	public int fileUploadSavePathChange(String savePath, String content) {
 		// 이미지가 없을 경우 리턴
 		if(content.indexOf("src=\"/") == -1) return 0;
-		
-		HttpServletRequest request =((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/");
-		
-		String insertPath = "/javaweb14S/ckeditorUpload";
-		String nextImg = content.substring(content.indexOf(insertPath)+insertPath.length());
+
+		String saved_Path = "/javaweb14S/ckeditorUpload";
+		String nextImg = content.substring(content.indexOf(saved_Path)+saved_Path.length());
 		
 		boolean sw=true;
 		while(sw) {
 			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
 			
-			String origFilePath = realPath+"ckeditor"+imgFile;
-			String copyFilePath = realPath+savePath+imgFile;
+			String origFilePath = REALPATH+"ckeditor"+imgFile;
+			String copyFilePath = REALPATH+savePath+imgFile;
 			
 			//ckeditor 파일을 board폴더로 복사
-			fileCopyCheck(origFilePath,copyFilePath);
+			fileCopyCheck(origFilePath,copyFilePath,true);
 			
 			if(nextImg.indexOf("src=\"/") == -1) sw=false;
 			
-			else nextImg = nextImg.substring(nextImg.indexOf("/javaweb14S/ckeditorUpload")+insertPath.length());
+			else nextImg = nextImg.substring(nextImg.indexOf("/javaweb14S/ckeditorUpload")+saved_Path.length());
 			
 		}
 		
-		
-		return 0;
+		return 1;
 	}
 	
-	//원본 파일을 다른곳으로 복사 처리
-	private void fileCopyCheck(String origFilePath, String copyFilePath) {
+	//원본 파일을 다른곳으로 복사 처리 후 원본 파일 삭제
+	private void fileCopyCheck(String origFilePath, String copyFilePath,Boolean delete) {
 		try {
 			FileInputStream fis = new FileInputStream(new File(origFilePath));
 			
@@ -62,8 +61,10 @@ public class CkeditorUpload {
 			fos.close();
 			fis.close();
 			
-			File a = new File(origFilePath);
-			a.delete();
+			if(delete) {
+				File a = new File(origFilePath);
+				a.delete();
+			}
 			
 			
 		}catch (FileNotFoundException e) {
@@ -73,5 +74,31 @@ public class CkeditorUpload {
 		}
 		
 	}
+
+	
+	public int fileUploadImsiPathChange(String saved_Path, String flag, String content) {
+		// 이미지가 없을 경우 리턴
+		if(content.indexOf("src=\"/") == -1) return 0;
+		
+		String nextImg = content.substring(content.indexOf(saved_Path)+saved_Path.length());
+		
+		boolean sw=true;
+		while(sw) {
+			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+			String origFilePath = REALPATH+flag+imgFile;
+			String copyFilePath = REALPATH+"ckeditor"+imgFile;
+			
+			//ckeditor 파일을 board폴더로 복사
+			fileCopyCheck(origFilePath, copyFilePath, true);
+			
+			if(nextImg.indexOf("src=\"/") == -1) sw=false;
+			
+			else nextImg = nextImg.substring(nextImg.indexOf("/javaweb14S/ckeditorUpload")+saved_Path.length());
+			
+		}
+		
+		return 1;
+	}
+	
 	
 }

@@ -1,8 +1,10 @@
 package com.spring.javaweb14S.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,13 +62,14 @@ public class TheaterContoller {
 	@RequestMapping(value = "themaInputPage",method = RequestMethod.POST)
 	public String themaInputPagePost(ThemaVO vo, MultipartFile file1, MultipartHttpServletRequest file2, HttpServletRequest request) {
 		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/thema/");
+		String contextPath = request.getSession().getServletContext().getContextPath();
 		
-		int res = theaterService.setThemaInput(vo, file1, file2, realPath);
+		int res = theaterService.setThemaInput(vo, file1, file2, realPath,contextPath);
 		
 		if(res == 1) return "redirect:/adminMsg/themaInputOk";
 		else return "redirect:/adminMsg/themaInputNo";
 	}
-	//테마 메인 페이지 출력 수정(ajax)
+	//테마 메인 페이지 출력 여부 수정(ajax)
 	@ResponseBody
 	@RequestMapping(value = "themaChangeDisplay",method = RequestMethod.POST)
 	public int themaChangeDisplay(
@@ -85,8 +88,56 @@ public class TheaterContoller {
 			return "adminPage/theater/themaDetailPage";
 		}
 		else {
-			return "redirect:/adminMsg/theaterDetailNo";
+			return "redirect:/adminMsg/themaDetailNo";
 		}
+	}
+	// 상여관 테마 메인 이미지 수정(ajax)
+	@ResponseBody
+	@RequestMapping(value = "themaMainImageChange",method = RequestMethod.POST)
+	public int themaMainImageChange(
+			@RequestParam(name = "idx",defaultValue = "0", required = false) int idx, 
+			@RequestParam(name = "mainImg",defaultValue = "noImage.jpg", required = false) String mainImg) {
+		return theaterService.setThemaMainImgChange(idx,mainImg);
+	}
+	// 상영관 테마 이미지 추가
+	@RequestMapping(value = "themaImageAdd",method = RequestMethod.POST)
+	public String themaImageAdd(MultipartHttpServletRequest imagesAddFile, int idx, HttpServletRequest request,Model model) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/thema/");
+		int res = theaterService.setThemaImgInsert(idx,imagesAddFile,realPath);
+		
+		model.addAttribute("idx", idx);
+		if(res == 1) {
+			return "redirect:/adminMsg/themaImageAddOk";
+		}
+		else {
+			return "redirect:/adminMsg/themaImageAddNo";
+		}
+	}
+	// 테마 이미지 삭제(ajax)
+	@ResponseBody
+	@RequestMapping(value = "themaImageDelete",method = RequestMethod.POST)
+	public int themaImageDelete(int idx, @RequestParam(value="imgArr[]")List<String> imgArr, HttpServletRequest request) {
+		String realPath = request.getSession().getServletContext().getRealPath("/resources/data/thema/");
+		int res = theaterService.setThemaImgDelete(idx,imgArr,realPath);
+				
+		return res;
+	}
+	// 테마 업로드 폴더 제외한 업데이트(테마명, 입장료, 해시태그, 메인페이지 출력 여부, 설명)
+	@RequestMapping(value = "themMainContentUpdate",method = RequestMethod.POST)
+	public String themMainContentUpdate(ThemaVO vo,HttpSession session) {
+		String contextPath=session.getServletContext().getContextPath();
+		String saved_Path=contextPath+"/thema/image";
+
+		int res = theaterService.setThemMainContentUpdate(vo,saved_Path);
+		
+		if(res == 1) return "redirect:/adminMsg/themMainContentUpdateOk?idx="+vo.getIdx();
+		else return "redirect:/adminMsg/themMainContentUpdateNo?idx="+vo.getIdx();
+	}
+	//테마 삭제
+	@ResponseBody
+	@RequestMapping(value = "themaDelete",method = RequestMethod.POST)
+	public int themaDelete(String idx) {
+		return theaterService.setThemaDelete(idx);
 	}
 	
 }

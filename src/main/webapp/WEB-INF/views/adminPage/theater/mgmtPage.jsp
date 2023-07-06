@@ -112,8 +112,8 @@
 	<p></p>
 	<div class="d-flex flex-row test">
 		<!-- 상영관 설정 -->
-		<div class="content mt-5 p-3 text-center theater" style="height: 700px;" >
-			<div class="d-flex flex-row-reverse mb-3" style="width: 750px">
+		<div class="content mt-5 p-3 text-center theater" style="height: 700px;width: 750px;" >
+			<div class="d-flex flex-row-reverse mb-3">
 				<div class="p-2"><input type="button" value="상영관 추가" class="btn btn-info btn-sm"/></div>
 			</div>
 			<c:if test="${!empty theaterVOS}">
@@ -149,15 +149,15 @@
 				<div class="text-center"> 내역이 없습니다.</div>
 			</c:if>
 		</div>
-	</div>
-	<!-- 테마 설정 -->
-	<div class="d-flex flex-column mb-3 text-center">
-		<div class="content mt-5 ml-4 p-2" style="width: 650px; height: 500px">
+		<!-- 테마 설정 -->
+		<div class="content mt-5 ml-4 p-2 text-center" style="width: 700px; height: 500px">
 			<div class="mt-2">
 				<input type="button" value="테마 추가" class="btn btn-info btn-sm" onclick="window.open('${ctp}/theater/themaInputPage','nWin','width=800 height=1000')" style="float: right;"/>
 			</div>
+			<br/>
 			<c:if test="${!empty themaVOS}">
 				<div class="row row_head mt-3">
+					<div class="col"><b>메인 이미지</b></div>
 					<div class="col"><b>테마명</b></div>
 					<div class="col"><b>가격</b></div>
 					<div class="col"><b>메인화면 표시</b></div>
@@ -165,7 +165,10 @@
 				<hr/>
 				<c:forEach var="vo" items="${themaVOS}">
 					<div class="row row_body align-items-center">
-						<div class="col" onclick="window.open('${ctp}/theater/themaDetailPage?idx=${vo.idx}','nWin','width=800px,height=800px')">${vo.name}</div>
+						<div class="col" onclick="window.open('${ctp}/theater/themaDetailPage?idx=${vo.idx}','nWin','width=1030px,height=800px')">
+							<img src="${ctp}/thema/image/${vo.mainImg}" width="70px" height="50px">
+						</div>
+						<div class="col">${vo.name}</div>
 						<div class="col">${vo.price}</div>
 						<div class="col">
 							<div class="form-group">

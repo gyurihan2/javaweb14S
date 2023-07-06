@@ -29,6 +29,7 @@
 	
 		
 <!-- Update -->
+	<!-- 상영관 작동 여부 수정 -->
 	<update id="getTheaterChange">
 		update theater set work=#{work} where idx=#{idx};
 	</update>
@@ -36,9 +37,32 @@
 	<update id="setThemaDisplayChange">
 		update thema set display=#{display} where idx=#{idx};
 	</update>
-	
+	<!-- 상영관 테마 메인 이미지 수정 -->
+	<update id="setThemaMainImagChange">
+		update thema set mainImg=#{mainImg} where idx=#{idx};
+	</update>
+	<!-- 상영관 테마 이미지 추가 -->
+	<update id="setThemaImageAdd">
+		update thema set images=concat(images,#{orgFName}), imgFName= concat(imgFName,#{saveFName}) where idx = #{idx};
+	</update>
+	<!-- 상영관 테마 이미지 업데이트 -->
+	<update id="setThemaImageUpdate">
+		update thema set images=#{images}, imgFName=#{imgFName} where idx = #{idx};
+	</update>
+	<!-- 상영관 테마 이미지 기본 이미지 세팅 -->
+	<update id="setThemaImageNoImage">
+		update thema set mainImg='noImage.jpg' where idx = #{idx};
+	</update>
+	<!-- 테마 업로드 폴더 제외한 업데이트(테마명, 입장료, 해시태그, 메인페이지 출력 여부, 설명) -->
+	<update id="setThemaMainContentUpdate">
+		update thema set name=#{vo.name}, price=#{vo.price}, hashTag=#{vo.hashTag}, content=#{vo.content} where idx=#{vo.idx};
+	</update>
 	
 <!-- Delete -->
+	<!-- 테마 삭제 -->
+	<delete id="setThemaDelete">
+		delete from thema where idx=#{idx};
+	</delete>
 
 
 </mapper>

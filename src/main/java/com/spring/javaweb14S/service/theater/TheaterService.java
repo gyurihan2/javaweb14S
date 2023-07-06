@@ -1,6 +1,7 @@
 package com.spring.javaweb14S.service.theater;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -20,7 +21,7 @@ public interface TheaterService {
 	public int setTheaterChange(int idx, int work);
 
 	// 상영관 테마 생성
-	public int setThemaInput(ThemaVO vo, MultipartFile file1, MultipartHttpServletRequest file2, String realPath);
+	public int setThemaInput(ThemaVO vo, MultipartFile file1, MultipartHttpServletRequest file2, String realPath,String contextPath);
 
 	// 상영관 테마 전체 리스트
 	public ArrayList<ThemaVO> getThemaList();
@@ -30,6 +31,21 @@ public interface TheaterService {
 
 	// 상영관 테마 상세 정보
 	public ThemaVO getThemaDetail(int idx);
+
+	// 상영관 테마 메인 이미지 수정
+	public int setThemaMainImgChange(int idx, String mainImg);
+	
+	//상영관 테마 이미지 추가	
+	public int setThemaImgInsert(int idx, MultipartHttpServletRequest imagesAddFile, String realPath);
+
+	//상영관 테마 이미지 삭제
+	public int setThemaImgDelete(int idx, List<String> imgArr,String realPath);
+
+	//테마 업로드 폴더 제외한 업데이트(테마명, 입장료, 해시태그, 메인페이지 출력 여부, 설명)
+	public int setThemMainContentUpdate(ThemaVO vo,String saved_Path);
+	
+	// 테마 삭제
+	public int setThemaDelete(String idx);
 
 
 	

@@ -17,3 +17,5 @@ create table thema(
 drop table thema;
 
 desc thema;
+
+update thema set images=concat(images,'con') where idx=9;

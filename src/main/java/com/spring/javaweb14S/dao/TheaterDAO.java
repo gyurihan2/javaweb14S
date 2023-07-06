@@ -30,4 +30,21 @@ public interface TheaterDAO {
 	// 상영관 테마 상세보기
 	public ThemaVO getThemaDetail(@Param("idx")int idx);
 
+	// 상영관 테마 메인 이미지 변경
+	public int setThemaMainImagChange(@Param("idx")int idx, @Param("mainImg")String mainImg);
+
+	// 상영관 테마 이미지 추가
+	public int setThemaImageAdd(@Param("idx")int idx, @Param("orgFName")String orgFName, @Param("saveFName")String saveFName);
+
+	// 상영관 테마 이미지 삭제
+	public int setThemaImageUpdate(@Param("idx")int idx, @Param("images")String images, @Param("imgFName")String imgFName);
+
+	// 상영관 테마 기본 이미지 noImage 설정(테마 이미지 다 삭제 할경우)
+	public void setThemaImageNoImage(@Param("idx")int idx);
+
+	//테마 업로드 폴더 제외한 업데이트(테마명, 입장료, 해시태그, 메인페이지 출력 여부, 설명)
+	public int setThemaMainContentUpdate(@Param("vo")ThemaVO vo);
+
+	public int setThemaDelete(@Param("idx")String idx);
+
 }
