@@ -1,10 +1,15 @@
 package com.spring.javaweb14S.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.spring.javaweb14S.common.JsonProcess;
 import com.spring.javaweb14S.service.theater.TheaterService;
 import com.spring.javaweb14S.vo.TheaterVO;
 import com.spring.javaweb14S.vo.ThemaVO;
@@ -26,14 +32,43 @@ public class TheaterContoller {
 	@Autowired
 	TheaterService theaterService;
 	
+	@Autowired
+	JsonProcess jsonProcess;
+	
+	//상영관 등록 페이지
+	@RequestMapping(value = "theaterInputPage", method = RequestMethod.GET)
+	public String theaterInputPageGet(Model model) throws JsonGenerationException, JsonMappingException, IOException {
+		ArrayList<ThemaVO> vos = theaterService.getThemaList();
+		
+		String json = new ObjectMapper().writeValueAsString(vos);
+		
+		model.addAttribute("vos", vos);
+		model.addAttribute("json", json);
+		
+		return "adminPage/theater/theaterInputPage";
+	}
+	//상영관 등록 처리
+	@RequestMapping(value = "theaterInputPage", method = RequestMethod.POST)
+	public String theaterInputPagePost(Model model, TheaterVO vo) {
+		int res = theaterService.setTheaterInput(vo);
+		
+		if(res == 1) return "redirect:/adminMsg/theaterInputPageOk";
+		else return "redirect:/adminMsg/theaterInputPageNo";
+	}
+	
 	// 상영관 상세 보기
 	@RequestMapping(value = "theaterDetailPage", method = RequestMethod.GET)
 	public String theaterDetailPage( Model model,
-			@RequestParam(name = "idx", defaultValue = "-1",required = false) int idx) {
+			@RequestParam(name = "idx", defaultValue = "-1",required = false) int idx) throws JsonGenerationException, JsonMappingException, IOException {
 		
 		TheaterVO vo = theaterService.getTheater(idx);
 		if(vo != null) {
+			ArrayList<ThemaVO> themaVOS = theaterService.getThemaList();
+			String jsonThemaList = jsonProcess.parseList(themaVOS);
+
 			model.addAttribute("vo", vo);
+			model.addAttribute("jsonThemaList", jsonThemaList);
+			model.addAttribute("themaVOS", themaVOS);
 			return "adminPage/theater/theaterDetailPage";
 		}
 		else {
@@ -48,10 +83,7 @@ public class TheaterContoller {
 		int res = theaterService.setTheaterChange(idx,work);
 		return res;
 	}
-	
-	
-	
-	
+		
 	
 	// 테마 등록 페이지
 	@RequestMapping(value = "themaInputPage",method = RequestMethod.GET)

@@ -18,6 +18,11 @@ public interface TheaterDAO {
 	// 상영관 작동 여부 수정
 	public int getTheaterChange(@Param("idx")int idx, @Param("work")int work);
 
+	//상영관 추가
+	public int setTheaterInput(@Param("vo")TheaterVO vo);
+	
+	
+	
 	// 상영관 테마 생성
 	public int setThemaInput(@Param("vo")ThemaVO vo);
 
@@ -45,6 +50,8 @@ public interface TheaterDAO {
 	//테마 업로드 폴더 제외한 업데이트(테마명, 입장료, 해시태그, 메인페이지 출력 여부, 설명)
 	public int setThemaMainContentUpdate(@Param("vo")ThemaVO vo);
 
+	// 테마 삭제
 	public int setThemaDelete(@Param("idx")String idx);
+
 
 }

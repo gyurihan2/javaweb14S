@@ -19,6 +19,13 @@ public interface TheaterService {
 
 	// 상영관 작동여부 수정
 	public int setTheaterChange(int idx, int work);
+	
+	//상영관 추가
+	public int setTheaterInput(TheaterVO vo);
+	
+	
+	
+	
 
 	// 상영관 테마 생성
 	public int setThemaInput(ThemaVO vo, MultipartFile file1, MultipartHttpServletRequest file2, String realPath,String contextPath);
@@ -47,7 +54,5 @@ public interface TheaterService {
 	// 테마 삭제
 	public int setThemaDelete(String idx);
 
-
-	
 
 }

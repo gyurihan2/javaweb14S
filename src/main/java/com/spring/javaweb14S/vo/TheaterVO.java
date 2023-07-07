@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class TheaterVO {
-	private int idx, price, seat,work, name;
-	private String thema, regDate, modifyDate;
+	private int idx, seat, work;
+	private String name, themaIdx, regDate, modifyDate;
+	
+	private String themaName;
+	private int themaPrice;
 }

@@ -14,6 +14,9 @@
 	<definition name="include/messageClose" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/include/messageClose.jsp"/>
 	</definition>
+	<definition name="include/messageCloseChk" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/include/messageCloseChk.jsp"/>
+	</definition>
 	<definition name="userPage/member/signUpIdChk" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/userPage/member/signUpIdChk.jsp"/>
 	</definition>
@@ -43,6 +46,9 @@
 	</definition>
 	<definition name="adminPage/theater/themaDetailPage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/themaDetailPage.jsp"/>
+	</definition>
+	<definition name="adminPage/theater/theaterInputPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/theaterInputPage.jsp"/>
 	</definition>
 	
 	<!-- Admin page 레이아웃 -->

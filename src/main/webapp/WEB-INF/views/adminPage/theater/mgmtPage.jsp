@@ -114,7 +114,7 @@
 		<!-- 상영관 설정 -->
 		<div class="content mt-5 p-3 text-center theater" style="height: 700px;width: 750px;" >
 			<div class="d-flex flex-row-reverse mb-3">
-				<div class="p-2"><input type="button" value="상영관 추가" class="btn btn-info btn-sm"/></div>
+				<div class="p-2"><input type="button" value="상영관 추가" class="btn btn-info btn-sm" onclick="window.open('${ctp}/theater/theaterInputPage','nWin','width=800 height=500')"/></div>
 			</div>
 			<c:if test="${!empty theaterVOS}">
 				<div class="row row_head ">
@@ -127,10 +127,10 @@
 				<hr/>
 				<c:forEach var="vo" items="${theaterVOS}">
 					<div class="row row_body align-items-center">
-						<div class="col" onclick="window.open('${ctp}/theater/theaterDetailPage?idx=${vo.idx}','nWin','width=800px,height=800px')">${vo.name} 상영관</div>
-						<div class="col" >${vo.thema}</div>
+						<div class="col" onclick="window.open('${ctp}/theater/theaterDetailPage?idx=${vo.idx}','nWin','width=800px,height=500px')">${vo.name}</div>
+						<div class="col" >${vo.themaName}</div>
 						<div class="col" >${vo.seat}</div>
-						<div class="col" >${vo.price}</div>
+						<div class="col" >${vo.themaPrice}</div>
 						<div class="col">
 							<div class="form-group">
 							  <select class="form-control workPre" id="display${vo.idx}" onchange="workChange('${vo.idx}','${vo.name}',this)">

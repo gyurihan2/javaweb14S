@@ -53,6 +53,15 @@ public class AdminMsg {
 			model.addAttribute("msg", "테마 수정 되었습니다.");
 			model.addAttribute("url", "/theater/themaDetailPage?idx="+idx);
 		}
+		else if(msgFlag.equals("theaterInputPageOk")){
+			model.addAttribute("msg", "상영관이 추가 되었습니다.");
+			model.addAttribute("url", "/theater/theaterInputPage");
+			return "include/messageCloseChk";
+		}
+		else if(msgFlag.equals("theaterInputPageNo")){
+			model.addAttribute("msg", "상영관이 추가 실패되었습니다.");
+			model.addAttribute("url", "/theater/theaterInputPage");
+		}
 		
 		return "include/message";
 	}

@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>상영관 수정</title>
+  <title>상영관 신규 등록</title>
     <style>
 		.row{
 			border-bottom: solid 1px black;
@@ -34,7 +34,7 @@
 			let Arrindex = obj.value;
 			
 			var arrValues = new Array();
-			arrValues = Object.values(${jsonThemaList});
+			arrValues = Object.values(${json});
 			
 			let img = document.createElement("img");
 			img.setAttribute("src","${ctp}/thema/image/"+arrValues[Arrindex].mainImg);
@@ -79,13 +79,13 @@
 	</script>
 </head>
 <body>
-<h3 class="text-center">상영관 수정</h3> 
+<h3 class="text-center">상영관 등록</h3> 
 <form name="myform"  method="post">
 	<div class="container">
 		<div class="row">
 			<div class="col-2 dth">상영관 명</div>
 			<div class="col">
-				<input type="text" name="name" id="name" class="form-control" value="${vo.name}"/>
+				<input type="text" name="name" id="name" class="form-control"/>
 			</div>
 			<div class="col-2 dth">좌석수</div>
 			<div class="col">
@@ -93,33 +93,32 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-2 dth">테마 ${vo.themaName }</div>
+			<div class="col-2 dth">테마</div>
 			<div class="col">
-				<c:if test="${!empty themaVOS}">
+				<c:if test="${!empty vos}">
 		  		<select class="custom-select align-self-start" onchange="themaSelect(this)">
 			  		<option selected> Select </option>
-		  			<c:forEach var="themaVO" items="${themaVOS}" varStatus="st">
-					    <option value="${st.index}" <c:if test="${vo.themaName == themaVO.name }">selected</c:if>>${themaVO.name}</option>
+		  			<c:forEach var="vo" items="${vos}" varStatus="st">
+					    <option value="${st.index}">${vo.name}</option>
 		  			</c:forEach>
 			  	</select>
 	  		</c:if>
-	  		<c:if test="${empty themaVOS}">테마를 추가하세요</c:if>
+	  		<c:if test="${empty vos}">테마를 추가하세요</c:if>
 			</div>
 			<div class="col-2 dth">
 				작동 상태
 			</div>
 			<div class="col">
 				<select name="work" id="work" class="custom-select align-self-start">
-					<option value="1" <c:if test="${vo.work == 1}">selected</c:if>>오픈</option>
-					<option value="2" <c:if test="${vo.work == 2}">selected</c:if>>임시중지</option>
-					<option value="3" <c:if test="${vo.work == 3}">selected</c:if>>중지</option>
-					<option value="4" <c:if test="${vo.work == 4}">selected</c:if>>차단</option>
+					<option value="1">오픈</option>
+					<option value="2">임시중지</option>
+					<option value="3" selected>중지</option>
+					<option value="4">차단</option>
 			  </select>
 			</div>
 		</div>
-		<div class="d-flex flex-row mb-3" id="previewThema">
-			<div class="p-2" id="themaImg">
-			</div>
+		<div class="d-flex flex-row mb-3" id="previewThema" style="display: none;">
+			<div class="p-2" id="themaImg"></div>
 			<div>
 				<div class="d-flex flex-column mb-3">
 					<div class="p-2" id="themaPrice"></div>

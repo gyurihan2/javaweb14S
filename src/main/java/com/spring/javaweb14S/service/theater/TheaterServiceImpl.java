@@ -39,7 +39,13 @@ public class TheaterServiceImpl implements TheaterService {
 	public int setTheaterChange(int idx, int work) {
 		return theaterDAO.getTheaterChange(idx,work);
 	}
-	
+
+	//상영관 추가
+	@Override
+	public int setTheaterInput(TheaterVO vo) {
+		return theaterDAO.setTheaterInput(vo);
+	}
+
 	//상영관 테마 생성
 	@Override
 	public int setThemaInput(ThemaVO vo, MultipartFile file1, MultipartHttpServletRequest file2, String realPath, String contextPath) {
