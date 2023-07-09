@@ -112,6 +112,7 @@
   		
   		if(imgArr.length == 0){
   			alert("삭제할 이미지를 선택하세요");
+  			return false;
   		}
   		
   		$.ajax({

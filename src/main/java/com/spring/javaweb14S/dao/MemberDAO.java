@@ -30,6 +30,8 @@ public interface MemberDAO {
 
 	public int setMemberBirthdayUpdate(@Param("mid")String mid, @Param("birthday")String birthday);
 
+	public int setMemberEmailUpdate(@Param("mid")String mid, @Param("email")String email);
+
 	
 
 

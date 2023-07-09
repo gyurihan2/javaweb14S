@@ -48,8 +48,11 @@ public interface MemberService {
 	// 회원 생일 수정
 	public int setmemberBirthdayUpdate(String mid, String birthday);
 
-	// 회원 이메일 수정
+	// 회원 이메일 수정(인증번호 발송)
 	public String myPageAuthSend(String sMid, String email);
+
+	// 회원 이메일 수정 처리
+	public int setMemberEmailUpdate(String mid, String email);
 
 	
 

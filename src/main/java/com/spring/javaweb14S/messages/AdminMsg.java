@@ -62,6 +62,14 @@ public class AdminMsg {
 			model.addAttribute("msg", "상영관이 추가 실패되었습니다.");
 			model.addAttribute("url", "/theater/theaterInputPage");
 		}
+		else if(msgFlag.equals("theaterDetailChangeOk")){
+			model.addAttribute("msg", "상영관 수정 완료되었습니다.");
+			model.addAttribute("url", "/theater/theaterDetailPage?idx="+idx);
+		}
+		else if(msgFlag.equals("theaterDetailChangeNo")){
+			model.addAttribute("msg", "상영관 수정 실패.");
+			model.addAttribute("url", "/theater/theaterDetailPage?idx="+idx);
+		}
 		
 		return "include/message";
 	}

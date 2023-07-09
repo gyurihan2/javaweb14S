@@ -106,6 +106,32 @@
  			});
  		}
  		
+ 		// 인증 번호 확인 및  이메일 수정
+ 		function authNumCheck(){
+ 			let authNum = $("#authNum").val();
+ 			let email = $("#email").val();
+ 			
+ 			$.ajax({
+ 				url:"${ctp}/member/memberAuthNumChk",
+ 				type:"post",
+ 				data:{
+ 					authNum:authNum,
+ 					email:email
+ 				},
+ 				success:function(res){
+ 					if(res=="1"){
+ 						alert("이메일이 변경 되었습니다.");
+ 					}
+ 					else{
+ 						alert("인증번호를 확인하세요");
+ 					}
+ 				},
+ 				error:function(){
+ 					alert("전송 실패");
+ 				}
+ 			});
+ 		}
+ 		
  		
  		
  		jQuery(function(){
@@ -229,9 +255,9 @@
 		        <button type="button" class="btn btn-outline-info" onclick="emailChange()">변경하기</button>
 		      </div>
 		      <div class="input-group">
-		      	<input type="text" class="form-control" id="authNum" placeholder="인증번호를 입력 하세요"/>
+		      	<input type="password" class="form-control" id="authNum" placeholder="인증번호를 입력 하세요"/>
 						<div class="input-group-append">
-		        <button type="button" class="btn btn-outline-success" >인증하기</button>
+		        <button type="button" class="btn btn-outline-success" onclick="authNumCheck()">인증하기</button>
 		      	</div>
 		      </div>
 				</div>

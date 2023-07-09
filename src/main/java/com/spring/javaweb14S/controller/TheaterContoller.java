@@ -58,7 +58,7 @@ public class TheaterContoller {
 	
 	// 상영관 상세 보기
 	@RequestMapping(value = "theaterDetailPage", method = RequestMethod.GET)
-	public String theaterDetailPage( Model model,
+	public String theaterDetailPageGet( Model model,
 			@RequestParam(name = "idx", defaultValue = "-1",required = false) int idx) throws JsonGenerationException, JsonMappingException, IOException {
 		
 		TheaterVO vo = theaterService.getTheater(idx);
@@ -75,12 +75,22 @@ public class TheaterContoller {
 			return "redirect:/adminMsg/theaterDetailNo";
 		}
 	}
+	// 상영관 수정
+	@RequestMapping(value = "theaterDetailPage", method = RequestMethod.POST)
+	public String theaterDetailPagePost(TheaterVO vo,  Model model)  {
+		int res = theaterService.setTheaterChange(vo);
+		
+		model.addAttribute("idx", vo.getIdx());
+		if(res == 1) return "redirect:/adminMsg/theaterDetailChangeOk";
+		else return "redirect:/adminMsg/theaterDetailChangeNo";
+		
+	}
 	
 	// 상영관 작동 여부 수정(ajax)
 	@RequestMapping(value = "theaterChangWork",method = RequestMethod.POST)
 	@ResponseBody
 	public int theaterChangWork(int idx,int work) {
-		int res = theaterService.setTheaterChange(idx,work);
+		int res = theaterService.setTheaterChangeWork(idx,work);
 		return res;
 	}
 		

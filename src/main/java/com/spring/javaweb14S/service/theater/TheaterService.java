@@ -18,12 +18,13 @@ public interface TheaterService {
 	public TheaterVO getTheater(int idx);
 
 	// 상영관 작동여부 수정
-	public int setTheaterChange(int idx, int work);
+	public int setTheaterChangeWork(int idx, int work);
 	
 	//상영관 추가
 	public int setTheaterInput(TheaterVO vo);
 	
-	
+	// 상영관 수정
+	public int setTheaterChange(TheaterVO vo);
 	
 	
 
@@ -53,6 +54,8 @@ public interface TheaterService {
 	
 	// 테마 삭제
 	public int setThemaDelete(String idx);
+
+	
 
 
 }

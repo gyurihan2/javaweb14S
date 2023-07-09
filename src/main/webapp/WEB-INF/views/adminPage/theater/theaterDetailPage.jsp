@@ -53,7 +53,7 @@
 			
 		}
 		
-		// 생성 버튼
+		// 수정 버튼
 		function fCheck(){
 			let name = $("#name").val();
 			let seat = $("#seat").val();
@@ -67,9 +67,9 @@
 				alert("좌석수를 입력하세요");
 				return false;
 			}
-			else if(themaIdx == ""){
-				alert("상영관 테마를 선택하세요");
-				return false;
+			
+			if(themaIdx == ""){
+				$("#themaIdx").val(${vo.themaIdx});
 			}
 			
 			myform.submit();
@@ -93,10 +93,10 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-2 dth">테마 ${vo.themaName }</div>
+			<div class="col-2 dth">테마</div>
 			<div class="col">
 				<c:if test="${!empty themaVOS}">
-		  		<select class="custom-select align-self-start" onchange="themaSelect(this)">
+		  		<select class="custom-select align-self-start" id="themas" onchange="themaSelect(this)">
 			  		<option selected> Select </option>
 		  			<c:forEach var="themaVO" items="${themaVOS}" varStatus="st">
 					    <option value="${st.index}" <c:if test="${vo.themaName == themaVO.name }">selected</c:if>>${themaVO.name}</option>
@@ -129,7 +129,7 @@
 		</div>
 	</div>
 	<div class="d-flex justify-content-center">
-		<button type="button" class="btn btn-success mr-2" onclick="fCheck()">추가하기</button>
+		<button type="button" class="btn btn-success mr-2" onclick="fCheck()">수정하기</button>
 		<button type="button" class="btn btn-warning mr-2" onclick="window.close()">취소</button>
 	</div>
 	<input type="hidden" name="themaIdx" id="themaIdx"/>

@@ -187,7 +187,7 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.setMemberBirthdayUpdate(mid,birthday);
 	}
 
-	// 회원 이메일 수정
+	// 회원 이메일 수정(인증번호 발송)
 	@Override
 	public String myPageAuthSend(String sMid, String email) {
 		
@@ -223,6 +223,11 @@ public class MemberServiceImpl implements MemberService {
 		
 		return imsi;
 		
+	}
+
+	@Override
+	public int setMemberEmailUpdate(String mid, String email) {
+		return memberDAO.setMemberEmailUpdate(mid,email);
 	}
 	
 	

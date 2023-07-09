@@ -52,6 +52,10 @@
 	<update id="setMemberBirthdayUpdate">
 		update member set birthday=#{birthday} where mid=#{mid};
 	</update>
+	<!-- 회원 이메일 변경 -->
+	<update id="setMemberEmailUpdate">
+		update member set email=#{email} where mid=#{mid};
+	</update>
 	
 	
 <!-- Delete -->

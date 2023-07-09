@@ -35,4 +35,16 @@ public class AdminController {
 		
 		return "adminPage/theater/mgmtPage";
 	}
+	// 영화 관리 페이지
+	@RequestMapping(value = "/movie/mgmtPage", method = RequestMethod.GET)
+	public String movieMgmtPage(Model model) {
+		
+		ArrayList<TheaterVO> theaterVOS = theaterService.getTheaterList();
+		ArrayList<ThemaVO> themaVOS = theaterService.getThemaList();
+		
+		model.addAttribute("theaterVOS", theaterVOS);
+		model.addAttribute("themaVOS", themaVOS);
+		
+		return "adminPage/movie/mgmtPage";
+	}
 }

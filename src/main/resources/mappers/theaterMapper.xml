@@ -36,9 +36,14 @@
 		
 <!-- Update -->
 	<!-- 상영관 작동 여부 수정 -->
-	<update id="getTheaterChange">
+	<update id="setTheaterChangeWork">
 		update theater set work=#{work}, modifyDate=now() where idx=#{idx};
 	</update>
+	<!-- 상영관 수정 -->
+	<update id="setTheaterChange">
+		update theater set name=#{vo.name}, themaIdx=#{vo.themaIdx}, seat=#{vo.seat}, work=#{vo.work}, modifyDate=now() where idx=#{vo.idx};
+	</update>
+	
 	<!-- 상영관 테마 메인화면 표시여부 수정 -->
 	<update id="setThemaDisplayChange">
 		update thema set display=#{display}, modifyDate=now()  where idx=#{idx};

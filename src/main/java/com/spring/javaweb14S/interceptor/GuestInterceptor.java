@@ -16,6 +16,8 @@ public class GuestInterceptor extends HandlerInterceptorAdapter{
 		
 		int level = session.getAttribute("sLevel") == null ? 0: (int)session.getAttribute("sLevel");
 		
+		if(session.getAttribute("sImsiAuth")!= null) session.removeAttribute("sImsiAuth");
+		
 		// 로그인 하여 guestPage(로그인 페이지, 회원가입 페이지 등 접근 X)
 		if(level == 0) return true;
 		else {

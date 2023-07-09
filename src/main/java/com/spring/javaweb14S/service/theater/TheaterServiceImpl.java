@@ -36,14 +36,20 @@ public class TheaterServiceImpl implements TheaterService {
 
 	// 상여관 작동여부 수정
 	@Override
-	public int setTheaterChange(int idx, int work) {
-		return theaterDAO.getTheaterChange(idx,work);
+	public int setTheaterChangeWork(int idx, int work) {
+		return theaterDAO.setTheaterChangeWork(idx,work);
 	}
 
 	//상영관 추가
 	@Override
 	public int setTheaterInput(TheaterVO vo) {
 		return theaterDAO.setTheaterInput(vo);
+	}
+	
+	// 상영관 수정
+	@Override
+	public int setTheaterChange(TheaterVO vo) {
+		return theaterDAO.setTheaterChange(vo);
 	}
 
 	//상영관 테마 생성

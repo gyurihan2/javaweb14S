@@ -16,6 +16,6 @@ create table theater(
 );
 
 
-desc theater;
+desc theater; 
 
 select a.*, b.name as themaName, b.price as themaPrice from theater a, thema b where a.themaIdx = b.idx;

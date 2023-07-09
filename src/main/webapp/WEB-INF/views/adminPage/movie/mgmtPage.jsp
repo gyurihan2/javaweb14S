@@ -6,17 +6,17 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>상영관 관리 페이지</title>
+	<title>영화 관리 페이지</title>
 	<style>
-		.theater{
-    	overflow-y: scroll;
-    }
-    .theater::-webkit-scrollbar {
-      width: 15px;
-    }
-    .theater::-webkit-scrollbar-track {
-      background-color: transparent;
-    }
+		 .theater{
+            overflow-y: scroll;
+        }
+        .theater::-webkit-scrollbar {
+          width: 15px;
+        }
+        .theater::-webkit-scrollbar-track {
+          background-color: transparent;
+        }
         
 		.col{
 			margin-top : 5px;
@@ -107,7 +107,7 @@
 </head>
 <body id="wrapper">
 	<div class="mb-5" id="top_title">
-		<h4 class="m-1 p-0"><b>상영관 관리</b>	</h4>
+		<h4 class="m-1 p-0"><b>영화 관리</b>	</h4>
 	</div>
 	<p></p>
 	<div class="d-flex flex-row test">
@@ -150,7 +150,7 @@
 			</c:if>
 		</div>
 		<!-- 테마 설정 -->
-		<div class="content mt-5 ml-4 p-2 text-center theater" style="width: 700px; height: 500px">
+		<div class="content mt-5 ml-4 p-2 text-center" style="width: 700px; height: 500px">
 			<div class="mt-2">
 				<input type="button" value="테마 추가" class="btn btn-info btn-sm" onclick="window.open('${ctp}/theater/themaInputPage','nWin','width=800 height=1000')" style="float: right;"/>
 			</div>

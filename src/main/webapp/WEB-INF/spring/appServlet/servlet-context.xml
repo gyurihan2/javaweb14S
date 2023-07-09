@@ -64,6 +64,7 @@
 		<interceptor>
 			<mapping path="/member/loginPage"/>
 			<mapping path="/member/signUpPage"/>
+			<mapping path="/member/pwdSearchPage"/>
 			<beans:ref bean="GuestInterceptor"/>
 		</interceptor>
 		

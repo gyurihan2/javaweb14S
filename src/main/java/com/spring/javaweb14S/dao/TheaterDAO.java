@@ -16,10 +16,13 @@ public interface TheaterDAO {
 	public TheaterVO getTheater(@Param("idx") int idx);
 
 	// 상영관 작동 여부 수정
-	public int getTheaterChange(@Param("idx")int idx, @Param("work")int work);
+	public int setTheaterChangeWork(@Param("idx")int idx, @Param("work")int work);
 
 	//상영관 추가
 	public int setTheaterInput(@Param("vo")TheaterVO vo);
+	
+	// 상영관 수정
+	public int setTheaterChange(@Param("vo")TheaterVO vo);
 	
 	
 	
@@ -52,6 +55,7 @@ public interface TheaterDAO {
 
 	// 테마 삭제
 	public int setThemaDelete(@Param("idx")String idx);
+
 
 
 }

@@ -211,7 +211,6 @@ public class MemberController {
 		else if(res.equals("-1")) return "-1";
 		else {
 			// 회원 정보 및 메일 전송 성공시 세션 생성
-			session.setMaxInactiveInterval(300); // 5분
 			session.setAttribute("sImsiAuth", res);
 			return "1";
 		}
@@ -358,7 +357,7 @@ public class MemberController {
 	public String memberInfoPageGet(HttpSession session, Model model) {
 		String loginChk = session.getAttribute("loginChk") == null ? "" : (String)session.getAttribute("loginChk");
 		String sMid = (String)session.getAttribute("sMid");
-		//session.removeAttribute("loginChk");
+		session.removeAttribute("loginChk");
 		
 		if(loginChk.equals("OK")) {
 			MemberVO vo = memberService.getUserInfo(sMid);
@@ -417,13 +416,24 @@ public class MemberController {
 	public int myPageAuthNumSend(HttpSession session, String email,HttpServletRequest request) {
 		String sMid = (String)session.getAttribute("sMid");
 		
-		String imsiNum = memberService.myPageAuthSend(sMid,email);
+		String imsiAuth = memberService.myPageAuthSend(sMid,email);
 		
-		if(imsiNum != null) {
-		
+		if(imsiAuth != null) {
+			session.setAttribute("sImsiAuth", imsiAuth);
 			return 1;
 		}
 		else return 0;
 		
+	}
+	// 인증번호 왁인 및 이메일 수정
+	@RequestMapping(value = "/memberAuthNumChk",method = RequestMethod.POST)
+	@ResponseBody
+	public int memberAuthNumChk(HttpSession session,String authNum ,String email) {
+		String mid = (String)session.getAttribute("sMid");
+		String imsiNum = session.getAttribute("sImsiAuth") == null ? "" : (String)session.getAttribute("sImsiAuth");
+		
+		if(imsiNum.equals(authNum)) return memberService.setMemberEmailUpdate(mid,email);
+		else return 0;
+
 	}
 }
