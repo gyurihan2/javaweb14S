@@ -6,17 +6,18 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="${ctp}/js/apiKey.js"></script>
 	<title>영화 관리 페이지</title>
 	<style>
-		 .theater{
-            overflow-y: scroll;
-        }
-        .theater::-webkit-scrollbar {
-          width: 15px;
-        }
-        .theater::-webkit-scrollbar-track {
-          background-color: transparent;
-        }
+		 .contentScroll{
+      overflow-y: scroll;
+    }
+    .contentScroll::-webkit-scrollbar {
+      width: 15px;
+    }
+    .contentScroll::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
         
 		.col{
 			margin-top : 5px;
@@ -41,80 +42,116 @@
 		}
 	</style>
 	<script>
-		'use strict';
-		
-	function workChange(idx,name,obj){
-		let work = $(obj).val();
-		let chk = confirm(name+"상영관 작동 여부를 수정 하시겠습니까?");
-		
-		if(chk){
-			$.ajax({
-				type:"post",
-				url:"${ctp}/theater/theaterChangWork",
-				data:{
-					idx:idx,
-					work:work
-				},
-				success:function(res){
-					if(res =="1") alert("수정 되었습니다.");
-					else alert("수정 실패");	
-					
-					location.reload();
-				},
-				error:function(){
-					alert("전송 실패");
-					location.reload();
-				}
-			});
-		}
-		else{
-			location.reload();
-		}
-		
-	} 
+	'use strict';
 	
-	function displayChange(idx,name,obj){
-		let display = $(obj).val();
-		let chk = confirm(name+"를 메인화면 출력 여부를 수정 하시겠습니까?");
+	let today;
+	let map1 = new Map();
+	
+	const tmdbKey = config.tmdbApiKey;
+	const tmdbAuth = config.tmdbApiKeyAuth;
+	
+	// TMDB Api option
+	const options = {
+    method: 'GET',
+    headers: {
+        accept: 'application/json',
+        Authorization: 'Bearer '+tmdbAuth
+  	}
+	};
+	//const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-KR&page=1&region=kr&release_date.gte='+release_date_gte+'&release_date.lte='+release_date_lte+'&sort_by=popularity.desc&watch_region=kr&with_release_type=3'
+ 	
+ 	function movieGetChart(){
+ 		today = new Date();
+		//to
+		let release_date_lte = today.toISOString().substring(0,10);
+		today.setDate(0);
+		//from
+		let release_date_gte = today.toISOString().substring(0,10);
+		console.log(release_date_gte);
+		console.log(release_date_lte);
+ 		$.ajax({
+ 			type:"get",
+ 			url:'https://api.themoviedb.org/3/discover/movie?release_date.gte='+release_date_gte+'&release_date.lte='+release_date_lte,
+ 			data:{
+ 				api_key:tmdbKey,
+ 				dataType: "jsonp",
+ 				contentType: 'application/json',
+ 				include_adult:false,
+ 				include_video:false,
+ 				language:"ko-KR",
+ 				page:1,
+ 				region:"kr",
+ 				sort_by:"popularity.desc",
+ 				watch_region:"kr",
+ 				with_release_type:3
+ 			},
+ 			success:function(res){
+ 				
+ 				let tempHtml = "";
+ 				for(let i=0;i<10;i++){
+ 					tempHtml += '<div class="row row_body">';
+ 					tempHtml += '<div class="col-1">'+(i+1)+'</div>';
+ 					tempHtml += '<div class="col">'+res.results[i].title+'</div>';
+ 					tempHtml += '<div class="col-2">'+res.results[i].release_date+'</div>';
+ 					tempHtml += '<div class="col-2">'+res.results[i].vote_average+'</div>';
+ 					tempHtml += '</div>	<hr class="mb-2 mt-2"/>';
+ 				}
+ 				$("#movieChart").html($("#movieChart").html()+tempHtml);
+ 				
+	  		},
+	  		error:function(){
+	  			alert("전송 실패");
+	  		}
+ 		});
+ 	}
+ 	
+	
+
+	function movieChartList(){
+		console.log("1:"+test.length);
+    console.log("2:"+test[1].title);
 		
-		if(chk){
-			$.ajax({
-				type:"post",
-				url:"${ctp}/theater/themaChangeDisplay",
-				data:{
-					idx:idx,
-					display:display
-				},
-				success:function(res){
-					if(res =="1") alert("수정 되었습니다.");
-					else alert("수정 실패");	
-					
-					location.reload();
-				},
-				error:function(){
-					alert("전송 실패");
-					location.reload();
-				}
-			});
+		let tempHtml = "";
+		for(let i=0;i<10;i++){
+			let j = test[i];
+			tempHtml += '<div class="row row_body">';
+			tempHtml += '<div class="col">'+(i+1)+'</div>';
+			tempHtml += '<div class="col">'+j.title+'</div>';
+			tempHtml += '<div class="col">'+j.release_date+'</div>';
+			tempHtml += '<div class="col">'+j.vote_average+'</div>';
+			tempHtml += '</div>';
 		}
-		else{
-			location.reload();
-		}
-		
-	} 
+		$("#movieChart").html($("#movieChart").html()+tempHtml); 
+	}
+	jQuery(function(){
+		movieGetChart();
+	});	
 	
 	</script>
 </head>
 <body id="wrapper">
 	<div class="mb-5" id="top_title">
-		<h4 class="m-1 p-0"><b>영화 관리</b>	</h4>
+		<h4 class="m-1 p-0"><b>영화 관리</b></h4>
 	</div>
 	<p></p>
+	<h4>영화 순위</h4>
+	<div class=" content container text-center contentScroll">
+		<div class="" style="height: 300px;">
+			<div id="movieChart">
+				<div class="row row_head">
+					<div class="col-1">순위</div>
+					<div class="col">타이틀</div>
+					<div class="col-2">개봉일</div>
+					<div class="col-2">평점</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="d-flex flex-row test">
-		<!-- 상영관 설정 -->
-		<div class="content mt-5 p-3 text-center theater" style="height: 700px;width: 750px;" >
+		<!-- 영ㅇ화 설정 -->
+		<div class="content mt-5 p-3 text-center contentScroll" style="height: 700px;width: 750px;" >
 			<div class="d-flex flex-row-reverse mb-3">
-				<div class="p-2"><input type="button" value="상영관 추가" class="btn btn-info btn-sm" onclick="window.open('${ctp}/theater/theaterInputPage','nWin','width=800 height=500')"/></div>
+				<div class="p-2"><input type="button" value="영화 조회" class="btn btn-info btn-sm" onclick="window.open('${ctp}/movie/movieSearchPage','nWin','width=800 height=700')"/></div>
 			</div>
 			<c:if test="${!empty theaterVOS}">
 				<div class="row row_head ">
@@ -150,7 +187,7 @@
 			</c:if>
 		</div>
 		<!-- 테마 설정 -->
-		<div class="content mt-5 ml-4 p-2 text-center" style="width: 700px; height: 500px">
+		<div class="content mt-5 ml-4 p-2 text-center contentScroll" style="width: 700px; height: 500px">
 			<div class="mt-2">
 				<input type="button" value="테마 추가" class="btn btn-info btn-sm" onclick="window.open('${ctp}/theater/themaInputPage','nWin','width=800 height=1000')" style="float: right;"/>
 			</div>

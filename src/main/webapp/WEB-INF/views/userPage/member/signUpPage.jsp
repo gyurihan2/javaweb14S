@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://kit.fontawesome.com/fa3667321f.js" crossorigin="anonymous"></script>
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-	<script src="${ctp}/js/woo.js" ></script>
+	<script src="${ctp}/js/woo.js"></script>
 	<title>회원가입페이지</title>
 	<jsp:include page="/WEB-INF/views/include/userPage/signScript.jsp"/>
 	<script>
