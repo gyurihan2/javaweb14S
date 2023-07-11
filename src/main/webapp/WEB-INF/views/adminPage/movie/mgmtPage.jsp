@@ -61,12 +61,15 @@
 	//const url = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=ko-KR&page=1&region=kr&release_date.gte='+release_date_gte+'&release_date.lte='+release_date_lte+'&sort_by=popularity.desc&watch_region=kr&with_release_type=3'
  	
  	function movieGetChart(){
- 		today = new Date();
-		//to
+		today = new Date();
+ 		//to
 		let release_date_lte = today.toISOString().substring(0,10);
-		today.setDate(0);
+		
 		//from
-		let release_date_gte = today.toISOString().substring(0,10);
+ 		let setDate = new Date(today.setDate(today.getDate()-10));
+		let release_date_gte = setDate.toISOString().substring(0,10);
+		
+		$("#movieChartTitle").html($("#movieChartTitle").html()+" <em>("+release_date_gte+" ~ "+release_date_lte+")</em>");
 		console.log(release_date_gte);
 		console.log(release_date_lte);
  		$.ajax({
@@ -134,7 +137,7 @@
 		<h4 class="m-1 p-0"><b>영화 관리</b></h4>
 	</div>
 	<p></p>
-	<h4>영화 순위</h4>
+	<h4 id="movieChartTitle">영화 순위</h4>
 	<div class=" content container text-center contentScroll">
 		<div class="" style="height: 300px;">
 			<div id="movieChart">
