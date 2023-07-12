@@ -26,7 +26,9 @@
 		background-color: #f8f8f8;
 		height: 100%;
   }
-      
+  .col{
+  	font-size: 15px;
+  }    
 	#dth .col,.col-2{
 		margin-top : 5px;
 		height: 15px;
@@ -67,14 +69,16 @@
 	  'opsz' 48
 		}
 
-
 </style>
 <script>
 	'use script';
 	
+	
 	const tmdbKey = config.tmdbApiKey;
-	const imgSrc = "https://image.tmdb.org/t/p/w500"
-	let flag="movieList";
+	const googleApiKey = config.googleApiKey;
+
+	const imgSrc = "https://image.tmdb.org/t/p/w500";
+	const vidioSrc = "https://www.youtube.com/embed";
 	
 	let url="https://api.themoviedb.org/3/discover/movie";
 	
@@ -120,12 +124,12 @@
 				alert("전송 실패");
 			}
 		}).then(res =>{
-			console.log(res);
 			
 			let tempHtml = "";
 			for(let i = 0; i<res.results.length;i++){
+				let chkboxValue = (page-1) * 20 + (i+1); 
 				tempHtml += '<div class="d-flex align-items-center row_body text-center" onclick="movieDetail('+res.results[i].id+')">';
-				tempHtml += '<div class="col-1 ml-2"><div><input class="form-check-input" type="checkbox"></div></div>';
+				//tempHtml += '<div class="col-1 pl-2"><div><input type="checkbox" onchange="test(this,'+chkboxValue+')"></div></div>';
 				if(res.results[i].poster_path == null) tempHtml +='<div class="col">이미지 준비중</div>'
 				else tempHtml += '<div class="col"><img src="'+imgSrc+res.results[i].poster_path+'" width="50"></div>';
 				tempHtml += '<div class="col">'+res.results[i].title+'</div>';
@@ -196,7 +200,7 @@
 			with_release_type:3			
 		}
 		
-		movieList(data,flag);
+		movieList(data);
 	}
 	
 	// 페이지 이동 버튼
@@ -216,7 +220,8 @@
 			return false;
 		}
 		page = movePage;
-		movieList();
+		if(data != null) data.page = movePage;
+		movieList(data);
 	}
 	
 	//영화 이름 검색
@@ -247,11 +252,12 @@
 	}
 	
 	let movieDetailArr=[];
-	let moviePosterArr=[];
-	let movietrailerArr=[];
-	
+	let movieDetailTemp="";
+	let moviePosterStr="";
+	let movicCastingStr="";	
+	// 영화 상세 보기
 	function movieDetail(id){
-		
+		// 영화 상세 정보 요청(기본적인 정보)
 		$.ajax({
 			type:"get",
 			url:'https://api.themoviedb.org/3/movie/'+id,
@@ -282,26 +288,166 @@
 					companies+=company.name+"/"
 				});
 				$("#production_companies").html(companies);
-				//$("#").val(); 감독
-				//$("#").val(); 배우
+				
 				$("#overview").html(res.overview);
 				$("#vote_average").html(res.vote_average +" 점");
 				$("#vote_count").html(res.vote_count + " 명");
 				
+				movieDetailTemp="";
+				movieDetailTemp={
+					id:res.id,
+					title:res.title,
+					tagline:res.tagline,
+					original_title:res.original_title,
+					genres:genres,
+					runtime:res.runtime,
+					original_language:res.original_language,
+					release_date:res.release_date,
+					production_companies:companies,
+					overview:res.overview,
+					vote_average:res.vote_average,
+					vote_count:res.vote_count
+				};
 				
 			},
 			error:function(){
 				alert("전송 실패");
 			}
 		});
-		//영화 포스터 이미지
+		//영화 크레딧(감독 배우 정보) 요청
+		$.ajax({
+			type:"get",
+			url:"https://api.themoviedb.org/3/movie/"+id+"/credits",
+			data:{
+				api_key:tmdbKey,
+				async:false
+			},
+			success:function(res){
+				movicCastingStr="";
+				for(let i=0; i<res.cast.length; i++){
+					movicCastingStr += res.cast[i].original_name;
+					if(res.cast[i].character != "") movicCastingStr += "("+res.cast[i].character+")/";
+					else movicCastingStr += "/"
+					
+					if(i == 9) break;
+				}
+				
+				// 영어 -> 한글 
+				$.ajax({
+					type:"post",
+					url:"https://translation.googleapis.com/language/translate/v2",
+					data:{
+						key:googleApiKey,
+						q:movicCastingStr,
+						target:"ko"
+					},
+					success:function(res){
+						movicCastingStr = res.data.translations[0].translatedText;
+						$("#actor").html(movicCastingStr);
+						movieDetailTemp.actor=movicCastingStr;
+					},
+					error:function(a){
+						alert("전송실패:");
+					}
+				});
+			},
+			error:function(a){
+				alert("전송실패");
+			}
+		});
+		
+		
+		//포스터 요청
+		$.ajax({
+			type:"get",
+			url:"https://api.themoviedb.org/3/movie/"+id+"/images",
+			data:{
+				api_key:tmdbKey,
+				include_image_language:"ko,null"
+			},
+			success:function(res){
+				moviePosterStr="";
+				$("#poster_path").html("");
+				
+				if(res.posters.length == 0 ){
+					moviePosterStr = "이미지 준비중입니다.";
+					$("#poster_path").html("이미지 준비중입니다.");
+				}
+				else{
+					for(let i=0; i< res.posters.length; i++){
+						moviePosterStr += res.posters[i].file_path+"/";
+						$("#poster_path").html($("#poster_path").html() + '<img class="ml-1" src="https://image.tmdb.org/t/p/w500'+res.posters[i].file_path+'" width=150 />');
+						if(i==9) break;
+					}
+					movieDetailTemp.poster_path=moviePosterStr;
+				}
+			},
+			error:function(err){
+				alert("전송 실패");
+			}
+		});
+		
+		// 트레일러 요청
+		$.ajax({
+			type:"get",
+			url:"https://api.themoviedb.org/3/movie/"+id+"/videos",
+			data:{
+				api_key:tmdbKey,
+				language:"ko-KR"
+			},
+			success:function(res){
+				$("#videos").html("");
+				if(res.results.length == 0){
+					$("#videos").html("등록된 트레일러가 없습니다.");
+				}
+				else{
+					let cnt = 0;
+					let videos="";
+					for(let i=(res.results.length-1); i>=0; i--){
+						let temp = '<div class="mr-2"><iframe width="380" height="250"src="';
+						temp += vidioSrc+"/"+res.results[i].key;
+						temp += '"></iframe></div>';
+						$("#videos").html($("#videos").html() + temp);
+						videos += res.results[i].key +"/";
+						if(++cnt == 9) break;
+					}
+					movieDetailTemp.videos = videos;
+				}
+				
+			},
+			error:function(err){
+				alert("전송 실패");
+			}
+		});
 		
 		$("#movieDetail").css("display","none");
 		$("#movieDetail").slideDown(500);
 	}
 	
+	function movieSelect(){
+		if(movieDetailArr != null){
+			for(let i=0; i<movieDetailArr.length;i++){
+				if(movieDetailArr[i].id == movieDetailTemp.id){
+					alert("이미 올려둔 영화입니다.");
+					return false;
+				}
+			}
+		}
+		
+		movieDetailArr.push(movieDetailTemp);
+		console.log(movieDetailArr);
+		let temp = "";
+		for(let i=0;i<movieDetailArr.length;i++){
+			temp += '<div class="row mb-2">';
+			temp += '<div class="col">'+movieDetailArr[i].id+'</div>';
+			temp += '<div class="col">'+movieDetailArr[i].title+'</div>';
+			temp += '<div class="col"><button type="button" class="btn btn-sm btn-warning" onclick="movieUnSelect('+i+')">취소</button></div>';
+			temp += '</div>'
+		}
+		$("#movieSelected").html(temp);
+	}
 </script>
-<body>
+<body id="wrapper">
   <h4>영화 검색 및 추가</h4>
   <div class="d-flex flex-column">
 	  <div class="d-flex flex-row-reverse">
@@ -335,11 +481,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="d-flex justify-content-between align-items-center" style="width: 900px; margin: auto;">
+	<div class="d-flex align-items-center">
 		<div style="width: 69px;"><span class="material-symbols-outlined" id="prev" onclick="prevMovie()" style="display: none;">arrow_back_ios</span></div>
 		<div class="text-center content" style="width: 800px">  
 			<div class="row dth m-3" id="dth">
-				<div class="col-1"></div>
+				<!-- <div class="col-1"></div> -->
 				<div class="col"><b>메인 이미지</b></div>
 				<div class="col"><b>영화 제목</b></div>
 				<div class="col-2"><b>개봉일</b></div>
@@ -352,10 +498,40 @@
 			</div>
 		</div>
 		<div style="width: 69px;"><span class="material-symbols-outlined mr-5" id="next" onclick="nextMovie()">arrow_forward_ios</span></div>
+		<!-- 영화 추가 리스트 -->
+		<div class="text-center content" style="width: 800px">
+			<div class="row">
+		  	<div class="col dth">영화 ID</div>
+		  	<div class="col dth">영화 제목</div>
+		  	<div class="col dth">비고</div>
+	  	</div>
+	  	<hr/>
+			<div class="d-flex flex-column mb-3 contentScroll" style="height: 300px;">
+			  <div class="p-2">
+			  	
+			  </div>
+			  
+			  <div class="p-2" id="movieSelected">
+			  	추가할 영화를 올려주세요
+			  </div>
+			</div>
+		</div>
 	</div>
 	<!-- 영화 상세 정보 -->
-	<div class="text-center content mt-4 p-2" id="movieDetail" style="width: 800px; height:400px; margin: auto; display: none;">
-		<div class="contentScroll p-3" style="height: 350px">
+		<div class="text-center content mt-4 p-2 contentScroll" id="movieDetail" style="width: 1200px; display: none; margin: auto;">
+		<div class="d-flex justify-content-end">
+			<button type="button" class="btn btn-info" onclick="movieSelect()">영화 올리기</button>
+		</div>
+		<div class="p-3">
+			<div class="row">
+				<div class="col-2" id="dth">포스터</div>
+				<div class="col d-flex flex-row m-2" id="poster_path" style="overflow-x: scroll;"></div>
+			</div>
+			<div class="row">
+				<div class="col-2" id="dth">트레일러</div>
+				<div class="col d-flex flex-row m-2" id="videos" style="overflow-x: scroll;"></div>
+			</div>
+			<hr/>
 			<div class="row">
 				<div class="col-2" id="dth"><b>제목</b></div>
 				<div class="col" id="title"></div>
@@ -389,10 +565,6 @@
 				<div class="col" id="genres"></div>
 			</div>
 			<hr/>
-			<div class="row">
-				<div class="col-2" id="dth"><b>감독</b></div>
-				<div class="col" id="director"></div>
-			</div>
 			<hr/>
 			<div class="row">
 				<div class="col-2" id="dth"><b>배우</b></div>

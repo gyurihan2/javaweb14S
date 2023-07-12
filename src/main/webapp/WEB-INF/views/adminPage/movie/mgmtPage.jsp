@@ -151,10 +151,10 @@
 		</div>
 	</div>
 	<div class="d-flex flex-row test">
-		<!-- 영ㅇ화 설정 -->
+		<!-- 영화 설정 -->
 		<div class="content mt-5 p-3 text-center contentScroll" style="height: 700px;width: 750px;" >
 			<div class="d-flex flex-row-reverse mb-3">
-				<div class="p-2"><input type="button" value="영화 조회" class="btn btn-info btn-sm" onclick="window.open('${ctp}/movie/movieSearchPage','nWin','width=800 height=700')"/></div>
+				<div class="p-2"><input type="button" value="영화 추가" class="btn btn-info btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
 			</div>
 			<c:if test="${!empty theaterVOS}">
 				<div class="row row_head ">
