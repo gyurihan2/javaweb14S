@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.javaweb14S.dao.MovieDAO">
+<!-- Select -->
+	<select id="getMovie" resultType="movieVO">
+		select * from movie where idx=#{idx};
+	</select>
+	<select id="getMovieList" resultType="movieVO">
+		select * from movie;
+	</select>
+	
+	
+<!-- Insert -->
+	<insert id="setMovieArrInput" parameterType="java.util.List">
+		insert into movie values
+		<foreach collection="vos" item="vo" separator=",">
+		(#{vo.idx},#{vo.title},#{vo.main_poster},#{vo.poster_path},#{vo.tagline},#{vo.original_title},#{vo.original_language},#{vo.production_companies},#{vo.videos},#{vo.genres},#{vo.runtime},#{vo.release_date},#{vo.actor},#{vo.overview},#{vo.vote_average},#{vo.vote_count},#{vo.totalView},#{vo.rating})
+		</foreach>
+	</insert>
+	
+		
+<!-- Update -->
+
+	
+<!-- Delete -->
+
+
+
+</mapper>

@@ -19,10 +19,7 @@
       background-color: transparent;
     }
         
-		.col{
-			margin-top : 5px;
-			height: 50px;
-		}
+		
 	 .row_body{
 			font-size: 15px;
 		} 
@@ -137,55 +134,49 @@
 		<h4 class="m-1 p-0"><b>영화 관리</b></h4>
 	</div>
 	<p></p>
-	<h4 id="movieChartTitle">영화 순위</h4>
-	<div class=" content container text-center contentScroll">
-		<div class="" style="height: 300px;">
+	<div class="content container text-center" style="height: 250px;">
+		<h4 class="mt-4" id="movieChartTitle">영화 순위</h4>
+		<div class="row row_head">
+			<div class="col-1"><b>순위</b></div>
+			<div class="col"><b>타이틀</b></div>
+			<div class="col-2"><b>개봉일</b></div>
+			<div class="col-2"><b>평점</b></div>
+		</div>
+		<div class="contentScroll" style="height: 200px;">
 			<div id="movieChart">
-				<div class="row row_head">
-					<div class="col-1">순위</div>
-					<div class="col">타이틀</div>
-					<div class="col-2">개봉일</div>
-					<div class="col-2">평점</div>
-				</div>
 			</div>
 		</div>
 	</div>
-	<div class="d-flex flex-row test">
+	<div class="d-flex flex-row">
 		<!-- 영화 설정 -->
 		<div class="content mt-5 p-3 text-center contentScroll" style="height: 700px;width: 750px;" >
+			<h4>영화 설정</h4>
 			<div class="d-flex flex-row-reverse mb-3">
 				<div class="p-2"><input type="button" value="영화 추가" class="btn btn-info btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
+				<div class="p-2"><input type="button" value="영화 검색" class="btn btn-info btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
 			</div>
-			<c:if test="${!empty theaterVOS}">
+			<c:if test="${!empty movieVOS}">
 				<div class="row row_head ">
-					<div class="col"><b>이름</b></div>
-					<div class="col"><b>테마</b></div>
-					<div class="col"><b>좌석수</b></div>
-					<div class="col"><b>가격</b></div>
-					<div class="col"><b>상태</b></div>
+					<div class="col"><b>메인포스터</b></div>
+					<div class="col"><b>제목</b></div>
+					<div class="col"><b>개봉일</b></div>
+					<div class="col"><b>비고</b></div>
 				</div>
 				<hr/>
-				<c:forEach var="vo" items="${theaterVOS}">
-					<div class="row row_body align-items-center">
-						<div class="col" onclick="window.open('${ctp}/theater/theaterDetailPage?idx=${vo.idx}','nWin','width=800px,height=500px')">${vo.name}</div>
-						<div class="col" >${vo.themaName}</div>
-						<div class="col" >${vo.seat}</div>
-						<div class="col" >${vo.themaPrice}</div>
-						<div class="col">
-							<div class="form-group">
-							  <select class="form-control workPre" id="display${vo.idx}" onchange="workChange('${vo.idx}','${vo.name}',this)">
-							    <option value="1" <c:if test="${vo.work==1 }">selected</c:if>>오픈</option>
-							    <option value="2" <c:if test="${vo.work==2 }">selected</c:if>>임시 중단</option>
-							    <option value="3" <c:if test="${vo.work==3 }">selected</c:if>>중지</option>
-							    <option value="4" <c:if test="${vo.work==4 }">selected</c:if>>차단</option>
-							  </select>
-							</div>
+				<c:forEach var="vo" items="${movieVOS}">
+					<div class="row row_body align-items-center" style="height: 150px">
+						<div class="col"><img src="https://image.tmdb.org/t/p/w500${vo.main_poster}" width="60px"/></div>
+						<div class="col" >${vo.title}</div>
+						<div class="col" >${vo.release_date}</div>
+						<div class="col" >
+							<button class="btn btn-sm btn-info">업데이트</button>
+							<button class="btn btn-sm btn-danger">삭제</button>
 						</div>
 					</div>
 					<hr class="mb-2 mt-2"/>
 				</c:forEach>
 			</c:if>
-			<c:if test="${empty theaterVOS}">
+			<c:if test="${empty movieVOS}">
 				<div class="text-center"> 내역이 없습니다.</div>
 			</c:if>
 		</div>

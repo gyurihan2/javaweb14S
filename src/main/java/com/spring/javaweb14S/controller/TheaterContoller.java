@@ -64,7 +64,7 @@ public class TheaterContoller {
 		TheaterVO vo = theaterService.getTheater(idx);
 		if(vo != null) {
 			ArrayList<ThemaVO> themaVOS = theaterService.getThemaList();
-			String jsonThemaList = jsonProcess.parseList(themaVOS);
+			String jsonThemaList = jsonProcess.parseToString(themaVOS);
 
 			model.addAttribute("vo", vo);
 			model.addAttribute("jsonThemaList", jsonThemaList);
