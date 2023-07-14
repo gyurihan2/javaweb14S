@@ -20,7 +20,14 @@
 	
 		
 <!-- Update -->
-
+	<update id="setMovieMainImageChange">
+		update movie set main_poster=#{posterSrc} where idx=#{idx};
+	</update>
+	<update id="setMovieUpdate">
+		update movie set title=#{vo.title},main_poster=#{vo.main_poster},poster_path=#{vo.poster_path},tagline=#{vo.tagline},original_title=#{vo.original_title},original_language=#{vo.original_language},production_companies=#{vo.production_companies},
+			videos=#{vo.videos},genres=#{vo.genres},runtime=#{vo.runtime},release_date=#{vo.release_date},actor=#{vo.actor},overview=#{vo.overview},vote_average=#{vo.vote_average},vote_count=#{vo.vote_count},totalView=#{vo.totalView},rating=#{vo.rating}
+			where idx=#{vo.idx};
+	</update>
 	
 <!-- Delete -->
 

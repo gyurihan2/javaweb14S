@@ -17,4 +17,10 @@ public interface MovieDAO {
 	// 등록된 영화 리스트
 	public ArrayList<MovieVO> getMovieList();
 
+	// 등록된 영화 메인 포스터 변경
+	public int setMovieMainImageChange(@Param("idx")String idx, @Param("posterSrc")String posterSrc);
+
+	// 등록된 영화 업데이트
+	public int setMovieUpdate(@Param("vo") MovieVO vo);
+
 }

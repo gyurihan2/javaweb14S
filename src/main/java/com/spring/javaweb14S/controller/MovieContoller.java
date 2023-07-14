@@ -58,8 +58,20 @@ public class MovieContoller {
 	@ResponseBody
 	public int movieMainImageChange(
 			@RequestParam(name = "idx",required = false) String idx, @RequestParam(name="posterSrc", required = false) String posterSrc) {
+		
 		return movieService.setMovieMainImageChage(idx,posterSrc);
 	}
+	// 등록된 영화 메인 포스터 변경
+	@RequestMapping(value = "movieUpdate", method = RequestMethod.POST)
+	@ResponseBody
+	public int movieUpdate(
+			@RequestParam(name = "idx",required = false) String idx, @RequestParam(name="jsonData", required = false) String jsonData) {
+		// -1: 기존 IDX와 업데이트 정보의 IDX가 일치 X(삭제하고 다시 등록 필요)
+		// 0: 업데이트 실패 / 1: 업데이트 완료
+		return movieService.setmovieUpdate(idx,jsonData);
+	}
+	
+	
 
 	
 }

@@ -8,6 +8,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>영화 상세 보기</title>
+  <script src="${ctp}/js/apiKey.js"></script>
   <style>
 		.dth_wide{
 			font-weight: bold;
@@ -29,6 +30,8 @@
   <script>
   	'use strict';
   	
+  	const tmdbKey = config.tmdbApiKey;
+		const googleApiKey = config.googleApiKey;
   	
   	$(function(){
   		var prePoster = $("input[name='poster']:checked").val();
@@ -50,18 +53,182 @@
   					posterSrc:"/"+$(this).val()
   				},
   				success:function(res){
-  					
-  					prePoster = $(this).val();
+  					if(res == "1") alert("수정 되었습니다.");
+  					else alert("수정 실패");
   				},
   				error:function(){
   					alert("전송 실패");
   				}
   			});
-  			
-  			
   		});
   	
   	});
+  	
+  	let movieData="";
+  	// 업데이트 데이터 요청(api)
+  	function movieUpdate(){
+  		
+  		let id="${vo.idx}";
+  		
+  		$.ajax({
+			type:"get",
+			url:'https://api.themoviedb.org/3/movie/'+id,
+			data:{
+				api_key:tmdbKey,
+				dataType: "json",
+				async:false,
+				contentType: 'application/json',
+				append_to_response:"videos",
+				language:"ko-KR"
+			},
+			success:function(res){
+				
+				let genres = "";
+				res.genres.forEach(function(genre){
+					genres += genre.name+"/"
+				});
+				genres = genres.substring(0,genres.length-1);
+				
+				let companies = "";
+				res.production_companies.forEach(function(company){
+					companies+=company.name+"/"
+				});
+				
+				companies = companies.substring(0,companies.length-1);
+				
+				movieData={
+					idx:res.id,
+					main_poster:res.poster_path,
+					title:res.title,
+					tagline:res.tagline,
+					original_title:res.original_title,
+					genres:genres,
+					runtime:res.runtime,
+					original_language:res.original_language,
+					release_date:res.release_date,
+					production_companies:companies,
+					overview:res.overview,
+					vote_average:res.vote_average,
+					vote_count:res.vote_count
+				};
+			},
+			error:function(){
+				alert("전송 실패");
+			}
+		});
+	
+		let movicCastingStr="";	
+		//영화 크레딧(배우 정보) 요청
+		$.ajax({
+			type:"get",
+			url:"https://api.themoviedb.org/3/movie/"+id+"/credits",
+			data:{
+				api_key:tmdbKey,
+				async:false
+			},
+			success:function(res){
+				movicCastingStr="";
+				for(let i=0; i<res.cast.length; i++){
+					movicCastingStr += res.cast[i].original_name;
+					if(res.cast[i].character != "") movicCastingStr += "("+res.cast[i].character+")/";
+					else movicCastingStr += "/"
+					
+					if(i == 9) break;
+				}
+				movicCastingStr = movicCastingStr.substring(0,movicCastingStr.length-1);
+				// 영어 -> 한글 
+				$.ajax({
+					type:"post",
+					url:"https://translation.googleapis.com/language/translate/v2",
+					data:{
+						key:googleApiKey,
+						q:movicCastingStr,
+						target:"ko"
+					},
+					success:function(res){
+						movicCastingStr = res.data.translations[0].translatedText;
+						movieData.actor=movicCastingStr;
+					},
+					error:function(a){
+						alert("전송실패:");
+					}
+				});
+			},
+				error:function(a){
+				alert("전송실패");
+			}
+		});
+		
+			let moviePosterStr="";
+			//포스터 요청
+			$.ajax({
+				type:"get",
+				url:"https://api.themoviedb.org/3/movie/"+id+"/images",
+				data:{
+					api_key:tmdbKey,
+					include_image_language:"ko,null"
+				},
+				success:function(res){
+					
+					for(let i=0; i< res.posters.length; i++){
+						moviePosterStr += res.posters[i].file_path;
+						$("#poster_path").html($("#poster_path").html() + '<img class="ml-1" src="https://image.tmdb.org/t/p/w500'+res.posters[i].file_path+'" width=150 />');
+						if(i==4) break;
+					}
+					if(moviePosterStr.indexOf(movieData.main_poster) != -1) movieData.poster_path=moviePosterStr;
+					else if(movieData.main_poster != null) movieData.poster_path = movieData.main_poster + moviePosterStr;
+					
+				},
+				error:function(err){
+					alert("전송 실패");
+				}
+			});
+		
+			// 트레일러 요청
+			$.ajax({
+				type:"get",
+				url:"https://api.themoviedb.org/3/movie/"+id+"/videos",
+				data:{
+					api_key:tmdbKey,
+					language:"ko-KR"
+				},
+				success:function(res){
+					let cnt = 0;
+					let videos="";
+					for(let i=(res.results.length-1); i>=0; i--){
+						videos += res.results[i].key +"/";
+						if(cnt++ == 5) break;
+					}
+					videos = videos.substring(0,videos.length-1);
+					movieData.videos = videos;
+				},
+				error:function(err){
+					alert("전송 실패");
+				}
+			}).then(()=>{
+				let json = JSON.stringify(movieData)
+				$.ajax({
+					type:"post",
+					url:"${ctp}/movie/movieUpdate",
+					data:{
+						idx:"${vo.idx}",
+						jsonData:json
+					},
+					success:function(res){
+						if(res == "-1") alert("아이디가 일치 하지 않습니다\n 삭제 후 다시 등록해주세요");
+						else if(res == 0) alert("업데이트 실패");
+						else {
+							alert("업데이트 완료");
+							location.reload();
+						}
+					},
+					error:function(){
+						alert("전송 실패");
+					}
+				});
+			});
+  	}
+  	
   </script>
 </head>
 <body>
@@ -163,7 +330,7 @@
 		<p></p>
 	</div>
 	<div class="d-flex justify-content-center mt-3">
-		<button type="button" class="btn btn-info mr-3">업데이트 요청(API)</button>
+		<button type="button" class="btn btn-info mr-3" onclick="movieUpdate()">업데이트 요청(API)</button>
 		<button type="button" class="btn btn-danger">삭제</button>
 	</div>
 <p><br/></P>

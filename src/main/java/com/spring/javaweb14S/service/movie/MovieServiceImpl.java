@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.javaweb14S.dao.MovieDAO;
 import com.spring.javaweb14S.vo.MovieVO;
@@ -46,10 +47,30 @@ public class MovieServiceImpl implements MovieService {
 	//등록된 영화 메인 포스터 변경
 	@Override
 	public int setMovieMainImageChage(String idx, String posterSrc) {
-		System.out.println(idx);
-		System.out.println(posterSrc);
-		return 0;
+		return movieDAO.setMovieMainImageChange(idx,posterSrc);
 	}
+
+	// 등록된 영화 정보 업데이트
+	@Override
+	public int setmovieUpdate(String idx, String jsonData) {
+		MovieVO vo=null;
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			vo = mapper.readValue(jsonData, MovieVO.class);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		if(!vo.getIdx().equals(idx)) return -1;
+		else return movieDAO.setMovieUpdate(vo);
+		
+		
+	}
+	
+	
 
 
 }

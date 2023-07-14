@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class MovieVO {
 	
-	private int idx;
+	private String idx;
 	private int runtime,totalView,vote_count;
 	
 	private float vote_average, rating;
