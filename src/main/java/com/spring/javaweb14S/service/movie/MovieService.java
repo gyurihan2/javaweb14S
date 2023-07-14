@@ -15,4 +15,7 @@ public interface MovieService {
 	// 영화 전체 리스트
 	public ArrayList<MovieVO> getMovieList();
 
+	// 영화 메인 포스터 변경
+	public int setMovieMainImageChage(String idx, String posterSrc);
+
 }

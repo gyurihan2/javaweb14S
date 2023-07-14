@@ -380,8 +380,9 @@
 					for(let i=0; i< res.posters.length; i++){
 						moviePosterStr += res.posters[i].file_path;
 						$("#poster_path").html($("#poster_path").html() + '<img class="ml-1" src="https://image.tmdb.org/t/p/w500'+res.posters[i].file_path+'" width=150 />');
-						if(i==9) break;
+						if(i==4) break;
 					}
+				
 					if(moviePosterStr.indexOf(movieDetailTemp.main_poster) != -1) movieDetailTemp.poster_path=moviePosterStr;
 					else if(movieDetailTemp.main_poster != null)movieDetailTemp.poster_path = movieDetailTemp.main_poster + moviePosterStr;
 				}
@@ -413,7 +414,7 @@
 						temp += '"></iframe></div>';
 						$("#videos").html($("#videos").html() + temp);
 						videos += res.results[i].key +"/";
-						if(++cnt == 9) break;
+						if(cnt++ == 5) break;
 					}
 					videos = videos.substring(0,videos.length-1);
 					movieDetailTemp.videos = videos;

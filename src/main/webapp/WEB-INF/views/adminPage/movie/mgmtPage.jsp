@@ -107,9 +107,7 @@
  	
 	
 
-	function movieChartList(){
-		console.log("1:"+test.length);
-    console.log("2:"+test[1].title);
+	/* function movieChartList(){
 		
 		let tempHtml = "";
 		for(let i=0;i<10;i++){
@@ -122,7 +120,15 @@
 			tempHtml += '</div>';
 		}
 		$("#movieChart").html($("#movieChart").html()+tempHtml); 
+	} */
+	
+	//등록된 영화 상세 보기
+	function movieDeatil(idx){
+		let url="${ctp}/movie/movieDetailPage?idx="+idx;
+		
+		window.open(url,"nWin","width=1200, height=800");
 	}
+	
 	jQuery(function(){
 		movieGetChart();
 	});	
@@ -149,10 +155,10 @@
 	</div>
 	<div class="d-flex flex-row">
 		<!-- 영화 설정 -->
-		<div class="content mt-5 p-3 text-center contentScroll" style="height: 700px;width: 750px;" >
+		<div class="content mt-5 p-3 text-center" style="height: 700px;width: 750px;" >
 			<h4>영화 설정</h4>
 			<div class="d-flex flex-row-reverse mb-3">
-				<div class="p-2"><input type="button" value="영화 추가" class="btn btn-info btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
+				<div class="p-2"><input type="button" value="영화 추가 요청(TMDB)" class="btn btn-info btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
 				<div class="p-2"><input type="button" value="영화 검색" class="btn btn-info btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
 			</div>
 			<c:if test="${!empty movieVOS}">
@@ -163,18 +169,19 @@
 					<div class="col"><b>비고</b></div>
 				</div>
 				<hr/>
+				<div class="contentScroll" style="height: 500px;">
 				<c:forEach var="vo" items="${movieVOS}">
 					<div class="row row_body align-items-center" style="height: 150px">
 						<div class="col"><img src="https://image.tmdb.org/t/p/w500${vo.main_poster}" width="60px"/></div>
-						<div class="col" >${vo.title}</div>
+						<div class="col" onclick="movieDeatil(${vo.idx})">${vo.title}</div>
 						<div class="col" >${vo.release_date}</div>
 						<div class="col" >
-							<button class="btn btn-sm btn-info">업데이트</button>
 							<button class="btn btn-sm btn-danger">삭제</button>
 						</div>
 					</div>
 					<hr class="mb-2 mt-2"/>
 				</c:forEach>
+				</div>
 			</c:if>
 			<c:if test="${empty movieVOS}">
 				<div class="text-center"> 내역이 없습니다.</div>

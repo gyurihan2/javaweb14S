@@ -43,7 +43,13 @@ public class MovieServiceImpl implements MovieService {
 		return movieDAO.getMovieList();
 	}
 
-	
-	
-	
+	//등록된 영화 메인 포스터 변경
+	@Override
+	public int setMovieMainImageChage(String idx, String posterSrc) {
+		System.out.println(idx);
+		System.out.println(posterSrc);
+		return 0;
+	}
+
+
 }

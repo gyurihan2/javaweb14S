@@ -6,7 +6,7 @@
 		select * from movie where idx=#{idx};
 	</select>
 	<select id="getMovieList" resultType="movieVO">
-		select * from movie;
+		select * from movie order by release_date desc;
 	</select>
 	
 	

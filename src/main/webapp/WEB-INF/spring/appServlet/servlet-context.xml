@@ -92,6 +92,7 @@
 		<interceptor>
 			<mapping path="/admin/**"/>
 			<mapping path="/theater/**"/>
+			<mapping path="/movie/**"/>
 			<beans:ref bean="AdminInterceptor"/>
 		</interceptor>	
 	</interceptors>

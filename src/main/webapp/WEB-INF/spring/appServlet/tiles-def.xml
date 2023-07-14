@@ -50,6 +50,9 @@
 	<definition name="adminPage/theater/theaterInputPage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/theaterInputPage.jsp"/>
 	</definition>
+	<definition name="adminPage/movie/movieDetailPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/movie/movieDetailPage.jsp"/>
+	</definition>
 	
 	
 	<!-- Admin page 레이아웃 -->
