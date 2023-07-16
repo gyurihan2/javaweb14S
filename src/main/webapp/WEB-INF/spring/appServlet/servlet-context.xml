@@ -18,6 +18,7 @@
 	<resources mapping="/emoticon/**" location="/resources/images/emoticon/"/>
 	<resources mapping="/js/**" location="/resources/js/"/>
 	<resources mapping="/ckeditor/**" location="/resources/ckeditor/"/>
+	<resources mapping="/fullcalendar/**" location="/resources/fullcalendar/"/>
 	<resources mapping="/ckeditorUpload/**" location="/resources/data/ckeditor/"/>
 	<resources mapping="/member/image/**" location="/resources/data/member/"/>
 	<resources mapping="/thema/image/**" location="/resources/data/thema/"/>
@@ -93,6 +94,7 @@
 			<mapping path="/admin/**"/>
 			<mapping path="/theater/**"/>
 			<mapping path="/movie/**"/>
+			<mapping path="/schedule/**"/>
 			<beans:ref bean="AdminInterceptor"/>
 		</interceptor>	
 	</interceptors>

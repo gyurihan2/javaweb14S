@@ -48,4 +48,10 @@ public class AdminController {
 		model.addAttribute("movieVOS", movieVOS);
 		return "adminPage/movie/mgmtPage";
 	}
+	// 스케줄 관리 페이지
+	@RequestMapping(value = "/schedule/mgmtPage", method = RequestMethod.GET)
+	public String scheduleMgmtPage() {
+		
+		return "adminPage/schedule/mgmtPage";
+	}
 }

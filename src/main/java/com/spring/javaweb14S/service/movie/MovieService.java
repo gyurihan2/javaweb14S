@@ -18,7 +18,10 @@ public interface MovieService {
 	// 영화 메인 포스터 변경
 	public int setMovieMainImageChage(String idx, String posterSrc);
 
-	// 영화 
+	// 영화 업데이트
 	public int setmovieUpdate(String idx, String jsonData);
+
+	// 영화 삭제
+	public int setmovieDelete(String idx);
 
 }

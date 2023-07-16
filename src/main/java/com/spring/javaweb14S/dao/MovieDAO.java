@@ -23,4 +23,7 @@ public interface MovieDAO {
 	// 등록된 영화 업데이트
 	public int setMovieUpdate(@Param("vo") MovieVO vo);
 
+	// 영화 삭제
+	public int setmovieDelete(@Param("idx") String idx);
+
 }

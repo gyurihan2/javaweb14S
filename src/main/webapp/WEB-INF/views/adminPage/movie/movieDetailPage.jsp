@@ -229,6 +229,29 @@
 			});
   	}
   	
+ 	// 영화 삭제
+	function movieDelete(idx,title){
+		if(!confirm(title+"을 삭제 하시겠습니까?")) return false;
+		
+		$.ajax({
+			type:"post",
+			url:"${ctp}/movie/movieDelete",
+			data:{
+				idx:idx
+			},
+			success:function(res){
+				if(res == 1){
+					alert("삭제 완료");
+					window.close();
+				}
+				else alert("삭제 실패");
+			},
+			error:function(){
+				alert("전송 실패");
+			}
+		});
+	}
+  	
   </script>
 </head>
 <body>
@@ -331,7 +354,7 @@
 	</div>
 	<div class="d-flex justify-content-center mt-3">
 		<button type="button" class="btn btn-info mr-3" onclick="movieUpdate()">업데이트 요청(API)</button>
-		<button type="button" class="btn btn-danger">삭제</button>
+		<button type="button" class="btn btn-danger" onclick="movieDelete('${vo.idx}','${vo.title}')">삭제</button>
 	</div>
 <p><br/></P>
 </body>

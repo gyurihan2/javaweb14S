@@ -66,9 +66,13 @@ public class MovieServiceImpl implements MovieService {
 		
 		if(!vo.getIdx().equals(idx)) return -1;
 		else return movieDAO.setMovieUpdate(vo);
-		
-		
 	}
+
+	@Override
+	public int setmovieDelete(String idx) {
+		return movieDAO.setmovieDelete(idx);
+	}
+	
 	
 	
 

@@ -18,7 +18,6 @@
     .contentScroll::-webkit-scrollbar-track {
       background-color: transparent;
     }
-        
 		
 	 .row_body{
 			font-size: 15px;
@@ -67,14 +66,12 @@
 		let release_date_gte = setDate.toISOString().substring(0,10);
 		
 		$("#movieChartTitle").html($("#movieChartTitle").html()+" <em>("+release_date_gte+" ~ "+release_date_lte+")</em>");
-		console.log(release_date_gte);
-		console.log(release_date_lte);
  		$.ajax({
  			type:"get",
  			url:'https://api.themoviedb.org/3/discover/movie?release_date.gte='+release_date_gte+'&release_date.lte='+release_date_lte,
  			data:{
  				api_key:tmdbKey,
- 				dataType: "jsonp",
+ 				dataType: "json",
  				contentType: 'application/json',
  				include_adult:false,
  				include_video:false,
@@ -104,29 +101,35 @@
 	  		}
  		});
  	}
- 	
-	
-
-	/* function movieChartList(){
-		
-		let tempHtml = "";
-		for(let i=0;i<10;i++){
-			let j = test[i];
-			tempHtml += '<div class="row row_body">';
-			tempHtml += '<div class="col">'+(i+1)+'</div>';
-			tempHtml += '<div class="col">'+j.title+'</div>';
-			tempHtml += '<div class="col">'+j.release_date+'</div>';
-			tempHtml += '<div class="col">'+j.vote_average+'</div>';
-			tempHtml += '</div>';
-		}
-		$("#movieChart").html($("#movieChart").html()+tempHtml); 
-	} */
-	
+ 		
 	//등록된 영화 상세 보기
 	function movieDeatil(idx){
 		let url="${ctp}/movie/movieDetailPage?idx="+idx;
 		
 		window.open(url,"nWin","width=1200, height=800");
+	}
+	
+	// 영화 삭제
+	function movieDelete(idx,title){
+		if(!confirm(title+"을 삭제 하시겠습니까?")) return false;
+		
+		$.ajax({
+			type:"post",
+			url:"${ctp}/movie/movieDelete",
+			data:{
+				idx:idx
+			},
+			success:function(res){
+				if(res == 1){
+					alert("삭제 완료");
+					location.reload();
+				}
+				else alert("삭제 실패");
+			},
+			error:function(){
+				alert("전송 실패");
+			}
+		});
 	}
 	
 	jQuery(function(){
@@ -176,7 +179,7 @@
 						<div class="col" onclick="movieDeatil(${vo.idx})">${vo.title}</div>
 						<div class="col" >${vo.release_date}</div>
 						<div class="col" >
-							<button class="btn btn-sm btn-danger">삭제</button>
+							<button class="btn btn-sm btn-danger" onclick="movieDelete('${vo.idx}','${vo.title}')">삭제</button>
 						</div>
 					</div>
 					<hr class="mb-2 mt-2"/>

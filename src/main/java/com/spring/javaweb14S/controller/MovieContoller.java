@@ -71,6 +71,14 @@ public class MovieContoller {
 		return movieService.setmovieUpdate(idx,jsonData);
 	}
 	
+	// 등록된 영화 메인 포스터 변경
+	@RequestMapping(value = "movieDelete", method = RequestMethod.POST)
+	@ResponseBody
+	public int movieDelete(
+			@RequestParam(name = "idx",required = false) String idx) {
+		return movieService.setmovieDelete(idx);
+	}
+	
 	
 
 	
