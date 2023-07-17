@@ -19,3 +19,7 @@ create table theater(
 desc theater; 
 
 select a.*, b.name as themaName, b.price as themaPrice from theater a, thema b where a.themaIdx = b.idx;
+
+/* 설정한 기간의 사용 가능한 상영관 */
+select *,(select name from thema where idx=a.themaidx) as themaName from theater as a where idx not in
+(select theaterIdx from schedule where playDate between '2023-05-26' and '2023-06-07' group by theaterIdx);

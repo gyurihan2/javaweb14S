@@ -25,35 +25,73 @@
 	<script>
 		'use strict';
 		let calendar;
+		let data="";
+		let date= new Date();
+		
+		// String -> json
+		function ParseScheduleData(){
+				
+		}
+		
+		// 일정 추가
+		function scheduleAdd(startDate,endDate){
+			let url="${ctp}/schedule/scheduleInputPage?startDate="+startDate+"&endDate="+endDate;
+			window.open(url,"n_win","width=800,height=600");
+		}
+		
 		document.addEventListener('DOMContentLoaded', function() {
 		    var calendarEl = document.getElementById('calendar');
 		    calendar = new FullCalendar.Calendar(calendarEl, {
 		    	customButtons:{
-		    		mydataButton:{
-		    			text:'test',
-		    			//icon:'chevron-left',
-		    			//bootstrapFontAwesome:'fa-solid fa-car',
+		    		prevButton:{
+		    			text:'이전달',
+		    			icon:'chevron-left',
 		    			click:function(){
-		    				alert("하하하");
-		    				//calendar.prev();
+								date.setMonth(date.getMonth()-1);    				
+		    				let year = date.getFullYear();
+		    				let month = ("0"+(date.getMonth()+1)).slice(-2);
+		    				
+		    				$.ajax({
+		    					type:"post",
+		    					url:"${ctp}/schedule/scheduleGetList",
+		    					data:{
+		    						requestDate:year+"-"+month
+		    					},
+		    					success:function(){
+		    						alert("전송 완료");
+		    					},
+		    					error:function(){
+		    						alert("전송 실패");
+		    					}
+		    				});
+		    				
+		    				calendar.prev();
+		    				
+		    				
+		    			}
+		    		},
+		    		nextButton:{
+		    			text:'다음달',
+		    			icon:'chevron-right',
+		    			click:function(){
 		    				//calendar.next();
 		    				
 		    			}
 		    		}
+		   
 		    	},
-		    	
 		    	initialView: 'dayGridMonth', // 초기 로드 될때 보이는 캘린더 화면 (기본 설정: 달)
 		    	navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
 		    	editable: true,
 		    	selectable: true,
 		    	nowIndicator: true,
-		    	dayMaxEvents: true,
+		    	dayMaxEvents: true,	
 	        locale: 'ko', // 한국어 설정
 	        expandRows: true, // 화면에 맞게 높이 재설정
 	        height: '800px', // calendar 높이 설정
 	        headerToolbar: {
-	        		left: "title mydataButton",
-	            center: 'prev today next',
+	        		left: "title",
+	            center: 'prevButton today nextButton',
 	            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
           eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
@@ -77,108 +115,25 @@
               }
               calendar.unselect()
           },
-	        events: [
-        		{	
-          		idx: 0, // extendedProps.idx 접근 가능
-          		aaa: "1111",
-              title: '첫번째 일정',
-              start: '2023-07-02',
-              classNames: [ 'classAddtest' ], // event 영역 class 추가
-              backgroundColor: 'red',
-              borderColor: 'red',
-              textColor: 'black',
-          	},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-							idx:"test",
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-        		{
-          		title: '두번째 일정',
-              start: '2023-07-15',
-              end: '2023-07-28',
-						},
-	          {
-          		title: '페이지 이동 이벤트 호출',
-              url: 'https://naver.com',
-              start: '2023-07-01',
-						},
-					], // 이벤트
-	       eventClick: function(info) {
-	        	console.log(info);
-	        	alert('Event info : ' + JSON.stringify(info.event));
-	        	info.event.remove();
-	          	
-          	// url 커스텀 이동
-            info.jsEvent.preventDefault(); // 클릭이벤트 후처리 방지
-
-          	if (info.event.url) {
-            	window.open("https://fullcalendar.io/docs/eventClick");
-					}
-				}, // 일정 이벤트 클릭 이벤트 callback
+					events: data, // 이벤트
+					eventClick: function(info) {
+					  	console.log(info);
+					  	alert('Event info : ' + JSON.stringify(info.event));
+					  	info.event.remove();
+					    	
+					  	// url 커스텀 이동
+					    info.jsEvent.preventDefault(); // 클릭이벤트 후처리 방지
+					
+					  	if (info.event.url) {
+					    	window.open("https://fullcalendar.io/docs/eventClick");
+						}
+					}, // 일정 이벤트 클릭 이벤트 callback
 			});
 			calendar.render();
+			date=calendar.getDate();
 		});
 		
-		$(function(){
-			 // 왼쪽 버튼을 클릭하였을 경우
-		      $(".fc-prev-button").click(function() {
-		          var date = jQuery("#calendar").fullCalendar("getDate");
-		          //convertDate(date);
-		          console.log(date)
-		      });
-		});
+		
 		
 	</script>
 </head>
@@ -187,8 +142,11 @@
 		<h4 class="m-1 p-0"><b>스케줄 관리</b></h4>
 	</div>
 		<div id='calendar-container'>
-		<div id='calendar'></div>    
-	</div>
+			<div class="d-flex justify-content-end">
+				<button type="button" class="btn btn-sm btn-success" onclick="scheduleAdd()">일정 추가</button>
+			</div>
+			<div id='calendar'></div>    
+		</div>
 <p><br/></p>
 </body>
 </html>

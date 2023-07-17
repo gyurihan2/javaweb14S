@@ -22,6 +22,10 @@ public class MovieMsg {
 			return "include/messageClose";
 		}
 	
+		else if(msgFlag.equals("movieDateNo")) {
+			model.addAttribute("msg", "상영 시작일을 설정 하세요");
+			model.addAttribute("url", "/schedule/scheduleInputPage");
+		}
 		
 		return "include/message";
 	}

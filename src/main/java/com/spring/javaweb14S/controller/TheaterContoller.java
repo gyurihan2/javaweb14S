@@ -178,8 +178,29 @@ public class TheaterContoller {
 	//테마 삭제
 	@ResponseBody
 	@RequestMapping(value = "themaDelete",method = RequestMethod.POST)
-	public int themaDelete(String idx) {
+	public int themaDelete(@RequestParam(name = "idx",defaultValue = "0", required = false) String idx) {
 		return theaterService.setThemaDelete(idx);
+	}
+	
+	@RequestMapping(value="theaterListPage",method = RequestMethod.GET)
+	public String theaterListPage(Model model,
+			@RequestParam(name = "startDate", defaultValue = "0", required = false) String startDate,
+			@RequestParam(name = "endDate", defaultValue = "0", required = false) String endDate) {
+		
+		if(startDate.equals("0") || endDate.equals("0")) return "redirect:/adminMsg/theaterDateNo";
+		
+		ArrayList<TheaterVO> vos = theaterService.getTheaterDateList(startDate,endDate);
+		String jsonStr="";
+		try {
+			jsonStr = jsonProcess.parseToString(vos);
+		} 
+		catch (JsonGenerationException e) {e.printStackTrace();} 
+		catch (JsonMappingException e) {e.printStackTrace();} 
+		catch (IOException e) {e.printStackTrace();}
+		
+		model.addAttribute("vos", vos);
+		model.addAttribute("jsonStr", jsonStr);
+		return "adminPage/theater/theaterListPage";
 	}
 	
 }

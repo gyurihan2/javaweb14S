@@ -9,9 +9,9 @@
 	<script src="${ctp}/js/apiKey.js"></script>
 	<title>영화 관리 페이지</title>
 	<style>
-		 .contentScroll{
-      overflow-y: scroll;
-    }
+		.contentScroll{
+  		overflow-y: scroll;
+		}
     .contentScroll::-webkit-scrollbar {
       width: 15px;
     }

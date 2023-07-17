@@ -206,6 +206,13 @@ public class TheaterServiceImpl implements TheaterService {
 	public int setThemaDelete(String idx) {
 		return theaterDAO.setThemaDelete(idx);
 	}
+
+	// 설정한 기간의 사용가능한 상영관 리스트
+	@Override
+	public ArrayList<TheaterVO> getTheaterDateList(String startDate, String endDate) {
+		
+		return theaterDAO.getTheaterDateList(startDate, endDate);
+	}
 	
 	
 	

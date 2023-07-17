@@ -21,6 +21,12 @@
 		select * from thema where idx=#{idx};
 	</select>
 	
+	<!-- 설정한 기간의 사용 가능한 상영관 리스트 -->
+	<select id="getTheaterDateList" resultType="theaterVO">
+		select *, (select name from thema where idx=a.themaidx) as themaName from theater as a where idx not in 
+		(select theaterIdx from schedule where playDate between #{startDate} and #{endDate} group by theaterIdx);
+	</select>
+	
 	
 <!-- Insert -->
 	<!-- 상영관 추가 -->

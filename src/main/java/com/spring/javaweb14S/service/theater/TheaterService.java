@@ -55,6 +55,9 @@ public interface TheaterService {
 	// 테마 삭제
 	public int setThemaDelete(String idx);
 
+	// 선택한 기간에 사용 가능한 상영관 리스트
+	public ArrayList<TheaterVO> getTheaterDateList(String startDate, String endDate);
+
 	
 
 

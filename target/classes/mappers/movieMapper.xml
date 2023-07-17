@@ -10,7 +10,12 @@
 	<select id="getMovieList" resultType="movieVO">
 		select * from movie order by release_date desc;
 	</select>
-	
+	<!-- 상영 시작일 기준 상영 가능한 영화 리스트 -->
+	<select id="getMovieDateList" resultType="movieVO">
+		<![CDATA[
+			select * from movie where release_date <= #{startDate} order by release_date desc;
+		]]>
+	</select>
 	
 <!-- Insert -->
 	<!-- 영화 생성 -->

@@ -24,4 +24,7 @@ public interface MovieService {
 	// 영화 삭제
 	public int setmovieDelete(String idx);
 
+	// 상영 시작일 기준 상영 가능한 영화 리스트
+	public ArrayList<MovieVO> getMovieDateList(String startDate);
+
 }

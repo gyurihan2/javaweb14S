@@ -56,6 +56,9 @@ public interface TheaterDAO {
 	// 테마 삭제
 	public int setThemaDelete(@Param("idx")String idx);
 
+	// 설정한 기간의 사용가능한 상영관 리스트
+	public ArrayList<TheaterVO> getTheaterDateList(@Param("startDate") String startDate, @Param("endDate") String endDate);
+
 
 
 }

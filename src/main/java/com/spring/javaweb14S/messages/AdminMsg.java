@@ -70,6 +70,10 @@ public class AdminMsg {
 			model.addAttribute("msg", "상영관 수정 실패.");
 			model.addAttribute("url", "/theater/theaterDetailPage?idx="+idx);
 		}
+		else if(msgFlag.equals("theaterDateNo")){
+			model.addAttribute("msg", "상영일자를 설정하세요.");
+			model.addAttribute("url", "/schedule/scheduleInputPage");
+		}
 		
 		return "include/message";
 	}

@@ -50,8 +50,17 @@
 	<definition name="adminPage/theater/theaterInputPage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/theaterInputPage.jsp"/>
 	</definition>
+	<definition name="adminPage/theater/theaterListPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/theaterListPage.jsp"/>
+	</definition>
 	<definition name="adminPage/movie/movieDetailPage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/adminPage/movie/movieDetailPage.jsp"/>
+	</definition>
+	<definition name="adminPage/movie/movieListPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/movie/movieListPage.jsp"/>
+	</definition>
+	<definition name="adminPage/schedule/scheduleInputPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/schedule/scheduleInputPage.jsp"/>
 	</definition>
 	
 	

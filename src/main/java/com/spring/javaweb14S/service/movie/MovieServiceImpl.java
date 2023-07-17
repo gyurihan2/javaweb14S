@@ -72,6 +72,12 @@ public class MovieServiceImpl implements MovieService {
 	public int setmovieDelete(String idx) {
 		return movieDAO.setmovieDelete(idx);
 	}
+
+	// 상영 시작일 기준 상영 가능한 영화 리스트
+	@Override
+	public ArrayList<MovieVO> getMovieDateList(String startDate) {
+		return movieDAO.getMovieDateList(startDate);
+	}
 	
 	
 	
