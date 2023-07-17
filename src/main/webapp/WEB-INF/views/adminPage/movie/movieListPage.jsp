@@ -104,13 +104,15 @@
 			let movieRuntime = theaterArr[index].runtime; 
 			let movieTitle = theaterArr[index].title; 
 			
-			opener.document.getElementById("movieTitle").value = movieTitle;
 			opener.document.getElementById("movieIdx").value = movieIdx;
 			opener.document.getElementById("movieRuntime").value = movieRuntime;
+			opener.document.getElementById("movieTitle").innerHTML = movieTitle;
+			opener.document.getElementById("movieTime").innerHTML = movieRuntime+" 분";
 			opener.document.getElementById("genres").innerHTML = theaterArr[index].genres;
+			opener.document.getElementById("movieTagline").innerHTML=theaterArr[index].tagline;
 			opener.document.getElementById("main_poster").setAttribute('src', 'https://image.tmdb.org/t/p/w500'+theaterArr[index].main_poster);
 			
-			//window.close();
+			window.close();
 		}
   	
   	$(function(){
