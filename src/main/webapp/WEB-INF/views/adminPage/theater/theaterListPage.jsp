@@ -14,6 +14,7 @@
   		let theaterArr = Object.values(${jsonStr});
   		opener.document.getElementById("theater").value = theaterArr[index].name;
   		opener.document.getElementById("theaterIdx").value = theaterArr[index].idx;
+  		opener.document.getElementById("leftSeat").value = theaterArr[index].seat;
   	}
   </script>
 </head>

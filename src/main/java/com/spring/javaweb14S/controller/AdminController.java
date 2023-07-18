@@ -1,5 +1,7 @@
 package com.spring.javaweb14S.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.spring.javaweb14S.service.movie.MovieService;
+import com.spring.javaweb14S.service.schedule.ScheduleService;
 import com.spring.javaweb14S.service.theater.TheaterService;
 import com.spring.javaweb14S.vo.MovieVO;
+import com.spring.javaweb14S.vo.ScheduleVO;
 import com.spring.javaweb14S.vo.TheaterVO;
 import com.spring.javaweb14S.vo.ThemaVO;
 
@@ -23,6 +27,9 @@ public class AdminController {
 	
 	@Autowired
 	MovieService movieServie;
+	
+	@Autowired
+	ScheduleService scheduleService;
 	
 	@RequestMapping(value = "/mainPage", method = RequestMethod.GET)
 	public String adminMainPage() {
@@ -50,8 +57,13 @@ public class AdminController {
 	}
 	// 스케줄 관리 페이지
 	@RequestMapping(value = "/schedule/mgmtPage", method = RequestMethod.GET)
-	public String scheduleMgmtPage() {
+	public String scheduleMgmtPage(Model model) {
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM");
+		String today = now.format(fmt);
 		
+		String jsonData = scheduleService.getScheduleList(today);
+		model.addAttribute("jsonData", jsonData);
 		return "adminPage/schedule/mgmtPage";
 	}
 }

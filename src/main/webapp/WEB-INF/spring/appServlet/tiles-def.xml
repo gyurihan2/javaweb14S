@@ -62,6 +62,9 @@
 	<definition name="adminPage/schedule/scheduleInputPage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/adminPage/schedule/scheduleInputPage.jsp"/>
 	</definition>
+	<definition name="adminPage/schedule/scheduleSelectDate" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/adminPage/schedule/scheduleSelectDate.jsp"/>
+	</definition>
 	
 	
 	<!-- Admin page 레이아웃 -->

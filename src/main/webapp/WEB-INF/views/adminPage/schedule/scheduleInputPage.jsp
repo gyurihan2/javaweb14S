@@ -75,6 +75,46 @@
 		
 	}
 	
+	//영화 screenOrder 삭제
+	function sreenOrderDelete(){
+		let cnt = $("input[name=order]").length;
+		$("#screenOreder_"+cnt).remove();
+	}
+	
+	// 일정 추가
+	function insertSchedule(){
+		let startDate = $("#startDate").val();
+		let endDate = $("#endDate").val();
+		let theaterIdx = $("#theaterIdx").val();
+		let movieIdx = $("#movieIdx").val();
+		let order = $("#order1").val();
+
+		
+		if(startDate == ""){
+			alert("상영 시작일을 입력하세요");
+			return false;
+		}
+		else if(endDate == ""){
+			alert("상영 종료일을 입력하세요");
+			return false;
+		}
+		else if(theaterIdx == ""){
+			alert("상영관을 선택하세요");
+			return false;
+		}
+		else if(movieIdx == ""){
+			alert("상영 영화를 선택하세요");
+			return false;
+		}
+		else if(order == ""){
+			alert("첫번째 상영 순서 시간을 입력하세요");
+			return false;
+		}
+		
+		
+		myform.submit();
+	}
+	
 	
 	$(function(){
 		let today = new Date();
@@ -98,7 +138,7 @@
 </script>
 <body>
 <h4 class="text-center">일정 등록</h4>
-<form method="post" name="myform">
+<form method="post" name="myform" action="${ctp}/schedule/scheduleInput">
 	<div class="row text-center">
 		<div class="col-2">상 영 일</div>
 		<div class="col"><input type="date" class="form-control" name="startDate" id="startDate"/></div>
@@ -109,8 +149,9 @@
 		<div class="col-2">상 영 관</div>
 		<div class="col">
 			<div class="input-group">
-	      <input type="text" class="form-control" name="theater" id="theater" readonly/>
+	      <input type="text" class="form-control" id="theater" readonly/>
 	      <input type="hidden" name="theaterIdx" id="theaterIdx"/>
+	      <input type="hidden" name="leftSeat" id="leftSeat"/>
 	      <div class="input-group-prepend ml-2">
 	      	<input type="button" class="btn btn-info btn-sm " id="midCheck" value="상영관 조회" onclick="theaterSerch()" style="border-radius: 10px;"/>
 	  		</div>
@@ -126,7 +167,7 @@
 	    </div>
 		</div>
 	</div>
-	<div id="movieBrief">
+	<div id="movieBrief" style="display: none;">
 		<div class="row d-flex align-items-center" style="height: 150px">
 			<div class="col d-flex flex-column">
 				<div><img id="main_poster" width="75px"/></div>
@@ -137,6 +178,7 @@
 			</div>
 			<div class="col">
 				상영시간: <span id="movieTime"></span>
+				<input type="hidden" name="runtime" id="movieRuntime"/>
 			</div>
 		</div>
 		<div class="row">
@@ -147,21 +189,24 @@
 				장르: <span id="genres"></span>
 			</div>
 		</div>
-	</div>
-	<div id="screenOrderList">
-		<div class="d-flex flex-column" id="screenOrderContent">
-			<div class="text-center"> 상영일정
-				<button type="button" class="btn btn-sm btn-info" onclick="sreenOrderAdd()">일정 추가</button>
-				<button type="button" class="btn btn-sm btn-warning" onclick="sreenOrderDelete()">삭제</button>
-			</div>
-			<div class="d-flex justify-content-center"  id="screenOreder_1">
-				<div>1 회차 :</div>
-				<div><input type="time" name="order" id="order1"  min="07:55:00" max="23:55" value="08:00" /></div>
+		<div id="screenOrderList">
+			<div class="d-flex flex-column" id="screenOrderContent">
+				<div class="text-center"> 상영일정
+					<button type="button" class="btn btn-sm btn-info" onclick="sreenOrderAdd()">일정 추가</button>
+					<button type="button" class="btn btn-sm btn-warning" onclick="sreenOrderDelete()">삭제</button>
+				</div>
+				<div class="d-flex justify-content-center"  id="screenOreder_1">
+					<div>1 회차 :</div>
+					<div><input type="time" name="order" id="order1" /></div>
+				</div>
 			</div>
 		</div>
 	</div>
+	<div>
+		<button type="button" class="btn btn-success btn-sm" onclick="insertSchedule()">추가하기</button>
+		<button type="button" class="btn btn-warning btn-sm" onclick="window.close()">취소</button>
+	</div>
 </form>
-<input type="hidden" name="	" id="movieRuntime"/>
 <p><br/></P>
 </body>
 </html>

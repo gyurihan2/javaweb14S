@@ -111,8 +111,11 @@
 			opener.document.getElementById("genres").innerHTML = theaterArr[index].genres;
 			opener.document.getElementById("movieTagline").innerHTML=theaterArr[index].tagline;
 			opener.document.getElementById("main_poster").setAttribute('src', 'https://image.tmdb.org/t/p/w500'+theaterArr[index].main_poster);
+			$(opener.document).find("#movieBrief").slideDown(500,function(){
+				window.close();
+			});
 			
-			window.close();
+			
 		}
   	
   	$(function(){
