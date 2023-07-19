@@ -13,10 +13,31 @@
 		let startPage=0;
 		let endPage=Math.floor(${fn:length(vos)}/4);
 		
-		let mainImagesStr = '${mainImagesStr}';
-		let titleStr = '${titleStr}';
-		let mainImgesArr = mainImagesStr.split("/");
-		let titleArr = titleStr.split("/");
+		let movieArr = [];
+		let themaArr = ${jsonData2};
+		let randomSu="";
+		
+		
+		
+		function changeImgHall(hall){
+		   document.getElementById('hallImgSrc').src = "${ctp}/thema/image/"+hall;
+		}
+
+			let movieHallCnt=0;
+			let statusTime;
+
+		function moviehall(){
+			document.getElementById('hallImgSrc').src= "${ctp}/thema/image/"+themaArr[movieHallCnt++].mainImg;
+	    if(movieHallCnt == themaArr.length) movieHallCnt=0;
+		}
+
+		function movieHallAutoStart(){
+	    moviehall();
+	    statusTime = setTimeout(movieHallAutoStart,3000);
+		}
+		function movieHallAutoStop(){
+	    clearTimeout(statusTime);
+		}
 		
 		function movieChartPrevious(){
 		    startPage--;
@@ -27,11 +48,10 @@
 		    let moviename = document.getElementsByName("movieChartName");
 		    let start = startPage*4;
 		    for(let i=0;i<4;i++){
-		        if(titleArr[start] != null){
+		        if(movieArr[start].title != null){
 		            if( movieChart[i].style.display =="none") movieChart[i].style.display="block"
-		            
-		            movieChart[i].src= "${ctp}/images/movieChart/"+mainImgesArr[start];
-		            moviename[i].innerText=titleArr[start];
+		            movieChart[i].src= "https://image.tmdb.org/t/p/w500"+movieArr[start].main_poster;
+		            moviename[i].innerText=movieArr[start].title;
 		            start++;
 		        }
 		        
@@ -48,24 +68,48 @@
 		    let moviename = document.getElementsByName("movieChartName");
 		    let start = startPage*4;
 		    for(let i=0;i<4;i++){
-		        if(titleArr[start] != null){
-		        	movieChart[i].src="${ctp}/images/movieChart/"+mainImgesArr[start];
-			        moviename[i].innerText=titleArr[start];
+		        if(movieArr.length > start){
+		        	movieChart[i].src="https://image.tmdb.org/t/p/w500"+movieArr[start].main_poster;
+			        moviename[i].innerText=movieArr[start].title;
 		        	start++;
 		        }
 		        else{
 		            movieChart[i].style.display="none";
 		            moviename[i].innerText="";
+		            console.log("aaa");
 		            start++;
 		            
 		        }
 		    }
 		}
 		
+		function videoPlay(){
+			randomSu = Math.floor(Math.random() * movieArr.length + 1);
+			console.log("---");
+			console.log(movieArr[randomSu-1].videos);
+			if(movieArr[randomSu-1].videos != null){
+				let video = movieArr[randomSu-1].videos.split("/");
+				$("#test").attr("src","https://www.youtube.com/embed/"+video[0]+"?autoplay=1&mute=1&playlist="+video[0]+"&loop=1&modestbranding=1");
+			}
+			else{
+				videoPlay();
+			}
+		}
+		
 		$(function(){
 			if(${fn:length(vos)} <= 4){
 				document.getElementById("movieNext").style.visibility="hidden";
 			}
+			
+			if(${!empty jsonData}){
+				movieArr=${jsonData};
+				videoPlay();
+			}
+			
+		 movieHallAutoStart();
+		    hall_lists.addEventListener('mouseout',()=>{
+		        movieHallAutoStart();
+		    });
 		});
 		
 	</script>
@@ -77,8 +121,9 @@
 <!-- 메인 영화 예고편 -->
 	<div class="row">
 	<div class="col ">
-    	<!-- <iframe width="889" height="500" src="https://www.youtube.com/embed/d2VN6NNa9BE?" title="YouTube video player" frameborder="0" 
-    	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen"></iframe> -->
+		<c:if test="${!empty vos}">
+    	<iframe  width="889" height="500" id="test" frameborder="0" allowfullscreen></iframe>
+		</c:if>
 	</div>
 	</div>
 </div>
@@ -93,7 +138,7 @@
                 <!-- <button type="button" class="btn btn-light text-secondary font-weight-bold">상영예정</button> -->
             </div>
             <div class="col "></div>
-            <div class="col-2  text-right" id="movieAllView"><button onclick="location.href='${ctp}/ReservationPage.res';"><b>예약하기</b></button></div>
+            <div class="col-2  text-right" id="movieAllView"><button onclick="location.href='${ctp}/reservation/reservationMainPage';"><b>예약하기</b></button></div>
         </div>
         <div class="row mt-3">
             <div class="col align-self-center"> <!--왼쪽 공백-->
@@ -104,7 +149,7 @@
             <c:forEach var="index" begin="0" end="3">
             	<c:if test="${!empty vos[index] }">
             		<div class="col text-center moviecontent movienext" >
-                <a href="#"><img name="movieChartImg" src="${ctp}/images/movieChart/${vos[index].mainImg}"></a>
+                <a href="#"><img name="movieChartImg" src="https://image.tmdb.org/t/p/w500${vos[index].main_poster}"></a>
                 <br/><span name="movieChartName">${vos[index].title}</span>
             		</div>
             	</c:if>
@@ -128,15 +173,13 @@
             <div><h2>특별관</h2></div>
               <div id="specialhall_content">
                 <div id="hall_imags" style="float: left; padding-top: 10px;">
-                    <img id="hallImgSrc" src="${ctp}/theater/imax.png">
+                    <img id="hallImgSrc" src="${ctp}/thema/image/${themaVOS[0].mainImg}">
                 </div>
                 <div id="hall_lists" onmouseover=movieHallAutoStop()>
 									<ul id="hall_list">
-										<li id="imax" onmouseover=changeImgHall(this)><a href="#"><strong>IMAX</strong><span>#대형스크린 #최고의몰입감</a></span></li>
-										<li id="4dx" onmouseover=changeImgHall(this)><a href="#"><strong>4DX</strong><span>#모션 시트 #오감체험</span></li></a>
-										<li id="screenx" onmouseover=changeImgHall(this)><a href="#"><strong>SCREENX </strong><span>#3면 확장스크린 #270도스크린</span></li></a>
-										<li id="primium" onmouseover=changeImgHall(this)><a href="#"><strong>PREMIUM </strong><span>#리클라이너#최고급 좌석</span></a>
-										</li>
+										<c:forEach var="vo" items="${themaVOS}">
+											<li id="${vo.mainImg}" onmouseover='changeImgHall("${vo.mainImg}")'><a href="#"><strong>${vo.name}</strong><span>${vo.hashTag }</a></span></li>
+										</c:forEach>
 									</ul> 
                 </div>
               </div>

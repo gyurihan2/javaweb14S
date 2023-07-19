@@ -25,8 +25,8 @@ public class ScheduleServiceImpl implements ScheduleService{
 	JsonProcess jsonProcess;
 
 	@Override
-	public String  getScheduleList(String requestDate) {
-		ArrayList<ScheduleVO> vos =  scheduleDAO.getSchduleList(requestDate);
+	public String  getScheduleList() {
+		ArrayList<ScheduleVO> vos =  scheduleDAO.getSchduleList();
 		
 		if(vos.size() != 0) {
 			try {
@@ -93,6 +93,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	}
 
 	// 해당 일의 일정 출력
+	@SuppressWarnings("unchecked")
 	@Override
 	public String getScheduleDateListJson(String selectDate) {
 		ArrayList<ScheduleVO> vos = scheduleDAO.getSchduleDateList(selectDate);
@@ -148,6 +149,12 @@ public class ScheduleServiceImpl implements ScheduleService{
 		
 		
 		return jsonArray.toJSONString();
+	}
+
+	// 일정 그룹 아이디 삭제
+	@Override
+	public int setScheduleDeleteGroup(String groupId) {
+		return scheduleDAO.setScheduleDeleteGroup(groupId);
 	}
 	
 	

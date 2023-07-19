@@ -340,6 +340,7 @@
 				$.ajax({
 					type:"post",
 					url:"https://translation.googleapis.com/language/translate/v2",
+					async:false,
 					data:{
 						key:googleApiKey,
 						q:movicCastingStr,

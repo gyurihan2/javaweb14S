@@ -59,6 +59,9 @@ public interface TheaterDAO {
 	// 설정한 기간의 사용가능한 상영관 리스트
 	public ArrayList<TheaterVO> getTheaterDateList(@Param("startDate") String startDate, @Param("endDate") String endDate);
 
+	// 메인 홈페이지에 표시할 테마
+	public ArrayList<TheaterVO> getThemaDisplayList();
+
 
 
 }

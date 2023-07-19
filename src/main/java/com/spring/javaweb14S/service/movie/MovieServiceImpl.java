@@ -1,6 +1,8 @@
 package com.spring.javaweb14S.service.movie;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +66,8 @@ public class MovieServiceImpl implements MovieService {
 			e.printStackTrace();
 		}
 		
-		if(!vo.getIdx().equals(idx)) return -1;
+		System.out.println(vo.toString());
+		if(vo != null &&!vo.getIdx().equals(idx)) return -1;
 		else return movieDAO.setMovieUpdate(vo);
 	}
 
@@ -77,6 +80,17 @@ public class MovieServiceImpl implements MovieService {
 	@Override
 	public ArrayList<MovieVO> getMovieDateList(String startDate) {
 		return movieDAO.getMovieDateList(startDate);
+	}
+
+	// 메인 화면에 출력할 영화 리스트
+	@Override
+	public ArrayList<MovieVO> getMovieTodaySchedule() {
+		Date today = new Date();
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		
+		String todayFmt = fmt.format(today);
+		
+		return movieDAO.getMovieTodaySchedule(todayFmt);
 	}
 	
 	

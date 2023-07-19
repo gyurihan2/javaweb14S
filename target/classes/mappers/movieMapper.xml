@@ -16,6 +16,10 @@
 			select * from movie where release_date <= #{startDate} order by release_date desc;
 		]]>
 	</select>
+	<!-- 메인화면에 표시할 영화 리스트 -->
+	<select id="getMovieTodaySchedule" resultType="movieVO">
+		select * from movie as a ,(select movieIdx, theaterIdx from schedule where playDate = #{todayFmt} group by movieidx) as b where a.idx = b.movieIdx  order by b.theaterIdx;
+	</select>
 	
 <!-- Insert -->
 	<!-- 영화 생성 -->

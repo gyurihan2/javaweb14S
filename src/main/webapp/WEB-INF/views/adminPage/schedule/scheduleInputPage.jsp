@@ -23,6 +23,7 @@
 		
 		let url = "${ctp}/theater/theaterListPage?startDate="+startDate+"&endDate="+endDate;
 		window.open(url,"theater_win","width=800,height=300");
+		
 	}
 	
 	// 영화 조회
@@ -112,7 +113,8 @@
 		}
 		
 		
-		myform.submit();
+		let i = myform.submit();
+		console.log(i);
 	}
 	
 	

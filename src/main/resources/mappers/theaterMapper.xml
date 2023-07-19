@@ -4,7 +4,7 @@
 <!-- Select -->
 	<!-- 상영관 전체 리스트 -->
 	<select id="getTheaterList" resultType="theaterVO">
-		select a.*, b.name as themaName, b.price as themaPrice from theater a, thema b where a.themaIdx = b.idx;
+		select a.*, b.name as themaName, b.price as themaPrice from theater a, thema b where a.themaIdx = b.idx order by idx ;
 	</select>
 	
 	<!-- 상영관 상세 정보 -->
@@ -25,6 +25,11 @@
 	<select id="getTheaterDateList" resultType="theaterVO">
 		select *, (select name from thema where idx=a.themaidx) as themaName from theater as a where idx not in 
 		(select theaterIdx from schedule where playDate between #{startDate} and #{endDate} group by theaterIdx);
+	</select>
+	
+	<!-- 메인 페이지에 표시할 테마 -->
+	<select id="getThemaDisplayList" resultType="themaVO">
+		select * from thema where display = 'YES';
 	</select>
 	
 	

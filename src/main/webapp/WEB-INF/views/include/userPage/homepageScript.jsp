@@ -97,36 +97,3 @@
     float: right;
 }
 </style>
-<script>
-'use strict';
-let ctp ="/javaweb14S/theater"
-
-function changeImgHall(hall){
-   document.getElementById('hallImgSrc').src = ctp+"/"+hall.id+".png";
-}
-
-let movieHallCnt=0;
-let movieHall=['imax.png','4dx.png','screenx.png','primium.png'];
-let statusTime;
-
-function moviehall(id){
-    id.src= ctp+"/"+movieHall[movieHallCnt++];
-    if(movieHallCnt == movieHall.length) movieHallCnt=0;
-}
-
-function movieHallAutoStart(){
-    moviehall(document.getElementById("hallImgSrc"));
-    statusTime = setTimeout(movieHallAutoStart,3000);
-}
-function movieHallAutoStop(){
-    clearTimeout(statusTime);
-}
-
-window.onload = function(){
-    movieHallAutoStart();
-    hall_lists.addEventListener('mouseout',()=>{
-        movieHallAutoStart();
-    })
-   
-}
-</script>

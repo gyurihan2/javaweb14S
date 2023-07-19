@@ -70,7 +70,7 @@ public class MovieContoller {
 		
 		return movieService.setMovieMainImageChage(idx,posterSrc);
 	}
-	// 등록된 영화 메인 포스터 변경
+	// 등록된 영화 정보 업데이트
 	@RequestMapping(value = "movieUpdate", method = RequestMethod.POST)
 	@ResponseBody
 	public int movieUpdatePost(

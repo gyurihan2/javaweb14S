@@ -58,6 +58,9 @@ public interface TheaterService {
 	// 선택한 기간에 사용 가능한 상영관 리스트
 	public ArrayList<TheaterVO> getTheaterDateList(String startDate, String endDate);
 
+	// 메인 화면에 display Yes List 
+	public ArrayList<TheaterVO> getThemaDisplayList();
+
 	
 
 

@@ -114,6 +114,7 @@
 			},
 			error:function(){
 				alert("전송 실패");
+				return false;
 			}
 		});
 	
@@ -128,18 +129,20 @@
 			},
 			success:function(res){
 				movicCastingStr="";
+				console.log(res);
 				for(let i=0; i<res.cast.length; i++){
 					movicCastingStr += res.cast[i].original_name;
 					if(res.cast[i].character != "") movicCastingStr += "("+res.cast[i].character+")/";
 					else movicCastingStr += "/"
-					
 					if(i == 9) break;
 				}
 				movicCastingStr = movicCastingStr.substring(0,movicCastingStr.length-1);
+				
 				// 영어 -> 한글 
 				$.ajax({
 					type:"post",
 					url:"https://translation.googleapis.com/language/translate/v2",
+					async:false,
 					data:{
 						key:googleApiKey,
 						q:movicCastingStr,
@@ -148,6 +151,7 @@
 					success:function(res){
 						movicCastingStr = res.data.translations[0].translatedText;
 						movieData.actor=movicCastingStr;
+						
 					},
 					error:function(a){
 						alert("전송실패:");
@@ -207,6 +211,7 @@
 				}
 			}).then(()=>{
 				let json = JSON.stringify(movieData)
+				console.log(json);
 				$.ajax({
 					type:"post",
 					url:"${ctp}/movie/movieUpdate",

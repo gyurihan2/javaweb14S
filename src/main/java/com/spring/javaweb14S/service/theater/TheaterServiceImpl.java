@@ -213,6 +213,12 @@ public class TheaterServiceImpl implements TheaterService {
 		
 		return theaterDAO.getTheaterDateList(startDate, endDate);
 	}
+
+	// 메인 홈페이지에 표시 할 테마
+	@Override
+	public ArrayList<TheaterVO> getThemaDisplayList() {
+		return theaterDAO.getThemaDisplayList();
+	}
 	
 	
 	

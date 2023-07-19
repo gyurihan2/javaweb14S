@@ -27,4 +27,7 @@ public interface MovieService {
 	// 상영 시작일 기준 상영 가능한 영화 리스트
 	public ArrayList<MovieVO> getMovieDateList(String startDate);
 
+	// 메인 화면에 표시할 영화 리스트
+	public ArrayList<MovieVO> getMovieTodaySchedule();
+
 }

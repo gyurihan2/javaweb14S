@@ -19,3 +19,5 @@ drop table thema;
 desc thema;
 
 update thema set images=concat(images,'con') where idx=9;
+
+select * from thema where display = 'YES';

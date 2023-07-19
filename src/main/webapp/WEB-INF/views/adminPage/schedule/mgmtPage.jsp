@@ -26,41 +26,40 @@
 		'use strict';
 		let calendar;
 		let scheduleArr=[];
-		if(${!empty jsonData}) scheduleArr = Object.values(${jsonData});
 		let colorList=["#A0D468","#D9D951","#87CEFA","#E6E6FA","#FA8072","#F0E68C","#E0FFFF","#E6E6FA","#696969","#FFEBCD"];
 		let data=[];
+		if(${!empty jsonData}) scheduleArr=${jsonData};
 		
 		if(scheduleArr.length > 0){
 			let colorCnt=0;
 			scheduleArr.forEach(function(schedule) {
 				let tempDate = schedule.groupId.split("_")
 				let endDate = new Date(tempDate[3]);
+				
+				// 시간 설정을 하지않아 00:00시에 종료 -> 일정 + 1일 하여 화면에 표시 
 				endDate.setDate(endDate.getDate()+1);
 				
 		    data.push({
-		    	title:schedule.theaterName+":"+schedule.movieTitle,
+		    	title:schedule.theaterName+":"+schedule.movieTitle+"("+tempDate[2]+"~"+tempDate[3]+")",
 		    	groupId:schedule.groupId,
 		    	start:tempDate[2],
 		    	end:endDate.getFullYear()+"-"+("0"+(endDate.getMonth()+1)).slice(-2)+"-"+("0"+endDate.getDate()).slice(-2),
 		    	backgroundColor: colorList[colorCnt++]
 		    })
 			});
-		}
-		console.log(data);
+		} 
+		
+	
 		
 		// 이전/다음달 이동을 위한 날짜
 		let date= new Date();
-		
-		// String -> json
-		function ParseScheduleData(){
-				
-		}
 		
 		// 일정 추가
 		function scheduleAdd(startDate,endDate){
 			let url="${ctp}/schedule/scheduleInputPage?startDate="+startDate+"&endDate="+endDate;
 			window.open(url,"n_win","width=800,height=600");
 		}
+	
 		
 		document.addEventListener('DOMContentLoaded', function() {
 		    var calendarEl = document.getElementById('calendar');
@@ -70,53 +69,14 @@
 		    			text:'이전달',
 		    			icon:'chevron-left',
 		    			click:function(){
-								date.setMonth(date.getMonth()-1);    				
-		    				let year = date.getFullYear();
-		    				let month = ("0"+(date.getMonth()+1)).slice(-2);
-		    				
-		    				$.ajax({
-		    					type:"post",
-		    					url:"${ctp}/schedule/scheduleGetList",
-		    					data:{
-		    						requestDate:year+"-"+month
-		    					},
-		    					success:function(){
-		    						alert("전송 완료");
-		    					},
-		    					error:function(){
-		    						alert("전송 실패");
-		    					}
-		    				});
-		    				
 		    				calendar.prev();
-		    				
-		    				
 		    			}
 		    		},
 		    		nextButton:{
 		    			text:'다음달',
 		    			icon:'chevron-right',
 		    			click:function(){
-		    				date.setMonth(date.getMonth()-1); 
-		    				let year = date.getFullYear();
-		    				let month = ("0"+(date.getMonth()+1)).slice(-2);
-		    				
-		    				$.ajax({
-		    					type:"post",
-		    					url:"${ctp}/schedule/scheduleGetList",
-		    					data:{
-		    						requestDate:year+"-"+month
-		    					},
-		    					success:function(){
-		    						alert("전송 완료");
-		    					},
-		    					error:function(){
-		    						alert("전송 실패");
-		    					}
-		    				});
-		    				
 		    				calendar.next();
-		    				
 		    			}
 		    		}
 		   
@@ -135,16 +95,7 @@
 	            center: 'prevButton today nextButton',
 	            right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
           },
-          eventAdd: function(obj) { // 이벤트가 추가되면 발생하는 이벤트
-              console.log(obj);
-          },
-          eventChange: function(obj) { // 이벤트가 수정되면 발생하는 이벤트
-            console.log(obj);
-          },
-          eventRemove: function(obj){ // 이벤트가 삭제되면 발생하는 이벤트
-            console.log(obj);
-          },
-          select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
+          /* select: function(arg) { // 캘린더에서 드래그로 이벤트를 생성할 수 있다.
               var title = prompt('Event Title:');
               if (title) {
                 calendar.addEvent({
@@ -155,21 +106,31 @@
                 })
               }
               calendar.unselect()
-          },
+          }, */
 					events: data,
-					eventClick: function(info) { // 일정 이벤트 클릭 이벤트 callback
-					  	console.log(info);
-					  	//alert('Event info : ' + JSON.stringify(info.event));
-					  	//info.event.remove();
-					    	//var moment = $('#calendar').calendar('getDate');
-					    	
-
-					  	// url 커스텀 이동
-					    //info.jsEvent.preventDefault(); // 클릭이벤트 후처리 방지
-					
-					  	if (info.event.url) {
-					    	window.open("https://fullcalendar.io/docs/eventClick");
-						}
+					eventClick: function(info) { // 일정 이벤트 클릭 이벤트 삭제 처리
+							let groupId = info.event._def.groupId;
+							let title = info.event._def.title;
+							
+							if(!confirm(title+"\n일정을 삭제하시겠습니까?")) return false;
+							
+							
+					  	$.ajax({
+					  		type:"post",
+					  		url:"${ctp}/schedule/scheduleDelete",
+					  		data:{groupId:groupId},
+					  		success:function(res){
+					  			if(res == 0) alert("일정 삭제 실패");
+					  			else{
+						  			alert("일정 삭제 완료");
+						  			info.event.remove();
+					  			}
+					  		},
+					  		error:function(){
+					  			alert("전송 실패");
+					  		}
+					  	});
+					  	
 					}, 
 					navLinkDayClick: function(date,jsEvent){ //일정 일 클릭시 
 						let selectDate = date.getFullYear()+"-"+("0"+(date.getMonth()+1)).slice(-2)+"-"+("0"+date.getDate()).slice(-2);
