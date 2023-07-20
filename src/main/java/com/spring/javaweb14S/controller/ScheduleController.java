@@ -40,9 +40,9 @@ public class ScheduleController {
 		else return "redirect:/scheduleMsg/sheduleInputOk";
 	}
 	
-	// 일자 클릭시 일정 상세 보기
+	// 일자 클릭시 일정 상세 보기(일정 관리 페이지)
 	@RequestMapping(value = "scheduleSelectDate", method = RequestMethod.GET)
-	public String scheduleSelectDatetGet(Model model,
+	public String scheduleSelectDateGet(Model model,
 			@RequestParam(value = "selectDate", defaultValue = "2022-13-13", required = false) String selectDate){
 		
 		String jsonData = scheduleService.getScheduleDateListJson(selectDate);
@@ -52,6 +52,18 @@ public class ScheduleController {
 			model.addAttribute("jsonData", jsonData);
 			return "adminPage/schedule/scheduleSelectDate";
 		}
+	}
+	// 일자 클릭시 일정 상세보기(예약 페이지)
+	@RequestMapping(value = "scheduleSelectDate", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
+	@ResponseBody
+	public String scheduleSelectDatePost(
+			@RequestParam(value = "selectDate", defaultValue = "2022-13-13", required = false) String selectDate){
+		
+		String jsonData = scheduleService.getScheduleDateListJson(selectDate);
+		
+		if(jsonData == null) return null;
+		else return jsonData;
+		
 	}
 	
 	@RequestMapping(value = "scheduleDelete", method = RequestMethod.POST)

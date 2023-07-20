@@ -10,8 +10,8 @@
   <script>
   	'use strict';
   	let scheduleArr=[];
-		if(${!empty jsonData}) scheduleArr = Object.values(${jsonData});
-		
+		if(${!empty jsonData}) scheduleArr = ${jsonData};
+		console.log(scheduleArr);
 		let today = new Date();
 		let selectDate= new Date("${param.selectDate}");
 		

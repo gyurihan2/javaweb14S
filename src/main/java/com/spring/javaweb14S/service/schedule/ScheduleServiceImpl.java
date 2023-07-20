@@ -105,43 +105,55 @@ public class ScheduleServiceImpl implements ScheduleService{
 		JSONArray jsonArray = new JSONArray();
 		JSONObject jsonObject = new JSONObject();
 		
-		ArrayList<String> playTimeList = new ArrayList<String>();
-		ArrayList<String> endTimeList = new ArrayList<String>();
-		ArrayList<String> leftSeatList = new ArrayList<String>();
+		ArrayList<Integer> screenOrder = new ArrayList<>();
+		ArrayList<String> playTimeList = new ArrayList<>();
+		ArrayList<String> endTimeList = new ArrayList<>();
+		ArrayList<String> leftSeatList = new ArrayList<>();
 		
 		String groupId = vos.get(0).getGroupId();
 		jsonObject.put("theaterName",vos.get(0).getTheaterName());
+		jsonObject.put("theaterWork",vos.get(0).getTheaterWork());
+		jsonObject.put("theaterIdx",vos.get(0).getTheaterIdx());
 		jsonObject.put("movieTitle",vos.get(0).getMovieTitle());
+		jsonObject.put("movieIdx",vos.get(0).getMovieIdx());
 		jsonObject.put("leftSeat",vos.get(0).getLeftSeat());
 		jsonObject.put("main_poster",vos.get(0).getMain_poster());
+		jsonObject.put("themaName",vos.get(0).getThemaName());
 		
 		
 		for(ScheduleVO vo : vos) {
 			if(groupId.equals(vo.getGroupId())) {
+				screenOrder.add(vo.getScreenOrder());
 				playTimeList.add(vo.getPlayTime());
 				endTimeList.add(vo.getEndTime());
 				leftSeatList.add(vo.getLeftSeat());
 			}
 			else {
+				jsonObject.put("screenOrder",screenOrder);
 				jsonObject.put("playTime",playTimeList);
 				jsonObject.put("endTime",endTimeList);
 				jsonObject.put("leftSeat",leftSeatList);
 				jsonArray.add(jsonObject);
 				
 				// 초기화
-				playTimeList=new ArrayList<String>();
-				endTimeList=new ArrayList<String>();
-				leftSeatList=new ArrayList<String>();
+				screenOrder=new ArrayList<>();
+				playTimeList=new ArrayList<>();
+				endTimeList=new ArrayList<>();
+				leftSeatList=new ArrayList<>();
 				
 				groupId = vo.getGroupId();
 				jsonObject = new JSONObject();
 				jsonObject.put("theaterName",vo.getTheaterName());
+				jsonObject.put("theaterWork",vo.getTheaterWork());
+				jsonObject.put("theaterIdx",vo.getTheaterIdx());
 				jsonObject.put("movieTitle",vo.getMovieTitle());
+				jsonObject.put("movieIdx",vo.getMovieIdx());
 				jsonObject.put("leftSeat",vo.getLeftSeat());
 				jsonObject.put("main_poster",vo.getMain_poster());
+				jsonObject.put("themaName", vo.getThemaName());
 			}
 		}
-		
+		jsonObject.put("screenOrder",screenOrder);
 		jsonObject.put("playTime",playTimeList);
 		jsonObject.put("endTime",endTimeList);
 		jsonObject.put("leftSeat",leftSeatList);

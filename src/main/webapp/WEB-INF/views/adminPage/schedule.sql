@@ -27,8 +27,15 @@ select a.*,(select name from theater where idx=a.theaterIdx) as theaterName, (se
 select a.*,(select name from theater where idx=a.theaterIdx) as theaterName, (select title from movie where idx=a.movieIdx) as movieTitle from schedule as a   group by (groupId) order by playDate, a.theaterIdx ;
 
 /* 해당 일 선택시 해당일 스케줄 리스트*/
-select a.*,(select name from theater where idx=a.theaterIdx) as theaterName, (select title from movie where idx=a.movieIdx) as movieTitle, (select main_poster from movie where idx=a.movieIdx) as main_poster from schedule as a where playDate ='2023-07-18' order by theaterName, screenOrder;
+select a.*,
+(select name from theater where idx=a.theaterIdx) as theaterName ,
+(select work from theater where idx=a.theaterIdx) as theaterWork ,
+(select name from thema as b where idx=(select themaIdx from theater where idx=a.theaterIdx)) as test,
+(select title from movie where idx=a.movieIdx) as movieTitle, 
+(select main_poster from movie where idx=a.movieIdx) as main_poster 
+from schedule as a where playDate ='2023-07-20' order by theaterName, screenOrder;
 
-
+select * from theater;
+/**/
 select * from movie as a ,(select movieIdx, theaterIdx from schedule where playDate ='2023-07-19' group by movieidx) as b where a.idx = b.movieIdx order by b.theaterIdx;
 
