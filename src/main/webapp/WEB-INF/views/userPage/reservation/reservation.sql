@@ -15,3 +15,6 @@ FOREIGN KEY(memberMid) REFERENCES member(mid) ON UPDATE CASCADE ON DELETE RESTRI
 );
 
 desc reservation;
+
+
+select seatInfo from reservation where groupId='aa';

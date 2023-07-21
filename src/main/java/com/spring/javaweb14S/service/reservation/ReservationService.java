@@ -1,7 +1,9 @@
 package com.spring.javaweb14S.service.reservation;
 
+import com.spring.javaweb14S.vo.ReservationVO;
+
 public interface ReservationService {
 
-	public void reservationGetSeat(int theaterIdx, int movieIdx, int screenOrder, String playDate);
+	public String reservationGetSeat(ReservationVO vo);
 
 }

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.javaweb14S.service.reservation.ReservationService;
+import com.spring.javaweb14S.vo.ReservationVO;
 
 @Controller
 @RequestMapping("/reservation")
@@ -56,18 +56,10 @@ public class ReservationController {
 	}
 	
 	// 예약 정보를 통한 좌석 확인
-	@RequestMapping(value = "/reservationGetSeat", method = RequestMethod.POST)
+	@RequestMapping(value = "/reservationGetSeat", method = RequestMethod.POST, produces = "application/text; charset=utf-8")
 	@ResponseBody
-	public String reservationGetSeatPost(
-			@RequestParam(name = "theaterIdx",defaultValue = "-1", required = false) int theaterIdx,
-			@RequestParam(name = "movieIdx",defaultValue = "-1", required = false) int movieIdx,
-			@RequestParam(name = "screenOrder",defaultValue = "-1", required = false) int screenOrder,
-			@RequestParam(name = "playDate",defaultValue = "-1", required = false) String playDate) {
+	public String reservationGetSeatPost(ReservationVO vo) {
 		
-		if(theaterIdx == -1 || movieIdx == -1 || screenOrder == -1 || playDate == "-1" ) return "";
-		
-		reservationService.reservationGetSeat(theaterIdx,movieIdx,screenOrder,playDate);
-		
-		return "";
+		return reservationService.reservationGetSeat(vo);
 	}
 }

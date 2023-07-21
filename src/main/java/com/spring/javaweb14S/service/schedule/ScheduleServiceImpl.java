@@ -106,6 +106,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		JSONObject jsonObject = new JSONObject();
 		
 		ArrayList<Integer> screenOrder = new ArrayList<>();
+		ArrayList<Integer> scheduleIdxList = new ArrayList<>();
 		ArrayList<String> playTimeList = new ArrayList<>();
 		ArrayList<String> endTimeList = new ArrayList<>();
 		ArrayList<String> leftSeatList = new ArrayList<>();
@@ -123,12 +124,14 @@ public class ScheduleServiceImpl implements ScheduleService{
 		
 		for(ScheduleVO vo : vos) {
 			if(groupId.equals(vo.getGroupId())) {
+				scheduleIdxList.add(vo.getIdx());
 				screenOrder.add(vo.getScreenOrder());
 				playTimeList.add(vo.getPlayTime());
 				endTimeList.add(vo.getEndTime());
 				leftSeatList.add(vo.getLeftSeat());
 			}
 			else {
+				jsonObject.put("scheduleIdxList",scheduleIdxList);
 				jsonObject.put("screenOrder",screenOrder);
 				jsonObject.put("playTime",playTimeList);
 				jsonObject.put("endTime",endTimeList);
@@ -136,6 +139,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 				jsonArray.add(jsonObject);
 				
 				// 초기화
+				scheduleIdxList=new ArrayList<>();
 				screenOrder=new ArrayList<>();
 				playTimeList=new ArrayList<>();
 				endTimeList=new ArrayList<>();
@@ -153,6 +157,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 				jsonObject.put("themaName", vo.getThemaName());
 			}
 		}
+		jsonObject.put("scheduleIdxList",scheduleIdxList);
 		jsonObject.put("screenOrder",screenOrder);
 		jsonObject.put("playTime",playTimeList);
 		jsonObject.put("endTime",endTimeList);

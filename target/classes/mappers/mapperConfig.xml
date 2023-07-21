@@ -7,5 +7,6 @@
  		<typeAlias alias="themaVO" type="com.spring.javaweb14S.vo.ThemaVO"/>
  		<typeAlias alias="movieVO" type="com.spring.javaweb14S.vo.MovieVO"/>
  		<typeAlias alias="scheduleVO" type="com.spring.javaweb14S.vo.ScheduleVO"/>
+ 		<typeAlias alias="reservationVO" type="com.spring.javaweb14S.vo.ReservationVO"/>
  	</typeAliases>
 </configuration>
