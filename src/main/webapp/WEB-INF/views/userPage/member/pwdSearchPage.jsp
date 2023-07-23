@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>비밀번호 찾기</title>
 <script>
-
+	'use strict';
 	function chkEmail(email){
 	    const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 			
@@ -41,8 +41,7 @@
 			$("#email").focus();
 			return false;
 		}
-		
-		let startTime=10;
+		openLoding();
 		$.ajax({
 			url:"${ctp}/member/authNumSend",
 			type:"POST",
@@ -52,7 +51,7 @@
 				email:email
 			},
 			success:function(res){
-				
+				closeLoading();
 				if(res == "0") alert("유저 정보가 없습니다.");
 				else if(res == "-1") alert("이메일 전송 실패");
 				else if(res == "1"){
@@ -64,7 +63,7 @@
 					$("#email").attr("readonly",true);
 					alert("이메일 발송 되었습니다.\n 인증번호를 확인하세요");
 					
-					$("#authForm").show();
+					$("#authForm").slideDown(500);
 				}
 			},
 			error:function(){
@@ -78,12 +77,16 @@
 	// 참고: https://mongwani.tistory.com/15418897
 	let timer;
 	let startTime;
+	
 	function countDown(){
-		startTime=300;
+		startTime=20;
 		function shwoRemaining(){
 			
 			if(startTime == 0){
 				clearInterval(timer);
+				
+				$("#authForm").slideUp(500);
+				$("#authForm").val("");
 				return;
 			}
 			
@@ -112,12 +115,35 @@
 			alert("인증번호 만료 시간이 지났습니다.\n인증번호를 다시 받으세요");
 			return false;
 		}
-		
 		myform.submit();
-		
 	}
-	
 
+	
+	//https://doitdoik.tistory.com/36
+	function openLoding(){
+		let mask ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+		
+		let loading ='<div class="text-center" id="loadingImg" style="position:absolute; top: calc(50% - (200px / 2)); width:100%; z-index:99999999;">';
+		loading +='<div class="spinner-border" role="status">';
+		loading +='<span class="sr-only">Loading...</span>';
+		loading +='</div>';
+		loading +='</div>';
+		
+		$("body").append(mask).append(loading);
+		
+		$('#mask').css({
+            'width' : "100%",
+            'height': "100%",
+            'opacity' :'0.3'
+    });
+		
+		$('#mask').show();
+		$('#loadingImg').show();
+	}
+	function closeLoading() {
+	    $('#mask, #loadingImg').hide();
+	    $('#mask, #loadingImg').empty(); 
+	}
 </script>
 </head>
 <body>

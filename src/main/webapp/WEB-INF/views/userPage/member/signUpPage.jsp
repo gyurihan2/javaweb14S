@@ -95,15 +95,13 @@
 				myform.mid.focus();
 				return false;
 			}
-			/*
 			else if(mid.value.indexOf("admin")==0){
 				alert("사용할수없는 아이디 입니다.");
 				myform.mid.focus();
 				return false;
 			}
-			*/
 			else if(!regMid(mid)){
-				alert(mid.value+"아이디 입력 형식을 확인하세요!");
+				alert("아이디는 영어 대/소문자, 숫자, '_' 입력 가능하며\n 5~19문자 사용 가능합니다.");
 				myform.mid.focus();
 				return false;
 			}
@@ -126,7 +124,7 @@
 				return false;
 			}
 			else if(!regNickName(nickName)){
-				alert(nickName.value+"닉네임 입력 형식을 확인하세요!");
+				alert("닉네임은 영어 대/소문자, 숫자, '_' 입력 가능하며\n 3~19문자 사용 가능합니다.");
 				myform.nickName.focus();
 				return false;
 			}

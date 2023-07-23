@@ -48,6 +48,7 @@
 	let dataIndex;
 	let themaPrice;
 	let totalPeaple=0;
+	let totSelected=0;
 	
 	function selectDate(obj,date,index){
 		console.log(date.substring(0,10));
@@ -70,7 +71,7 @@
 					console.log(scheduleArr);
 					
 					for(let i=0; i<scheduleArr.length;i++){
-						temp+='<div class="divHover selectMovieList" onclick="selectMovie(this,'+i+')">';
+						temp+='<div class="divHover selectMovieList mr-1" onclick="selectMovie(this,'+i+')">';
 						temp+= "("+scheduleArr[i].themaName+":"+scheduleArr[i].theaterName+")"+scheduleArr[i].movieTitle;
 						temp+="</div>";
 					}
@@ -162,8 +163,16 @@
 		$("#scheduleIdx").val(scheduleArr[arrIndex].scheduleIdxList[screenOrder]);
 	}
 	
-	// 예약 다음 버튼
-	function nextReser(){
+	// 좌석 선택 
+	function seatSelect(){
+		if("${sMid}" == ""){
+			alert("로그인이 필요합니다.");
+			return false;
+		}
+		else if($("#scheduleIdx").val() ==""){
+			alert("일정을 설정하세요");
+			return false;
+		}
 		let theaterIdx = $("#theaterIdx").val();
 		let movieIdx = $("#movieIdx").val();
 		let scheduleIdx = $("#scheduleIdx").val();
@@ -216,7 +225,7 @@
 	}
 	
 	// 예약 이전 버튼
-	function prevReser(){
+	function movieSelect(){
 		
 		//초기화
 		$("#price").html("0");
@@ -245,15 +254,18 @@
 			su = parseInt($("#nomalResult").html());
 		}
 		
+		
 		if(flag == -1){
 			changeSu--;
-			if(changeSu+su < totalPeaple){
+			if(totSelected > changeSu+su){
 				alert("선택한 좌석이 예매 인원 보다 많습니다.");
-				changeSu++;
 				return false;
 			}
 		}
 		else changeSu++;
+		
+		totalPeaple = changeSu+su;
+		
 		
 		if(changeSu > 10) {
 			alert("최대 인원은 10명까지 가능 합니다.");
@@ -275,14 +287,17 @@
 			totprice += changeSu*(themaPrice-3000)
 			totprice += su*themaPrice;
 		}
-		
-		totalPeaple = changeSu+su;
+
 		$("#price").html(totprice);
 	}
 	
 	// 좌석 선택
 	function selectTest(obj,row,col){
-		let totSelected = $('.selected').length
+		totSelected = $('.selected').length
+		
+		$('.selected').each(function(index,item){
+			console.log(item.id);
+		})
 		
 		if(totalPeaple == 0){
 			alert("인원을 먼저 선택 하세요");
@@ -293,13 +308,11 @@
 			alert("등록 가능한 인원을 초과했습니다.");
 			return false;
 		}
-		else if(obj.className.indexOf("selected") == -1)totSelected--;
-		else totSelected++;
+		else if(obj.className.indexOf("selected") == -1)totSelected++;
+		else totSelected--;
 		
 		obj.classList.toggle('selected');
 		
-		console.log(obj.id);
-		console.log(obj.className);	
 	}
 	
 </script>  
@@ -316,13 +329,13 @@
   		</c:forEach>
   	</div>
   	<!-- 영화 선택 -->
-  	<div class="d-flex flex-column" >
-  		<div class=" ml-1" style="width: 400px;  background-color: #333333;"><font color="#E2E2E2">영화</font></div>
-  		<div class="ml-2" id="movieSelectContent" style="text-align: left; display: none;" ></div>
+  	<div class="d-flex flex-column " style="width: 400px;">
+  		<div class=" ml-1" style="background-color: #333333;"><font color="#E2E2E2">영화</font></div>
+  		<div id="movieSelectContent" style="text-align: left; display: none;width: 400px;" ></div>
   	</div>
   	<!-- 영화 회차 선택 -->
-  	<div class="d-flex flex-column" >
-  		<div class=" ml-1" style="width: 400px;  background-color: #333333"><font color="#E2E2E2">시간</font></div>
+  	<div class="d-flex flex-column" style="width: 400px;">
+  		<div class=" ml-1" style="  background-color: #333333"><font color="#E2E2E2">시간</font></div>
   		<div id="screenOrderContent" style=" display: none"></div>
   	</div>
   </div>
@@ -350,7 +363,7 @@
 	<div class="container-xl text-center d-flex justify-content-start p-0" style="width:1010px; height: 100%">
 		<div class="d-flex flex-column " style="width: 140px;  height:100%;">
   		<div class="mt-4" id="prevButton" style="display: none;">
-				<button class="p-0 ml-2 text-center" type="button" style="border: 1px solid #E2E2E2;" onclick="prevReser()">
+				<button class="p-0 ml-2 text-center" type="button" style="border: 1px solid #E2E2E2;" onclick="movieSelect()">
 					<span class="material-symbols-outlined" style="transform: rotate( 180deg );">arrow_forward_ios</span>
 				</button>
   		</div>
@@ -368,7 +381,7 @@
   	</div>
 		<div class="d-flex flex-column " style="width: 140px;  height:100%;">
   		<div class="mt-4" id="nextButton">
-				<button class="p-0 ml-2 text-center" type="button" style="border: 1px solid #E2E2E2;" onclick="nextReser()">
+				<button class="p-0 ml-2 text-center" type="button" style="border: 1px solid #E2E2E2;" onclick="seatSelect()">
 					<span class="material-symbols-outlined">arrow_forward_ios</span>
 				</button>
   		</div>

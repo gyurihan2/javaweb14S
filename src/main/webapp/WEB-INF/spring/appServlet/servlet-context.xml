@@ -86,6 +86,8 @@
 			<exclude-mapping path="/member/pwdSearchPage"/>
 			<exclude-mapping path="/member/authNumSend"/>
 			<exclude-mapping path="/member/pwdChangePage"/>
+			<exclude-mapping path="/reservation/reservationMainPage"/>
+			<exclude-mapping path="/schedule/scheduleSelectDate"/>
 			<beans:ref bean="LoginInterceptor"/>
 		</interceptor>
 		
@@ -95,6 +97,7 @@
 			<mapping path="/theater/**"/>
 			<mapping path="/movie/**"/>
 			<mapping path="/schedule/**"/>
+			<exclude-mapping path="/schedule/scheduleSelectDate"/>
 			<beans:ref bean="AdminInterceptor"/>
 		</interceptor>	
 	</interceptors>

@@ -77,10 +77,10 @@
  			});
  		}
  		
+		let preEmail = "${vo.email}";
  		// 이메일 변경 버튼
  		function emailChange(){
  			
- 			let preEmail = "${vo.email}";
  			let email = $("#email").val();
  			
  			// 유효성 검사 필요
@@ -90,14 +90,20 @@
  			}
  			else if(email.trim() == ""){
  				alert("변경할 이메일을 입력하세요");
+ 				return false;
  			}
  			
+ 			openLoding();
  			$.ajax({
  				type:"post",
  				url:"${ctp}/member/myPageAuthNumSend",
  				data:{email:email},
  				success:function(res){
- 					if(res == "1") alert("인증번호 발송 되었습니다.\n인증번호를 입력해주세요");
+ 					closeLoading();
+ 					if(res == "1"){
+ 						alert("인증번호 발송 되었습니다.\n인증번호를 입력해주세요");
+ 						$("#authNumContent").slideDown(500);
+ 					}
  					else alert("인증번호 발송 실패.");
  				},
  				error:function(){
@@ -120,6 +126,7 @@
  				},
  				success:function(res){
  					if(res=="1"){
+ 						preEmail=email;
  						alert("이메일이 변경 되었습니다.");
  					}
  					else{
@@ -130,6 +137,32 @@
  					alert("전송 실패");
  				}
  			});
+ 		}
+ 		
+ 		//https://doitdoik.tistory.com/36
+ 		function openLoding(){
+ 			let mask ="<div id='mask' style='position:absolute; z-index:9000; background-color:#000000; display:none; left:0; top:0;'></div>";
+ 			
+ 			let loading ='<div class="text-center" id="loadingImg" style="position:absolute; top: calc(50% - (200px / 2)); width:100%; z-index:99999999;">';
+ 			loading +='<div class="spinner-border" role="status">';
+ 			loading +='<span class="sr-only">Loading...</span>';
+ 			loading +='</div>';
+ 			loading +='</div>';
+ 			
+ 			$("body").append(mask).append(loading);
+ 			
+ 			$('#mask').css({
+ 	            'width' : "100%",
+ 	            'height': "100%",
+ 	            'opacity' :'0.3'
+ 	    });
+ 			
+ 			$('#mask').show();
+ 			$('#loadingImg').show();
+ 		}
+ 		function closeLoading() {
+ 		    $('#mask, #loadingImg').hide();
+ 		    $('#mask, #loadingImg').empty(); 
  		}
  		
  		
@@ -254,7 +287,7 @@
 					<div class="input-group-append">
 		        <button type="button" class="btn btn-outline-info" onclick="emailChange()">변경하기</button>
 		      </div>
-		      <div class="input-group">
+		      <div class="input-group" id="authNumContent" style="display: none">
 		      	<input type="password" class="form-control" id="authNum" placeholder="인증번호를 입력 하세요"/>
 						<div class="input-group-append">
 		        <button type="button" class="btn btn-outline-success" onclick="authNumCheck()">인증하기</button>

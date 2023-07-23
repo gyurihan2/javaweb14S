@@ -193,7 +193,6 @@ public class MemberController {
 	//비밀번호 찾기 폼
 	@RequestMapping(value = "/pwdSearchPage", method = RequestMethod.GET)
 	public String pwdSearchPageGet(HttpSession session ) {
-		session.removeAttribute("sImsiAuth");
 		return "userPage/member/pwdSearchPage";
 	}
 	// 인증번호 발송
@@ -223,9 +222,8 @@ public class MemberController {
 			@RequestParam(name ="email", defaultValue = "", required = false ) String email,
 			@RequestParam(name ="imsiAuth", defaultValue = "", required = false ) String imsiAuth) {
 		
-		// session에 있는 임시비밀번호 저장후 session 삭제
+		// session에 있는 임시비밀번호 저장
 		String sImsiAuth = (String)session.getAttribute("sImsiAuth");
-		session.removeAttribute("sImsiAuth");
 		
 		if(sImsiAuth == null) return "redirect:/memberMsg/wrongAccess";
 		else if(sImsiAuth.equals(imsiAuth)) {
@@ -240,6 +238,7 @@ public class MemberController {
 	@RequestMapping(value = "/pwdChangePage",method = RequestMethod.GET) 
 	public String pwcChangePageGet(HttpSession session, Model model, HttpServletRequest request,
 			@RequestParam(name = "mid",defaultValue = "", required = false) String mid) {
+		
 		String sImsiMid = (String)session.getAttribute("sImsiMid");
 		
 		if(sImsiMid !=null && sImsiMid.equals(mid) ) {

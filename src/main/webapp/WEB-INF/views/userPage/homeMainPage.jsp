@@ -76,7 +76,6 @@
 		        else{
 		            movieChart[i].style.display="none";
 		            moviename[i].innerText="";
-		            console.log("aaa");
 		            start++;
 		            
 		        }
@@ -85,8 +84,6 @@
 		
 		function videoPlay(){
 			randomSu = Math.floor(Math.random() * movieArr.length + 1);
-			console.log("---");
-			console.log(movieArr[randomSu-1].videos);
 			if(movieArr[randomSu-1].videos != null){
 				let video = movieArr[randomSu-1].videos.split("/");
 				$("#test").attr("src","https://www.youtube.com/embed/"+video[0]+"?autoplay=1&mute=1&playlist="+video[0]+"&loop=1&modestbranding=1");
