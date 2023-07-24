@@ -20,4 +20,7 @@ public interface ScheduleDAO {
 	// 일정 그룹 아이디 삭제
 	public int setScheduleDeleteGroup(@Param("groupId")String groupId);
 
+	// 예약 그룹아이디를 통한 남은 좌석수 확인
+	public int getReservationListCnt(String string);
+
 }

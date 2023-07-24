@@ -31,7 +31,7 @@
 	</select>
 	
 <!-- Insert -->
-	<!-- 상영관 추가 -->
+	<!-- 일정 추가 -->
 	<insert id="setScheduleInput" parameterType="java.util.List">
 		insert into schedule values
 		<foreach collection="vos" item="vo" separator=",">

@@ -7,6 +7,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+  <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
   <jsp:include page="/WEB-INF/views/include/userPage/reservationSeatScript.jsp"/>
   <title>예약 페이지</title>
   <style>
@@ -199,12 +201,20 @@
 				$(".theaterSeat").html('<div class="screen"></div>');
 				let temp='';
 				let cnt=1;
+				let seatListIndex=0;
+				let seatList=res.seatInfoList;
 				for(let i=0;i<seatRow-1;i++){
 					temp +='<div class="row">';
 					temp += '<span class="mr-1" style="width:27px">'+seatRowArr[i]+'열</span>';
 					for(let j=0;j<20;j++){
 						if(cnt > totalSeat) break;
-						temp += '<div class="seat" id="'+(cnt++)+'" onclick="selectTest(this,'+i+','+j+')">';
+						if(seatList[seatListIndex] == cnt){
+							temp += '<div class="seat occupied" id="'+(cnt++)+'" onclick="selectTest(this,'+i+','+j+')">';
+							seatListIndex++;
+						}
+						else{
+							temp += '<div class="seat" id="'+(cnt++)+'" onclick="selectTest(this,'+i+','+j+')">';
+						}
 						temp += '<font size="1em" style="vertical-align: top;">'+(j+1)+'</font>';
 						temp += '</div>';
 					}
@@ -229,8 +239,8 @@
 		
 		//초기화
 		$("#price").html("0");
-		$("#childResult").html("0");
-		$("#nomalResult").html("0");
+		$("#childCnt").html("0");
+		$("#adultCnt").html("0");
 		totalPeaple=0;
 		
 		$("#theaterSeatContent").fadeOut(500,function(){
@@ -246,12 +256,12 @@
 		let changeSu;
 		let su;
 		if(people == "nomal") {
-			changeSu = parseInt($("#nomalResult").html());
-			su = parseInt($("#childResult").html());
+			changeSu = parseInt($("#adultCnt").html());
+			su = parseInt($("#childCnt").html());
 		}
 		else{
-			changeSu = parseInt($("#childResult").html());
-			su = parseInt($("#nomalResult").html());
+			changeSu = parseInt($("#childCnt").html());
+			su = parseInt($("#adultCnt").html());
 		}
 		
 		
@@ -278,12 +288,12 @@
 		
 		let totprice=0;
 		if(people == "nomal") {
-			$("#nomalResult").html(changeSu);
+			$("#adultCnt").html(changeSu);
 			totprice += changeSu*themaPrice
 			totprice += su*(themaPrice-3000);
 		}
 		else{
-			$("#childResult").html(changeSu);
+			$("#childCnt").html(changeSu);
 			totprice += changeSu*(themaPrice-3000)
 			totprice += su*themaPrice;
 		}
@@ -295,12 +305,12 @@
 	function selectTest(obj,row,col){
 		totSelected = $('.selected').length
 		
-		$('.selected').each(function(index,item){
-			console.log(item.id);
-		})
-		
 		if(totalPeaple == 0){
 			alert("인원을 먼저 선택 하세요");
+			return false;
+		}
+		else if(obj.className.indexOf("occupied") != -1){
+			alert("이미 예약된 좌석 입니다.");
 			return false;
 		}
 		
@@ -312,8 +322,109 @@
 		else totSelected--;
 		
 		obj.classList.toggle('selected');
-		
 	}
+	
+	//예약 하기
+	function reservationButton(){
+
+		let theaterIdx = $("#theaterIdx").val();
+		let movieIdx = $("#movieIdx").val();
+		let scheduleIdx = $("#scheduleIdx").val();
+		let adultCnt = $("#adultCnt").html();
+		let childCnt = $("#childCnt").html();
+
+		if($('.selected').length != (parseInt(adultCnt)+parseInt(childCnt))){
+			alert("선택한 좌석과 인원이 일치하지 않습니다.");
+			return false;
+		}
+		else if($('.selected').length == 0){
+			alert("인원을 선택하세요");
+			return false;
+		}
+
+		let seatInfo="";
+		$('.selected').each(function(index,item){
+			seatInfo += item.id+"/";
+		});
+		seatInfo = seatInfo.substring(0,seatInfo.length-1);
+		
+		$.ajax({
+			type:"post",
+			url:"${ctp}/reservation/reservationOk",
+			data:{
+				memberMid:"${sMid}",
+				theaterIdx:theaterIdx,
+				movieIdx:movieIdx,
+				scheduleIdx:scheduleIdx,
+				adultCnt:adultCnt,
+				childCnt:childCnt,
+				seatInfo:seatInfo,
+				playDate:selectedDate.getFullYear()+"-"+("0"+(selectedDate.getMonth()+1)).slice(-2)+"-"+("0"+selectedDate.getDate()).slice(-2)
+			},
+			error:function(){
+				alert("전송 실패");
+			}
+		}).then(function(res){
+			if(res == "-1"){
+				alert("이미 예매 완료된 좌석 입니다.");
+				location.reload();
+				return false;
+			}
+			else if(res =="-2"){
+				alert("입력값에 오류가 있습니다.");
+				return false;
+			}
+			requestPay(res);
+		});
+	}
+	
+	//결제
+	var IMP = window.IMP;
+  IMP.init("imp88261224");
+ 
+  function requestPay(reservationIdx) {
+    IMP.request_pay(
+      {
+        pg: "html5_inicis.INIpayTest",
+        //pg: "*",
+        pay_method: "*",
+        merchant_uid: "javaweb14S_"+new Date().getTime(),
+        name: "Spring project(영화 예약)",
+        amount: 10,
+        buyer_email: "${memberVO.email}",
+        buyer_name: "${memberVO.name}",
+        buyer_tel: "${memberVO.phone}",
+        buyer_addr: "${memberVO.address}"
+      },
+      function (rsp) {
+        if(rsp.success){
+        	console.log(rsp);
+        	$.ajax({
+        		type:"post",
+        		url:"${ctp}/reservation/reservationConfirm",
+        		success:function(){
+        			alert("결제가 완료 되었습니다.");
+        			location.reload();
+        		}
+        	});
+        }
+        else{
+        	$.ajax({
+        		type:"post",
+        		url:"${ctp}/reservation/reservationCancel",
+        		data:{
+        			idx:reservationIdx,
+        			scheduleIdx:$("#scheduleIdx").val(),
+        			peapleCnt:parseInt($("#adultCnt").html())+parseInt($("#childCnt").html())
+        		},
+        		success:function(res){
+        			alert(res+"결제 취소 했습니다.");
+        		}
+        	});
+        }
+      }
+    );
+  }
 	
 </script>  
 </head>
@@ -389,20 +500,20 @@
   			<div class="d-flex justify-content-end mb-2">
 					<div>성인</div>
 					<input type='button' class="mr-2 ml-2" value='-' onclick='peopleCount(-1,"nomal")' style="width: 24px;"/>
-					<div id='nomalResult' class="mr-2">0</div>
+					<div id='adultCnt' class="mr-2">0</div>
 				  <input type='button' value='+' onclick='peopleCount(1,"nomal")' style="width: 24px;"/>
 				</div>
 				<div class="d-flex justify-content-end mb-2">
 					<div>어린이</div>
 					<input type='button' class="mr-2 ml-2" value='-' onclick='peopleCount(-1,"child")' style="width: 24px;"/>
-					<div id='childResult' class="mr-2">0</div>
+					<div id='childCnt' class="mr-2">0</div>
 				  <input type='button' value='+' onclick='peopleCount(1,"child")' style="width: 24px;"/>
 				</div>
 				<div>
 					<div class="mb-2">총 가격: <span id="price">0</span></div>
 				</div>
 				<div class="d-flex justify-content-end">
-					<button type="button" class="btn btn-info">결제하기</button>
+					<button type="button" class="btn btn-info" onclick="reservationButton()">결제하기</button>
 				</div>
   		</div>
   	</div>
@@ -411,8 +522,6 @@
 <input type="hidden" name="theaterIdx" id="theaterIdx">
 <input type="hidden" name="movieIdx" id="movieIdx">
 <input type="hidden" name="scheduleIdx" id="scheduleIdx">
-<input type="hidden" name="nomalPeople" id="nomalPeople">
-<input type="hidden" name="childPeople" id="childPeople">
 <p><br/></P>
 </body>
 </html>

@@ -14,16 +14,26 @@
 	</select>
 	<!-- 좌석 정보 -->
 	<select id="getSeatInfoList" resultType="String">
-		select * from reservation where groupId = #{groupId}
+		select seatInfo from reservation where groupId = #{groupId}
 	</select>
 		
 <!-- Insert -->
-	
+	<insert id="setReservationInput">
+		insert into reservation values(#{vo.idx},#{vo.groupId},#{vo.scheduleIdx},#{vo.memberMid},#{vo.seatInfo},#{vo.adultCnt},#{vo.childCnt},now());
+	</insert>
 	
 <!-- Update -->
-	
+	<!-- 예약 시 남은 좌석수 업데이트 -->
+	<update id="setLeftSeatSub">
+		update schedule set leftSeat=(leftSeat-#{peapleCnt}) where idx=#{scheduleIdx};
+	</update>
+	<update id="setLeftSeatAdd">
+		update schedule set leftSeat=(leftSeat+#{peapleCnt}) where idx=#{scheduleIdx};
+	</update>
 	
 	
 <!-- Delete -->
-
+	<delete id="setReservationDelete">
+		delete from reservation where idx=#{idx};
+	</delete>
 </mapper>

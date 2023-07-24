@@ -4,14 +4,15 @@ import lombok.Data;
 
 @Data
 public class ReservationVO {
-	private int idx;
-	private String groupId;
+
+	private String idx,groupId;
 	
 	
 	private String memberMid, seatInfo, reserDate;
-	private int seatCnt;
+	private int adultCnt, childCnt;
 	
 	//
 	private int scheduleIdx,theaterIdx;
 	private String movieIdx;
+	private String playDate;
 }

@@ -97,6 +97,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public String getScheduleDateListJson(String selectDate) {
 		ArrayList<ScheduleVO> vos = scheduleDAO.getSchduleDateList(selectDate);
+		System.out.println(vos.toString());
 		
 		if(vos.size()==0) {
 			return null;
@@ -112,12 +113,14 @@ public class ScheduleServiceImpl implements ScheduleService{
 		ArrayList<String> leftSeatList = new ArrayList<>();
 		
 		String groupId = vos.get(0).getGroupId();
+	
 		jsonObject.put("theaterName",vos.get(0).getTheaterName());
 		jsonObject.put("theaterWork",vos.get(0).getTheaterWork());
 		jsonObject.put("theaterIdx",vos.get(0).getTheaterIdx());
 		jsonObject.put("movieTitle",vos.get(0).getMovieTitle());
 		jsonObject.put("movieIdx",vos.get(0).getMovieIdx());
 		jsonObject.put("leftSeat",vos.get(0).getLeftSeat());
+//		jsonObject.put("leftSeat",scheduleDAO.getReservationListCnt(selectDate+"_"+vos.get(0).getIdx()+"_"+vos.get(0).getTheaterIdx()+"_"+vos.get(0).getMovieIdx()));
 		jsonObject.put("main_poster",vos.get(0).getMain_poster());
 		jsonObject.put("themaName",vos.get(0).getThemaName());
 		
