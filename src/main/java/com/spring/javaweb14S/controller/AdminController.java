@@ -61,6 +61,11 @@ public class AdminController {
 		model.addAttribute("jsonData", jsonData);
 		return "adminPage/schedule/mgmtPage";
 	}
-	
+	//회원 관리 페이지
+	@RequestMapping(value = "/client/mgmtPage", method = RequestMethod.GET)
+	public String clientMgmtPage(Model model) {
+		
+		return "adminPage/client/mgmtPage";
+	}
 	
 }

@@ -97,7 +97,7 @@ $(function(){
     <a href="${ctp}/admin/movie/mgmtPage">영화 관리</a>
     <a href="${ctp}/admin/schedule/mgmtPage">영화 일정 관리</a>
   </div>
-  <a href="#clients"><i class="fa fa-fw fa-user"></i> Clients</a>
+  <a href="${ctp}/admin/client/mgmtPage"><i class="fa fa-fw fa-user"></i> Clients</a>
   <button class="dropdown-btn">
   	<i class="fa fa-bar-chart" aria-hidden="true"></i>
   	통계 
