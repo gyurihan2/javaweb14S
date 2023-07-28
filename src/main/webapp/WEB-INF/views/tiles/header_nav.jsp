@@ -121,8 +121,8 @@
 	                </button>
 	                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 	                    <div class="navbar-nav">
-	                        <a class="nav-link" href="#">영화</a>
-	                        <a class="nav-link" href="${ctp}/ReservationPage.res">예매</a>
+	                        <a class="nav-link" href="${ctp}/memberMovie/movieAllList">영화</a>
+	                        <a class="nav-link" href="${ctp}/reservation/reservationMainPage">예매</a>
 	                        <a class="nav-link" href="#">상영관</a>
 	                        <a class="nav-link" href="#">공지사항</a>
 	                    </div>

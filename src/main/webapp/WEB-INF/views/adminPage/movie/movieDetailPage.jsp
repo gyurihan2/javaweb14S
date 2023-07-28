@@ -116,122 +116,123 @@
 				alert("전송 실패");
 				return false;
 			}
-		});
-	
-		let movicCastingStr="";	
-		//영화 크레딧(배우 정보) 요청
-		$.ajax({
-			type:"get",
-			url:"https://api.themoviedb.org/3/movie/"+id+"/credits",
-			data:{
-				api_key:tmdbKey,
-				async:false
-			},
-			success:function(res){
-				movicCastingStr="";
-				console.log(res);
-				for(let i=0; i<res.cast.length; i++){
-					movicCastingStr += res.cast[i].original_name;
-					if(res.cast[i].character != "") movicCastingStr += "("+res.cast[i].character+")/";
-					else movicCastingStr += "/"
-					if(i == 9) break;
+		}).then(function(){
+			let movicCastingStr="";	
+			//영화 크레딧(배우 정보) 요청
+			$.ajax({
+				type:"get",
+				url:"https://api.themoviedb.org/3/movie/"+id+"/credits",
+				data:{
+					api_key:tmdbKey,
+					async:false
+				},
+				success:function(res){
+					movicCastingStr="";
+					console.log(res);
+					for(let i=0; i<res.cast.length; i++){
+						movicCastingStr += res.cast[i].original_name;
+						if(res.cast[i].character != "") movicCastingStr += "("+res.cast[i].character+")/";
+						else movicCastingStr += "/"
+						if(i == 9) break;
+					}
+					movicCastingStr = movicCastingStr.substring(0,movicCastingStr.length-1);
+					
+					// 영어 -> 한글 
+					$.ajax({
+						type:"post",
+						url:"https://translation.googleapis.com/language/translate/v2",
+						async:false,
+						data:{
+							key:googleApiKey,
+							q:movicCastingStr,
+							target:"ko"
+						},
+						success:function(res){
+							movicCastingStr = res.data.translations[0].translatedText;
+							movieData.actor=movicCastingStr;
+							
+						},
+						error:function(a){
+							alert("전송실패:");
+						}
+					});
+				},
+					error:function(a){
+					alert("전송실패");
 				}
-				movicCastingStr = movicCastingStr.substring(0,movicCastingStr.length-1);
-				
-				// 영어 -> 한글 
+			}).then(function(){
+				let moviePosterStr="";
+				//포스터 요청
 				$.ajax({
-					type:"post",
-					url:"https://translation.googleapis.com/language/translate/v2",
-					async:false,
+					type:"get",
+					url:"https://api.themoviedb.org/3/movie/"+id+"/images",
 					data:{
-						key:googleApiKey,
-						q:movicCastingStr,
-						target:"ko"
+						api_key:tmdbKey,
+						include_image_language:"ko,null"
 					},
 					success:function(res){
-						movicCastingStr = res.data.translations[0].translatedText;
-						movieData.actor=movicCastingStr;
+						
+						for(let i=0; i< res.posters.length; i++){
+							moviePosterStr += res.posters[i].file_path;
+							$("#poster_path").html($("#poster_path").html() + '<img class="ml-1" src="https://image.tmdb.org/t/p/w500'+res.posters[i].file_path+'" width=150 />');
+							if(i==4) break;
+						}
+						if(moviePosterStr.indexOf(movieData.main_poster) != -1) movieData.poster_path=moviePosterStr;
+						else if(movieData.main_poster != null) movieData.poster_path = movieData.main_poster + moviePosterStr;
 						
 					},
-					error:function(a){
-						alert("전송실패:");
-					}
-				});
-			},
-				error:function(a){
-				alert("전송실패");
-			}
-		});
-		
-			let moviePosterStr="";
-			//포스터 요청
-			$.ajax({
-				type:"get",
-				url:"https://api.themoviedb.org/3/movie/"+id+"/images",
-				data:{
-					api_key:tmdbKey,
-					include_image_language:"ko,null"
-				},
-				success:function(res){
-					
-					for(let i=0; i< res.posters.length; i++){
-						moviePosterStr += res.posters[i].file_path;
-						$("#poster_path").html($("#poster_path").html() + '<img class="ml-1" src="https://image.tmdb.org/t/p/w500'+res.posters[i].file_path+'" width=150 />');
-						if(i==4) break;
-					}
-					if(moviePosterStr.indexOf(movieData.main_poster) != -1) movieData.poster_path=moviePosterStr;
-					else if(movieData.main_poster != null) movieData.poster_path = movieData.main_poster + moviePosterStr;
-					
-				},
-				error:function(err){
-					alert("전송 실패");
-				}
-			});
-		
-			// 트레일러 요청
-			$.ajax({
-				type:"get",
-				url:"https://api.themoviedb.org/3/movie/"+id+"/videos",
-				data:{
-					api_key:tmdbKey,
-					language:"ko-KR"
-				},
-				success:function(res){
-					let cnt = 0;
-					let videos="";
-					for(let i=(res.results.length-1); i>=0; i--){
-						videos += res.results[i].key +"/";
-						if(cnt++ == 5) break;
-					}
-					videos = videos.substring(0,videos.length-1);
-					movieData.videos = videos;
-				},
-				error:function(err){
-					alert("전송 실패");
-				}
-			}).then(()=>{
-				let json = JSON.stringify(movieData)
-				console.log(json);
-				$.ajax({
-					type:"post",
-					url:"${ctp}/movie/movieUpdate",
-					data:{
-						idx:"${vo.idx}",
-						jsonData:json
-					},
-					success:function(res){
-						if(res == "-1") alert("아이디가 일치 하지 않습니다\n 삭제 후 다시 등록해주세요");
-						else if(res == 0) alert("업데이트 실패");
-						else {
-							alert("업데이트 완료");
-							location.reload();
-						}
-					},
-					error:function(){
+					error:function(err){
 						alert("전송 실패");
 					}
+				}).then(function(){
+					// 트레일러 요청
+					$.ajax({
+						type:"get",
+						url:"https://api.themoviedb.org/3/movie/"+id+"/videos",
+						data:{
+							api_key:tmdbKey,
+							language:"ko-KR"
+						},
+						success:function(res){
+							let cnt = 0;
+							let videos="";
+							for(let i=(res.results.length-1); i>=0; i--){
+								videos += res.results[i].key +"/";
+								if(cnt++ == 5) break;
+							}
+							videos = videos.substring(0,videos.length-1);
+							movieData.videos = videos;
+						},
+						error:function(err){
+							alert("전송 실패");
+						}
+					}).then(()=>{
+						let json = JSON.stringify(movieData)
+						console.log(json);
+						$.ajax({
+							type:"post",
+							url:"${ctp}/movie/movieUpdate",
+							data:{
+								idx:"${vo.idx}",
+								jsonData:json
+							},
+							success:function(res){
+								if(res == "-1") alert("아이디가 일치 하지 않습니다\n 삭제 후 다시 등록해주세요");
+								else if(res == 0) alert("업데이트 실패");
+								else {
+									alert("업데이트 완료");
+									location.reload();
+								}
+							},
+							error:function(){
+								alert("전송 실패");
+							}
+						});
+					});
 				});
 			});
+		});
+
   	}
   	
  	// 영화 삭제
@@ -300,7 +301,7 @@
 					<c:set var="videoArr" value="${fn:split(vo.videos,'/')}"/>
 					<c:forEach var="video" items="${videoArr}" varStatus="st">
 						<div class="mr-3">
-							<iframe src="https://www.youtube.com/embed/${video}" width="380" height="250"></iframe>
+							<iframe src="https://www.youtube.com/embed/${video}" width="380" height="250" frameborder="0" allowfullscreen></iframe>
 						</div>
 					</c:forEach>
 				</c:if>

@@ -37,6 +37,7 @@
 		}
 		
 		.autocomplete-items {
+			font-size:5px;
 		  position: absolute;
 		  border: 1px solid #d4d4d4;
 		  border-bottom: none;

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 
 import com.spring.javaweb14S.vo.MemberVO;
+import com.spring.javaweb14S.vo.MyReservationVO;
 
 public interface MemberDAO {
 
@@ -31,6 +32,10 @@ public interface MemberDAO {
 	public int setMemberBirthdayUpdate(@Param("mid")String mid, @Param("birthday")String birthday);
 
 	public int setMemberEmailUpdate(@Param("mid")String mid, @Param("email")String email);
+
+	public ArrayList<MyReservationVO> getMyReservationList(@Param("mid")String mid);
+
+	public int setMemberAddressUpdate(@Param("mid")String mid, @Param("address")String address);
 
 	
 

@@ -128,6 +128,7 @@
  					if(res=="1"){
  						preEmail=email;
  						alert("이메일이 변경 되었습니다.");
+ 						$("#authNumContent").slideUp(1000);
  					}
  					else{
  						alert("인증번호를 확인하세요");
@@ -165,6 +166,27 @@
  		    $('#mask, #loadingImg').empty(); 
  		}
  		
+ 		// 주소변경
+ 		function addressChage(){
+ 			let postcode1 = $("#sample6_postcode").val() == "" ? " " : $("#sample6_postcode").val();
+			let roadAddress1 = $("#sample6_address").val() == "" ? " " : $("#sample6_address").val();
+			let detailAddress1 = $("#sample6_detailAddress").val() == "" ? " " : $("#sample6_detailAddress").val();
+			let extraAddress1 = $("#sample6_extraAddress").val() == "" ? " " : $("#sample6_extraAddress").val();
+			let address = postcode1 + "/" + roadAddress1 + "/"+detailAddress1+"/"+extraAddress1;
+			
+			$.ajax({
+ 				type:"post",
+ 				url:"${ctp}/member/memberAddressChange",
+ 				data:{address:address},
+ 				success:function(res){
+ 					if(res == "1") alert("주소가 변경 되었습니다.");
+ 					else alert("주소 변경을 실패했습니다.");
+ 				},
+ 				error:function(){
+ 					alert("전송 실패");
+ 				}
+ 			});
+ 		}
  		
  		
  		jQuery(function(){
@@ -311,7 +333,7 @@
 	        <input type="text" name="detailAddress" id="sample6_detailAddress" placeholder="상세주소" class="form-control" value="${addresses[2]}">
           <input type="text" name="extraAddress" id="sample6_extraAddress" placeholder="참고항목" class="form-control" readonly value="${addresses[3]}">
 	        <div class="input-group-append">
-          	<button type="button" class="btn btn-outline-info" style="width: 119px;">수정하기</button>
+          	<button type="button" class="btn btn-outline-info" style="width: 119px;" onclick="addressChage()">수정하기</button>
           </div>
 	      </div>
 			</div>

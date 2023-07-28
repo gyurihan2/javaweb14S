@@ -30,3 +30,6 @@ desc movie;
 /* 상영 시작일 기준 상영 가능한 영화 리스트*/
 select * from movie where release_date <= '2023-07-17' order by release_date desc;
 select to_char(1234,'$00999') from dual;
+
+select count(*) from movie2 where poster_path is null;
+select count(*) from movie2 where videos is null;

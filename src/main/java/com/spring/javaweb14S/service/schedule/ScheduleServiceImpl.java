@@ -68,7 +68,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		
 		ArrayList<ScheduleVO> vos = new ArrayList<ScheduleVO>();
 		
-		for(int i=0;i<=(diffDay+1); i++) {
+		for(int i=0;i<(diffDay+1); i++) {
 			String playDate = sdf.format(cal.getTime());
 			
 			int cnt=1;
@@ -175,6 +175,16 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Override
 	public int setScheduleDeleteGroup(String groupId) {
 		return scheduleDAO.setScheduleDeleteGroup(groupId);
+	}
+
+	// 메인화면(영화상세보기) 스케줄이 있을경우 버튼 생성을 위해
+	@Override
+	public ScheduleVO getScheduleMoiveIdx(String movieIdx) {
+		Date now = new Date();
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		String fmtNow = fmt.format(now);
+		
+		return scheduleDAO.getScheduleMoiveIdx(movieIdx,fmtNow);
 	}
 	
 	

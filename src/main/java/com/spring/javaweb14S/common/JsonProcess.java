@@ -36,4 +36,8 @@ public class JsonProcess {
 
 		return jsonArray;
 	}
+	
+	public String voToJsonString(Object vo) throws JsonGenerationException, JsonMappingException, IOException {
+		return new ObjectMapper().writeValueAsString(vo);
+	}
 }

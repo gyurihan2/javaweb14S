@@ -7,6 +7,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="${ctp}/js/apiKey.js"></script>
+	<script src="${ctp}/js/autoComplte.js"></script>
 	<title>영화 관리 페이지</title>
 	<style>
 		.contentScroll{
@@ -35,6 +36,41 @@
 		}
 		.test{
 			margin-left: 70px;
+		}
+		
+		.autocomplete {
+		  position: relative;
+		  display: inline-block;
+		}
+		.autocomplete-items {
+			font-size:5px;
+		  position: absolute;
+		  border: 1px solid #d4d4d4;
+		  border-bottom: none;
+		  border-top: none;
+		  z-index: 99;
+		  /*position the autocomplete items to be the same width as the container:*/
+		  top: 100%;
+		  left: 0;
+		  right: 0;
+		}
+		
+		.autocomplete-items div {
+		  padding: 10px;
+		  cursor: pointer;
+		  background-color: #fff; 
+		  border-bottom: 1px solid #d4d4d4; 
+		}
+		
+		/*when hovering an item:*/
+		.autocomplete-items div:hover {
+		  background-color: #e9e9e9; 
+		}
+		
+		/*when navigating through the items using the arrow keys:*/
+		.autocomplete-active {
+		  background-color: DodgerBlue !important; 
+		  color: #ffffff; 
 		}
 	</style>
 	<script>
@@ -132,8 +168,45 @@
 		});
 	}
 	
+	let movieList=[];
+	let movieJsonData=[];
+	// 영화 검색 후 스크롤 이동
+		function searchScroll(){
+			let search = $("#search").val();
+			let movieTitle =  search.substring(0,search.length-12);
+			let release_date = search.substring(search.length-11,search.length-1);
+			
+			if(search==""){
+				alert("검색할 영화를 입력하세요");
+				return false;
+			}
+			let index=-1;
+			
+			for(let i=0;i<movieJsonData.length;i++){
+				if(movieJsonData[i].title == movieTitle && movieJsonData[i].release_date == release_date) {
+					index = i;
+					break;
+				}
+			}
+			console.log(movieJsonData)
+			let idx = movieJsonData[index].idx;
+			console.log(idx);
+			document.getElementById(idx).scrollIntoView({behavior: "smooth", block: "start"});
+			$("#search").val("");
+		}
+	
+	
+	// 자동완성
+	
+	if(${!empty movieJsonData}){
+		movieJsonData=${movieJsonData};
+		console.log(movieJsonData);
+		for(let i=0;i<movieJsonData.length;i++) movieList.push(movieJsonData[i].title+"("+movieJsonData[i].release_date+")");
+	}
+	
 	jQuery(function(){
 		movieGetChart();
+		autocomplete(document.getElementById("search"), movieList);
 	});	
 	
 	</script>
@@ -143,8 +216,8 @@
 		<h4 class="m-1 p-0"><b>영화 관리</b></h4>
 	</div>
 	<p></p>
-	<div class="content container text-center" style="height: 250px;">
-		<h4 class="mt-4" id="movieChartTitle">영화 순위</h4>
+	<div class="content .flex-column text-center" style="height: 300px; width: 1200px; margin: auto;">
+		<div class="mt-2 pt-1"><h4  id="movieChartTitle">TMDB 영화 순위</h4></div>
 		<div class="row row_head">
 			<div class="col-1"><b>순위</b></div>
 			<div class="col"><b>타이틀</b></div>
@@ -159,10 +232,19 @@
 	<div class="d-flex flex-row">
 		<!-- 영화 설정 -->
 		<div class="content mt-5 p-3 text-center" style="height: 700px;width: 750px;" >
-			<h4>영화 설정</h4>
-			<div class="d-flex flex-row-reverse mb-3">
-				<div class="p-2"><input type="button" value="영화 추가 요청(TMDB)" class="btn btn-info btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
-				<div class="p-2"><input type="button" value="영화 검색" class="btn btn-info btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
+			<div class="d-flex justify-content-end mb-1">
+				<div class="flex-fill text-center"><h4 class="pl-5">등록된 영화</h4></div>
+				<div class=""><input type="button" value="영화 추가 요청(TMDB)" class="btn btn-success btn-sm" onclick="location.href='${ctp}/movie/movieSearchPage'"/></div>
+			</div>
+			<div class="d-flex justify-content-end mb-3	">
+				<div class="d-flex flex-row" style="width: 300px;">
+			    <div class="input-group-append autocomplete">
+			    	<input type="text" class="form-control" id="search"  autocomplete="off">
+			   	</div>
+			    <div class="input-group-append ">
+			      <button class="btn btn-primary btn-sm" type="button" onclick="searchScroll()">영화 검색</button>  
+			     </div>
+  			</div>
 			</div>
 			<c:if test="${!empty movieVOS}">
 				<div class="row row_head ">
@@ -174,7 +256,7 @@
 				<hr/>
 				<div class="contentScroll" style="height: 500px;">
 				<c:forEach var="vo" items="${movieVOS}">
-					<div class="row row_body align-items-center" style="height: 150px">
+					<div class="row row_body align-items-center" id="${vo.idx}" style="height: 150px">
 						<div class="col"><img src="https://image.tmdb.org/t/p/w500${vo.main_poster}" width="60px"/></div>
 						<div class="col" onclick="movieDeatil(${vo.idx})">${vo.title}</div>
 						<div class="col" >${vo.release_date}</div>
@@ -187,45 +269,12 @@
 				</div>
 			</c:if>
 			<c:if test="${empty movieVOS}">
-				<div class="text-center"> 내역이 없습니다.</div>
+				<div class="text-center mt-5"> <font color="red">등록된 영화가 없습니다.</font></div>
 			</c:if>
 		</div>
-		<!-- 테마 설정 -->
+		<!-- 상영 일정 설정 -->
 		<div class="content mt-5 ml-4 p-2 text-center contentScroll" style="width: 700px; height: 500px">
-			<div class="mt-2">
-				<input type="button" value="테마 추가" class="btn btn-info btn-sm" onclick="window.open('${ctp}/theater/themaInputPage','nWin','width=800 height=1000')" style="float: right;"/>
-			</div>
-			<br/>
-			<c:if test="${!empty themaVOS}">
-				<div class="row row_head mt-3">
-					<div class="col"><b>메인 이미지</b></div>
-					<div class="col"><b>테마명</b></div>
-					<div class="col"><b>가격</b></div>
-					<div class="col"><b>메인화면 표시</b></div>
-				</div>
-				<hr/>
-				<c:forEach var="vo" items="${themaVOS}">
-					<div class="row row_body align-items-center">
-						<div class="col" onclick="window.open('${ctp}/theater/themaDetailPage?idx=${vo.idx}','nWin','width=1030px,height=800px')">
-							<img src="${ctp}/thema/image/${vo.mainImg}" width="70px" height="50px">
-						</div>
-						<div class="col">${vo.name}</div>
-						<div class="col">${vo.price}</div>
-						<div class="col">
-							<div class="form-group">
-							  <select class="form-control workPre" id="work${vo.idx}" onchange="displayChange('${vo.idx}','${vo.name}',this)">
-							    <option value="YES" <c:if test="${vo.display=='YES' }">selected</c:if>>YES</option>
-							    <option value="NO" <c:if test="${vo.display=='NO' }">selected</c:if>>NO</option>
-							  </select>
-							</div>
-						</div>
-					</div>
-					<hr class="mb-2 mt-2"/>
-				</c:forEach>
-			</c:if>
-			<c:if test="${empty themaVOS}">
-				<div class="text-center"> 내역이 없습니다.</div>
-			</c:if>
+				준비중입니다.
 		</div>
 	</div>
 <p><br/></p>

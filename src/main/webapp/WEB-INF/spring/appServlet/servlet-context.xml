@@ -77,8 +77,8 @@
 		<!-- 로그인 처리 -->
 		<interceptor>
 			<mapping path="/**"/>
+
 			<exclude-mapping path="/"/>
-			
 			<exclude-mapping path="/js/**"/>
 			<exclude-mapping path="/memberMsg/*"/>
 			<exclude-mapping path="/topMenu/**"/>
@@ -93,6 +93,7 @@
 			<exclude-mapping path="/member/pwdChangePage"/>
 			<exclude-mapping path="/reservation/reservationMainPage"/>
 			<exclude-mapping path="/schedule/scheduleSelectDate"/>
+			<exclude-mapping path="/memberMovie/**"/>
 			<beans:ref bean="LoginInterceptor"/>
 		</interceptor>
 		

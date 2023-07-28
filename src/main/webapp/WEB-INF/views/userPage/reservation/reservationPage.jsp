@@ -40,6 +40,15 @@
 	  -webkit-user-select: none;
 	  user-select: none;
 	}
+	.contentScroll{
+  		overflow-y: scroll;
+		}
+    .contentScroll::-webkit-scrollbar {
+      width: 15px;
+    }
+    .contentScroll::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
 </style>
 <script>
 	'use strict';
@@ -67,7 +76,7 @@
 			success:function(res){
 				let temp='';
 				
-				if(res == "") temp="상영 일정이 없습니다.";
+				if(res == "") temp="<div class='text-center mt-5'><font color='red'>상영 일정이 없습니다.</font></div>";
 				else{
 					scheduleArr= JSON.parse(res);
 					console.log(scheduleArr);
@@ -205,7 +214,7 @@
 				let seatList=res.seatInfoList;
 				for(let i=0;i<seatRow-1;i++){
 					temp +='<div class="row">';
-					temp += '<span class="mr-1" style="width:27px">'+seatRowArr[i]+'열</span>';
+					temp += '<span class="mr-1" style="width:30px">'+seatRowArr[i]+'열</span>';
 					for(let j=0;j<20;j++){
 						if(cnt > totalSeat) break;
 						if(seatList[seatListIndex] == cnt){
@@ -385,9 +394,9 @@
   function requestPay(reservationIdx) {
     IMP.request_pay(
       {
-        pg: "html5_inicis.INIpayTest",
-        //pg: "*",
-        pay_method: "*",
+        //pg: "html5_inicis.INIpayTest",
+        pg: "*",
+        pay_method: "kakaopay",
         merchant_uid: "javaweb14S_"+new Date().getTime(),
         name: "Spring project(영화 예약)",
         amount: 10,
@@ -435,9 +444,11 @@
   	<!-- 날짜 선택 -->
   	<div class="d-flex flex-column">
   		<div class=" ml-1" style="width: 200px;  background-color: #333333"><font color="#E2E2E2">날짜</font></div>
-  		<c:forEach var="vo" items="${dateVOS}" varStatus="st">
-  			<div><button class="btn btn-outline-dark selectDateList" type="button" onclick="selectDate(this,'${vo}','${st.index}')">${vo}</button></div>
-  		</c:forEach>
+  		<div class="mt-4">
+	  		<c:forEach var="vo" items="${dateVOS}" varStatus="st">
+	  			<div><button class="btn btn-outline-dark selectDateList" type="button" onclick="selectDate(this,'${vo}','${st.index}')">${vo}</button></div>
+	  		</c:forEach>
+  		</div>
   	</div>
   	<!-- 영화 선택 -->
   	<div class="d-flex flex-column " style="width: 400px;">
@@ -452,19 +463,21 @@
   </div>
 </div>
 <!-- 좌석 정보 -->
-<div class="container-xl text-center  p-0 dragNo" id="theaterSeatContent" style="width:1010px;height: 500px; background-color: #FBF8EE; display: none" >
-	<div id="theaterSeatList" style="width:1010px;height: 500px;">
-		 <ul class="showcase">
-	    <li>
-	      <div class="seat"></div>
-	      <small>예매가능</small>
-	    </li>
-	    <li>
-	      <div class="seat occupied"></div>
-	      <small>예매불가</small>
-	    </li>
-	  </ul>
-		<div class="theaterSeat">
+<div class="container-xl text-center  p-0 dragNo" id="theaterSeatContent" style="width:1010px; background-color: #FBF8EE; display: none" >
+	<div id="theaterSeatList" style="width:1010px;height: 700px;">
+		 <div class="mt-2">
+			 <ul class="showcase">
+		    <li>
+		      <div class="seat"></div>
+		      <small>예매가능</small>
+		    </li>
+		    <li>
+		      <div class="seat occupied"></div>
+		      <small>예매불가</small>
+		    </li>
+		  </ul>
+	  </div>
+		<div class="theaterSeat ">
 			<div class="screen"></div>
 		</div>
 	</div>

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spring.javaweb14S.vo.AgeStatisticsVO;
+import com.spring.javaweb14S.vo.GenderRatioVO;
 import com.spring.javaweb14S.vo.MovieVO;
+import com.spring.javaweb14S.vo.MyReservationVO;
 import com.spring.javaweb14S.vo.ReservationVO;
 import com.spring.javaweb14S.vo.ScheduleVO;
 import com.spring.javaweb14S.vo.TheaterVO;
@@ -34,6 +37,20 @@ public interface ReservationDAO {
 
 	// 결제 취소 시 남은 좌석 수 업데이트
 	public int setLeftSeatAdd(@Param("scheduleIdx")int scheduleIdx, @Param("peapleCnt")int peapleCnt);
+
+	// 예약 상세 보기
+	public MyReservationVO getReservationDetail(@Param("idx")String idx);
+
+	// 영화 예매 연령층
+	public ArrayList<AgeStatisticsVO> getReservationAgeStatic(@Param("movieIdx")String movieIdx);
+
+	// 영화 예매 성비
+	public GenderRatioVO getReservationGenderRatio(@Param("movieIdx")String movieIdx);
+
+	// 일주일간 예매 수
+	public int getWeekReservationCnt(@Param("days")String days);
+	
+	
 	
 	
 

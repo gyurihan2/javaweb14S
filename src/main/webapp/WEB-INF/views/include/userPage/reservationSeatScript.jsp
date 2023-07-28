@@ -28,7 +28,7 @@
 	}
 	
 	.container {
-	    perspective: 1000px;
+	    perspective: 1100px;
 	    margin-bottom: 30px;
 	}
 	

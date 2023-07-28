@@ -6,7 +6,10 @@
 	<tiles-definitions>
 	<!-- 레이아웃 적용하지 않는 화면(ex 로그인 화면)  -->
 	<definition name="layoutNo" template="/WEB-INF/views/tiles/layout/noLayout.jsp"/>
-	<definition name="memberMsg/*" extends="layoutNo">
+	<definition name="adminMsg/**" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/include/index.jsp"/>
+	</definition>
+	<definition name="memberMsg/**" extends="layoutNo">
 	</definition>
 	<definition name="include/message" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/include/message.jsp"/>
@@ -37,6 +40,9 @@
 	</definition>
 	<definition name="userPage/member/nickNameChangePage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/userPage/member/nickNameChangePage.jsp"/>
+	</definition>
+	<definition name="userPage/reservation/reservationDetailPage" extends="layoutNo">
+		<put-attribute name="body" value="/WEB-INF/views/userPage/reservation/reservationDetailPage.jsp"/>
 	</definition>
 	<definition name="adminPage/theater/theaterDetailPage" extends="layoutNo">
 		<put-attribute name="body" value="/WEB-INF/views/adminPage/theater/theaterDetailPage.jsp"/>

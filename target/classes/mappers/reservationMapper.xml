@@ -4,36 +4,74 @@
 <!-- Select -->
 	<!-- 달력에 표시할 스케줄 리스트 -->
 	<select id="getTheater" resultType="theaterVO">
-		select *,  (select price from thema where idx=themaIdx) as themaPrice from theater where idx = #{theaterIdx}
+		select *,  (select price from thema2 where idx=themaIdx) as themaPrice from theater2 where idx = #{theaterIdx}
 	</select>
-	<select id="getMovie" resultType="MovieVO">
-		select * from movie where idx = #{movieIdx}
+	<select id="getMovie" resultType="movieVO">
+		select * from movie2 where idx = #{movieIdx}
 	</select>
 	<select id="getSchedule" resultType="scheduleVO">
-		select * from schedule where idx = #{scheduleIdx}
+		select * from schedule2 where idx = #{scheduleIdx}
 	</select>
 	<!-- 좌석 정보 -->
 	<select id="getSeatInfoList" resultType="String">
-		select seatInfo from reservation where groupId = #{groupId}
+		select seatInfo from reservation2 where groupId = #{groupId}
+	</select>
+	<!-- 예약 정보 상세 보기 -->
+	<select id="getReservationDetail" resultType="myReservationVO">
+		select a.*, b.screenOrder,b.playDate, b.playTime, b.endTime, b.movieIdx,
+		(select name from theater2 where idx=b.theaterIdx) as theaterName,
+		(select name from thema2 where idx=(select themaIdx from theater2 where idx=b.theaterIdx)) as themaName,
+		(select title from movie2 where idx=b.movieIdx) as movieName,
+		(select main_poster from movie2 where idx=b.movieIdx) as moviePoster
+		from reservation2 as a, schedule2 as b where a.idx=#{idx} and b.idx=a.scheduleIdx;
+	</select>
+	<!-- 특정 영화 연령대 분포 -->
+	<select id="getReservationAgeStatic" resultType="ageStatisticsVO">
+		<![CDATA[
+			select case
+				when age < 20 then '10대'
+				when age < 30 then '20대'
+				when age < 40 then '30대'
+				when age < 50 then '40대'
+				when age >= 50 then '50대'
+				end as age_group,
+			count(*) cnt
+			from 
+				(select a.*, floor(date_format(now(),'%Y')-substring(birthday,1,4)) as age from member2 as a, 
+				(select memberMid from reservation2 where groupId like concat('%_','%_','%_',#{movieIdx})) as b where mid=memberMid) as c 
+			group by age_group;
+		]]>
+	</select>
+	<!-- 특정 영화 연령대 분포 -->
+	<select id="getReservationGenderRatio" resultType="genderRatioVO">
+		select count(*) as total, 
+			sum(if(gender='남자', 1,0))as male, 
+			sum(if(gender='여자', 1,0))as female
+		from (select * from member2 as a,
+			(select memberMid from reservation2 where groupId like concat('%_','%_','%_',#{movieIdx})) as b where a.mid=b.memberMid) as c;
+	</select>
+	<!--  -->
+	<select id="getWeekReservationCnt" resultType="int">
+		select count(*) from reservation2 where groupId like concat(#{days},'_%');
 	</select>
 		
 <!-- Insert -->
 	<insert id="setReservationInput">
-		insert into reservation values(#{vo.idx},#{vo.groupId},#{vo.scheduleIdx},#{vo.memberMid},#{vo.seatInfo},#{vo.adultCnt},#{vo.childCnt},now());
+		insert into reservation2 values(#{vo.idx},#{vo.groupId},#{vo.scheduleIdx},#{vo.memberMid},#{vo.seatInfo},#{vo.adultCnt},#{vo.childCnt},now());
 	</insert>
 	
 <!-- Update -->
 	<!-- 예약 시 남은 좌석수 업데이트 -->
 	<update id="setLeftSeatSub">
-		update schedule set leftSeat=(leftSeat-#{peapleCnt}) where idx=#{scheduleIdx};
+		update schedule2 set leftSeat=(leftSeat-#{peapleCnt}) where idx=#{scheduleIdx};
 	</update>
 	<update id="setLeftSeatAdd">
-		update schedule set leftSeat=(leftSeat+#{peapleCnt}) where idx=#{scheduleIdx};
+		update schedule2 set leftSeat=(leftSeat+#{peapleCnt}) where idx=#{scheduleIdx};
 	</update>
 	
 	
 <!-- Delete -->
 	<delete id="setReservationDelete">
-		delete from reservation where idx=#{idx};
+		delete from reservation2 where idx=#{idx};
 	</delete>
 </mapper>

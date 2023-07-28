@@ -84,6 +84,7 @@
 		
 		function videoPlay(){
 			randomSu = Math.floor(Math.random() * movieArr.length + 1);
+			console.log(movieArr);
 			if(movieArr[randomSu-1].videos != null){
 				let video = movieArr[randomSu-1].videos.split("/");
 				$("#test").attr("src","https://www.youtube.com/embed/"+video[0]+"?autoplay=1&mute=1&playlist="+video[0]+"&loop=1&modestbranding=1");
@@ -98,7 +99,7 @@
 				document.getElementById("movieNext").style.visibility="hidden";
 			}
 			
-			if(${!empty jsonData}){
+			if(${jsonData != "[]"}){
 				movieArr=${jsonData};
 				videoPlay();
 			}
@@ -143,6 +144,7 @@
                    <p><i class="fas fa-long-arrow-left fa-4x" style="color: #363535;"></i></p>
                </button>  
             </div>
+            <c:if test="${!empty vos}">
             <c:forEach var="index" begin="0" end="3">
             	<c:if test="${!empty vos[index] }">
             		<div class="col text-center moviecontent movienext" >
@@ -151,6 +153,10 @@
             		</div>
             	</c:if>
             </c:forEach>
+            </c:if>
+            <c:if test="${empty vos}">
+            	<h2><font color="red">금일 일정이 없습니다. 일정을 추가하세요</font></h2>
+            </c:if>
             <div class="col align-self-center movienext"><!--오른쪽 공백-->   
                 <button class="btn" type="button" onclick="movieChartNext()" id="movieNext">
                     <p><i class="fas fa-long-arrow-right fa-4x" style="color: #363535;"></i></p>
@@ -169,16 +175,21 @@
           <div id="specialhall">
             <div><h2>특별관</h2></div>
               <div id="specialhall_content">
-                <div id="hall_imags" style="float: left; padding-top: 10px;">
-                    <img id="hallImgSrc" src="${ctp}/thema/image/${themaVOS[0].mainImg}">
-                </div>
-                <div id="hall_lists" onmouseover=movieHallAutoStop()>
-									<ul id="hall_list">
-										<c:forEach var="vo" items="${themaVOS}">
-											<li id="${vo.mainImg}" onmouseover='changeImgHall("${vo.mainImg}")'><a href="#"><strong>${vo.name}</strong><span>${vo.hashTag }</a></span></li>
-										</c:forEach>
-									</ul> 
-                </div>
+              	<c:if test="${!empty themaVOS }">
+	                <div id="hall_imags" style="float: left; padding-top: 10px;">
+	                    <img id="hallImgSrc" src="${ctp}/thema/image/${themaVOS[0].mainImg}">
+	                </div>
+	                <div id="hall_lists" onmouseover=movieHallAutoStop()>
+										<ul id="hall_list">
+											<c:forEach var="vo" items="${themaVOS}">
+												<li id="${vo.mainImg}" onmouseover='changeImgHall("${vo.mainImg}")'><a href="#"><strong>${vo.name}</strong><span>${vo.hashTag }</a></span></li>
+											</c:forEach>
+										</ul> 
+	                </div>
+                </c:if>
+                <c:if test="${empty themaVOS }">
+                	<div class="text-center"><h2><font color="red">등록된 테마 목록이 없습니다.</font></h2></div>
+                </c:if>
               </div>
           </div>
         </div>

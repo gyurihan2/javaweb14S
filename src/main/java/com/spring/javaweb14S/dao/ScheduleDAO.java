@@ -21,6 +21,10 @@ public interface ScheduleDAO {
 	public int setScheduleDeleteGroup(@Param("groupId")String groupId);
 
 	// 예약 그룹아이디를 통한 남은 좌석수 확인
-	public int getReservationListCnt(String string);
+	//public int getReservationListCnt(String string);
+
+	// 영화 IDX로 스케줄 있는지 확인
+	public ScheduleVO getScheduleMoiveIdx(@Param("movieIdx")String movieIdx, @Param("today")String today);
+
 
 }

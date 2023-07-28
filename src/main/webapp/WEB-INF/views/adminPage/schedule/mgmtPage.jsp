@@ -25,10 +25,9 @@
 	<script>
 		'use strict';
 		let calendar;
-		let scheduleArr=[];
-		let colorList=["#A0D468","#D9D951","#87CEFA","#E6E6FA","#FA8072","#F0E68C","#E0FFFF","#E6E6FA","#696969","#FFEBCD"];
+		let scheduleArr=${jsonData} == "-1" ? "" : ${jsonData};;
+		let colorList=["#A0D468","#D9D951","#87CEFA","#E6E6FA","#FA8072","#F0E68C","#5c6eb4","#6faaaa","#696969","#FFEBCD"];
 		let data=[];
-		if(${!empty jsonData}) scheduleArr=${jsonData};
 		
 		if(scheduleArr.length > 0){
 			let colorCnt=0;
@@ -57,7 +56,7 @@
 		// 일정 추가
 		function scheduleAdd(startDate,endDate){
 			let url="${ctp}/schedule/scheduleInputPage?startDate="+startDate+"&endDate="+endDate;
-			window.open(url,"n_win","width=800,height=600");
+			window.open(url,"n_win","width=770,height=600");
 		}
 	
 		

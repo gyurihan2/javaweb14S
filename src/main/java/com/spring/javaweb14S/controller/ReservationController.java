@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.spring.javaweb14S.service.member.MemberService;
 import com.spring.javaweb14S.service.reservation.ReservationService;
 import com.spring.javaweb14S.vo.MemberVO;
+import com.spring.javaweb14S.vo.MyReservationVO;
 import com.spring.javaweb14S.vo.ReservationVO;
 
 @Controller
@@ -34,7 +36,7 @@ public class ReservationController {
 	@RequestMapping(value = "/reservationMainPage", method = RequestMethod.GET)
 	public String reservationMainPage(Model model,HttpSession session) {
 		String mid = (String)session.getAttribute("sMid");
-		
+	
 		if(mid != null) {
 			MemberVO memberVO = memberService.getUserInfo(mid);
 			System.out.println(memberVO.toString());
@@ -91,7 +93,7 @@ public class ReservationController {
 			return res;
 			
 		}catch (NullPointerException e) {
-			System.out.println("트랙잭션을 위한 강제 예외처리"+e.getMessage());
+			System.out.println("트랙잭션을 위한 강제 Null Exception 예외처리");
 			return "-2";
 		}
 	}
@@ -103,12 +105,39 @@ public class ReservationController {
 		if(session.getAttribute("sPaymentStatus") != null) session.removeAttribute("sPaymentStatus");
 	}
 	
-	//예약 처리 확정(결제 취소)
+	//예약 처리 확정 취소(결제 취소할 경우)
 	@RequestMapping(value = "/reservationCancel", method = RequestMethod.POST)
 	@ResponseBody
 	public void reservationCancelPost(HttpSession session,
 			String idx, int scheduleIdx, int peapleCnt) {
 		int res = reservationService.setReservationCansel(idx,scheduleIdx,peapleCnt);
 		if(res != 0) session.removeAttribute("sPaymentStatus");
+	}
+	
+	// 마이페이지 예약 상세 보기
+	@RequestMapping(value = "/reserDetailPage", method = RequestMethod.GET)
+	public String reserDetailPageGet(Model model,
+			@RequestParam(name = "idx",defaultValue = "-1", required = false)  String idx){
+		MyReservationVO vo = reservationService.getReservationDetail(idx);
+		model.addAttribute("vo", vo);
+		System.out.println(vo);
+		return "userPage/reservation/reservationDetailPage";
+	}
+	
+	// 마이페이지 예약 취소 처리(환불 처리 필요(portOne))
+	@RequestMapping(value = "/reservationCallOff", method = RequestMethod.POST)
+	@ResponseBody
+	public int reservationCallOffPost(
+			@RequestParam(name = "idx",defaultValue = "-1", required = false)  String idx,
+			@RequestParam(name = "scheduleIdx",defaultValue = "-1", required = false)  int scheduleIdx,
+			@RequestParam(name = "peapleCnt",defaultValue = "0", required = false)  int peapleCnt){
+		int res = 0;
+		try {
+			res = reservationService.reservationCallOff(idx,scheduleIdx,peapleCnt);
+			return res;
+		}catch (NullPointerException e) {
+			System.out.println("트랙잭션을 위한 강제 Null Exception 예외처리");
+			return -2;
+		}
 	}
 }

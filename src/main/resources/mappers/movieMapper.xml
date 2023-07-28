@@ -4,27 +4,27 @@
 <!-- Select -->
 	<!-- 영화 상세 보기 -->
 	<select id="getMovie" resultType="movieVO">
-		select * from movie where idx=#{idx};
+		select * from movie2 where idx=#{idx};
 	</select>
 	<!-- 영화 전체 목록 -->
 	<select id="getMovieList" resultType="movieVO">
-		select * from movie order by release_date desc;
+		select * from movie2 order by release_date desc;
 	</select>
 	<!-- 상영 시작일 기준 상영 가능한 영화 리스트 -->
 	<select id="getMovieDateList" resultType="movieVO">
 		<![CDATA[
-			select * from movie where release_date <= #{startDate} order by release_date desc;
+			select * from movie2 where release_date <= #{startDate} order by release_date desc;
 		]]>
 	</select>
 	<!-- 메인화면에 표시할 영화 리스트 -->
 	<select id="getMovieTodaySchedule" resultType="movieVO">
-		select * from movie as a ,(select movieIdx, theaterIdx from schedule where playDate = #{todayFmt} group by movieidx) as b where a.idx = b.movieIdx  order by b.theaterIdx;
+		select * from movie2 as a ,(select movieIdx, theaterIdx from schedule2 where playDate = #{todayFmt} group by movieidx) as b where a.idx = b.movieIdx  order by b.theaterIdx;
 	</select>
 	
 <!-- Insert -->
 	<!-- 영화 생성 -->
 	<insert id="setMovieArrInput" parameterType="java.util.List">
-		insert into movie values
+		insert into movie2 values
 		<foreach collection="vos" item="vo" separator=",">
 		(#{vo.idx},#{vo.title},#{vo.main_poster},#{vo.poster_path},#{vo.tagline},#{vo.original_title},#{vo.original_language},#{vo.production_companies},#{vo.videos},#{vo.genres},#{vo.runtime},#{vo.release_date},#{vo.actor},#{vo.overview},#{vo.vote_average},#{vo.vote_count},#{vo.totalView},#{vo.rating})
 		</foreach>
@@ -34,12 +34,12 @@
 <!-- Update -->
 	<!-- 영화 메인 이미지 변경 -->
 	<update id="setMovieMainImageChange">
-		update movie set main_poster=#{posterSrc} where idx=#{idx};
+		update movie2 set main_poster=#{posterSrc} where idx=#{idx};
 	</update>
 	
 	<!-- 영화 업데이트 -->
 	<update id="setMovieUpdate">
-		update movie set title=#{vo.title},main_poster=#{vo.main_poster},poster_path=#{vo.poster_path},tagline=#{vo.tagline},original_title=#{vo.original_title},original_language=#{vo.original_language},production_companies=#{vo.production_companies},
+		update movie2 set title=#{vo.title},main_poster=#{vo.main_poster},poster_path=#{vo.poster_path},tagline=#{vo.tagline},original_title=#{vo.original_title},original_language=#{vo.original_language},production_companies=#{vo.production_companies},
 			videos=#{vo.videos},genres=#{vo.genres},runtime=#{vo.runtime},release_date=#{vo.release_date},actor=#{vo.actor},overview=#{vo.overview},vote_average=#{vo.vote_average},vote_count=#{vo.vote_count},totalView=#{vo.totalView},rating=#{vo.rating}
 			where idx=#{vo.idx};
 	</update>
@@ -47,7 +47,7 @@
 <!-- Delete -->
 	<!-- 영화 삭제 -->
 	<delete id="setmovieDelete">
-		delete from movie where idx=#{idx};
+		delete from movie2 where idx=#{idx};
 	</delete>
 
 

@@ -93,7 +93,7 @@
 			</div>
 			<div class="col-2 dth">좌석수</div>
 			<div class="col">
-				<input type="number" name="seat" id="seat" class="form-control" value="100" step="10"/>
+				<input type="number" name="seat" id="seat" class="form-control" value="${vo.seat}" step="10"/>
 			</div>
 		</div>
 		<div class="row">

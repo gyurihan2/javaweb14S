@@ -4,86 +4,86 @@
 <!-- Select -->
 	<!-- 상영관 전체 리스트 -->
 	<select id="getTheaterList" resultType="theaterVO">
-		select a.*, b.name as themaName, b.price as themaPrice from theater a, thema b where a.themaIdx = b.idx order by idx ;
+		select a.*, b.name as themaName, b.price as themaPrice from theater2 a, thema2 b where a.themaIdx = b.idx order by idx ;
 	</select>
 	
 	<!-- 상영관 상세 정보 -->
 	<select id="getTheater" resultType="theaterVO">
-		select a.*, b.name as themaName, b.price as themaPrice from theater a, thema b where a.idx=#{idx} and a.themaIdx = b.idx;
+		select a.*, b.name as themaName, b.price as themaPrice from theater2 a, thema2 b where a.idx=#{idx} and a.themaIdx = b.idx;
 	</select>
 	
 	<!-- 상영관 테마 전체 리스트 -->
 	<select id="getThemaList" resultType="themaVO">
-		select * from thema;
+		select * from thema2;
 	</select>
 	<!-- 상영관 테마 전체 리스트 -->
 	<select id="getThemaDetail" resultType="themaVO">
-		select * from thema where idx=#{idx};
+		select * from thema2 where idx=#{idx};
 	</select>
 	
 	<!-- 설정한 기간의 사용 가능한 상영관 리스트 -->
 	<select id="getTheaterDateList" resultType="theaterVO">
-		select *, (select name from thema where idx=a.themaidx) as themaName from theater as a where idx not in 
-		(select theaterIdx from schedule where playDate between #{startDate} and #{endDate} group by theaterIdx);
+		select *, (select name from thema2 where idx=a.themaidx) as themaName from theater2 as a where idx not in 
+		(select theaterIdx from schedule2 where playDate between #{startDate} and #{endDate} group by theaterIdx);
 	</select>
 	
 	<!-- 메인 페이지에 표시할 테마 -->
 	<select id="getThemaDisplayList" resultType="themaVO">
-		select * from thema where display = 'YES';
+		select * from thema2 where display = 'YES';
 	</select>
 	
 	
 <!-- Insert -->
 	<!-- 상영관 추가 -->
 	<insert id="setTheaterInput">
-		insert into theater values(default,#{vo.name},#{vo.themaIdx},#{vo.seat}, #{vo.work},now(),now());
+		insert into theater2 values(default,#{vo.name},#{vo.themaIdx},#{vo.seat}, #{vo.work},now(),now());
 	</insert>
 
 	<!-- 상여관 테마 추가 -->
 	<insert id="setThemaInput">
-		insert into thema values(default,#{vo.name},#{vo.price},#{vo.content},#{vo.hashTag},#{vo.display},#{vo.mainImg},#{vo.images},#{vo.imgFName},now(),now());
+		insert into thema2 values(default,#{vo.name},#{vo.price},#{vo.content},#{vo.hashTag},#{vo.display},#{vo.mainImg},#{vo.images},#{vo.imgFName},now(),now());
 	</insert>
 	
 		
 <!-- Update -->
 	<!-- 상영관 작동 여부 수정 -->
 	<update id="setTheaterChangeWork">
-		update theater set work=#{work}, modifyDate=now() where idx=#{idx};
+		update theater2 set work=#{work}, modifyDate=now() where idx=#{idx};
 	</update>
 	<!-- 상영관 수정 -->
 	<update id="setTheaterChange">
-		update theater set name=#{vo.name}, themaIdx=#{vo.themaIdx}, seat=#{vo.seat}, work=#{vo.work}, modifyDate=now() where idx=#{vo.idx};
+		update theater2 set name=#{vo.name}, themaIdx=#{vo.themaIdx}, seat=#{vo.seat}, work=#{vo.work}, modifyDate=now() where idx=#{vo.idx};
 	</update>
 	
 	<!-- 상영관 테마 메인화면 표시여부 수정 -->
 	<update id="setThemaDisplayChange">
-		update thema set display=#{display}, modifyDate=now()  where idx=#{idx};
+		update thema2 set display=#{display}, modifyDate=now()  where idx=#{idx};
 	</update>
 	<!-- 상영관 테마 메인 이미지 수정 -->
 	<update id="setThemaMainImagChange">
-		update thema set mainImg=#{mainImg}, modifyDate=now() where idx=#{idx};
+		update thema2 set mainImg=#{mainImg}, modifyDate=now() where idx=#{idx};
 	</update>
 	<!-- 상영관 테마 이미지 추가 -->
 	<update id="setThemaImageAdd">
-		update thema set images=concat(images,#{orgFName}), imgFName= concat(imgFName,#{saveFName}), modifyDate=now() where idx = #{idx};
+		update thema2 set images=concat(images,#{orgFName}), imgFName= concat(imgFName,#{saveFName}), modifyDate=now() where idx = #{idx};
 	</update>
 	<!-- 상영관 테마 이미지 업데이트 -->
 	<update id="setThemaImageUpdate">
-		update thema set images=#{images}, imgFName=#{imgFName}, modifyDate=now() where idx = #{idx};
+		update thema2 set images=#{images}, imgFName=#{imgFName}, modifyDate=now() where idx = #{idx};
 	</update>
 	<!-- 상영관 테마 이미지 기본 이미지 세팅 -->
 	<update id="setThemaImageNoImage">
-		update thema set mainImg='noImage.jpg', modifyDate=now() where idx = #{idx};
+		update thema2 set mainImg='noImage.jpg', modifyDate=now() where idx = #{idx};
 	</update>
 	<!-- 테마 업로드 폴더 제외한 업데이트(테마명, 입장료, 해시태그, 메인페이지 출력 여부, 설명) -->
 	<update id="setThemaMainContentUpdate">
-		update thema set name=#{vo.name}, price=#{vo.price}, hashTag=#{vo.hashTag}, content=#{vo.content}, modifyDate=now() where idx=#{vo.idx};
+		update thema2 set name=#{vo.name}, price=#{vo.price}, hashTag=#{vo.hashTag}, content=#{vo.content}, modifyDate=now() where idx=#{vo.idx};
 	</update>
 	
 <!-- Delete -->
 	<!-- 테마 삭제 -->
 	<delete id="setThemaDelete">
-		delete from thema where idx=#{idx};
+		delete from thema2 where idx=#{idx};
 	</delete>
 
 

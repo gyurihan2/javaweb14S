@@ -8,5 +8,9 @@
  		<typeAlias alias="movieVO" type="com.spring.javaweb14S.vo.MovieVO"/>
  		<typeAlias alias="scheduleVO" type="com.spring.javaweb14S.vo.ScheduleVO"/>
  		<typeAlias alias="reservationVO" type="com.spring.javaweb14S.vo.ReservationVO"/>
+ 		<typeAlias alias="myReservationVO" type="com.spring.javaweb14S.vo.MyReservationVO"/>
+ 		<typeAlias alias="ageStatisticsVO" type="com.spring.javaweb14S.vo.AgeStatisticsVO"/>
+ 		<typeAlias alias="genderRatioVO" type="com.spring.javaweb14S.vo.GenderRatioVO"/>
+ 		<typeAlias alias="weekReservationCntVO" type="com.spring.javaweb14S.vo.WeekReservationCntVO"/>
  	</typeAliases>
 </configuration>

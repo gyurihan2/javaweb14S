@@ -16,4 +16,7 @@ public interface ScheduleService {
 	// 일정(gorupID) 삭제
 	public int setScheduleDeleteGroup(String groupId);
 
+	// 영화 상세보기 스케줄(메인페이지) 스케줄이 있을경우 예매하기 버튼 생성을 위한
+	public ScheduleVO getScheduleMoiveIdx(String movieIdx);
+
 }

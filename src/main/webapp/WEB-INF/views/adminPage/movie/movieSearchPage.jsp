@@ -269,7 +269,6 @@
 				language:"ko-KR"
 			},
 			success:function(res){
-				console.log(res);
 				$("#title").html(res.title);
 				$("#tagline").html(res.tagline);
 				$("#original_title").html(res.original_title);
@@ -315,120 +314,130 @@
 			error:function(){
 				alert("전송 실패");
 			}
-		});
-	
-		let movicCastingStr="";	
-		//영화 크레딧(배우 정보) 요청
-		$.ajax({
-			type:"get",
-			url:"https://api.themoviedb.org/3/movie/"+id+"/credits",
-			data:{
-				api_key:tmdbKey,
-				async:false
-			},
-			success:function(res){
-				movicCastingStr="";
-				for(let i=0; i<res.cast.length; i++){
-					movicCastingStr += res.cast[i].original_name;
-					if(res.cast[i].character != "") movicCastingStr += "("+res.cast[i].character+")/";
-					else movicCastingStr += "/"
-					
-					if(i == 9) break;
+		}).then(function(){
+			let movicCastingStr="";	
+			//영화 크레딧(배우 정보) 요청
+			$.ajax({
+				type:"get",
+				url:"https://api.themoviedb.org/3/movie/"+id+"/credits",
+				async:false,
+				data:{
+					api_key:tmdbKey,
+					async:false
+				},
+				success:function(res){
+					movicCastingStr="";
+					for(let i=0; i<res.cast.length; i++){
+						movicCastingStr += res.cast[i].original_name;
+						if(res.cast[i].character != "") movicCastingStr += "("+res.cast[i].character+")/";
+						else movicCastingStr += "/"
+						
+						if(i == 9) break;
+					}
+					movicCastingStr = movicCastingStr.substring(0,movicCastingStr.length-1);
+					// 영어 -> 한글 
+					$.ajax({
+						type:"post",
+						url:"https://translation.googleapis.com/language/translate/v2",
+						async:false,
+						data:{
+							key:googleApiKey,
+							q:movicCastingStr,
+							target:"ko"
+						},
+						success:function(res){
+							movicCastingStr = res.data.translations[0].translatedText;
+							$("#actor").html(movicCastingStr);
+							movieDetailTemp.actor=movicCastingStr;
+						},
+						error:function(a){
+							alert("전송실패:");
+						}
+					});
+				},
+				error:function(a){
+					alert("전송실패");
 				}
-				movicCastingStr = movicCastingStr.substring(0,movicCastingStr.length-1);
-				// 영어 -> 한글 
+			}).then(function(){
+				let moviePosterStr="";
+				//포스터 요청
 				$.ajax({
-					type:"post",
-					url:"https://translation.googleapis.com/language/translate/v2",
+					type:"get",
+					url:"https://api.themoviedb.org/3/movie/"+id+"/images",
 					async:false,
 					data:{
-						key:googleApiKey,
-						q:movicCastingStr,
-						target:"ko"
+						api_key:tmdbKey,
+						include_image_language:"ko,null"
 					},
 					success:function(res){
-						movicCastingStr = res.data.translations[0].translatedText;
-						$("#actor").html(movicCastingStr);
-						movieDetailTemp.actor=movicCastingStr;
+						$("#poster_path").html("");
+						if(res.posters.length == 0 ){
+							if(movieDetailTemp.main_poster != null){
+								moviePosterStr += movieDetailTemp.main_poster;
+								$("#poster_path").html($("#poster_path").html() + '<img class="ml-1" src="https://image.tmdb.org/t/p/w500'+movieDetailTemp.main_poster+'" width=150 />');
+								movieDetailTemp.poster_path=moviePosterStr;
+							}
+							else{
+								moviePosterStr = "이미지 준비중입니다.";
+								$("#poster_path").html("이미지 준비중입니다.");
+							}
+						}
+						else{
+							for(let i=0; i< res.posters.length; i++){
+								moviePosterStr += res.posters[i].file_path;
+								$("#poster_path").html($("#poster_path").html() + '<img class="ml-1" src="https://image.tmdb.org/t/p/w500'+res.posters[i].file_path+'" width=150 />');
+								if(i==4) break;
+							}
+						
+							if(moviePosterStr.indexOf(movieDetailTemp.main_poster) != -1) movieDetailTemp.poster_path=moviePosterStr;
+							else if(movieDetailTemp.main_poster != null)movieDetailTemp.poster_path = movieDetailTemp.main_poster + moviePosterStr;
+						}
 					},
-					error:function(a){
-						alert("전송실패:");
+					error:function(err){
+						alert("전송 실패");
 					}
+				}).then(function(){
+					// 트레일러 요청
+					$.ajax({
+						type:"get",
+						url:"https://api.themoviedb.org/3/movie/"+id+"/videos",
+						async:false,
+						data:{
+							api_key:tmdbKey,
+							language:"ko-KR"
+						},
+						success:function(res){
+							$("#videos").html("");
+							if(res.results.length == 0){
+								$("#videos").html("등록된 트레일러가 없습니다.");
+							}
+							else{
+								let cnt = 0;
+								let videos="";
+								for(let i=(res.results.length-1); i>=0; i--){
+									let temp = '<div class="mr-2"><iframe width="380" height="250"src="';
+									temp += vidioSrc+"/"+res.results[i].key;
+									temp += '"></iframe></div>';
+									$("#videos").html($("#videos").html() + temp);
+									videos += res.results[i].key +"/";
+									if(cnt++ == 5) break;
+								}
+								videos = videos.substring(0,videos.length-1);
+								movieDetailTemp.videos = videos;
+							}
+						},
+						error:function(err){
+							alert("전송 실패");
+						}
+					}).then(function(){
+						$("#movieDetail").css("display","none");
+						$("#movieDetail").slideDown(1000);
+					});
 				});
-			},
-			error:function(a){
-				alert("전송실패");
-			}
+			});
 		});
+
 		
-		let moviePosterStr="";
-		//포스터 요청
-		$.ajax({
-			type:"get",
-			url:"https://api.themoviedb.org/3/movie/"+id+"/images",
-			data:{
-				api_key:tmdbKey,
-				include_image_language:"ko,null"
-			},
-			success:function(res){
-				$("#poster_path").html("");
-				
-				if(res.posters.length == 0 ){
-					moviePosterStr = "이미지 준비중입니다.";
-					$("#poster_path").html("이미지 준비중입니다.");
-				}
-				else{
-					for(let i=0; i< res.posters.length; i++){
-						moviePosterStr += res.posters[i].file_path;
-						$("#poster_path").html($("#poster_path").html() + '<img class="ml-1" src="https://image.tmdb.org/t/p/w500'+res.posters[i].file_path+'" width=150 />');
-						if(i==4) break;
-					}
-				
-					if(moviePosterStr.indexOf(movieDetailTemp.main_poster) != -1) movieDetailTemp.poster_path=moviePosterStr;
-					else if(movieDetailTemp.main_poster != null)movieDetailTemp.poster_path = movieDetailTemp.main_poster + moviePosterStr;
-				}
-			},
-			error:function(err){
-				alert("전송 실패");
-			}
-		});
-		
-		// 트레일러 요청
-		$.ajax({
-			type:"get",
-			url:"https://api.themoviedb.org/3/movie/"+id+"/videos",
-			data:{
-				api_key:tmdbKey,
-				language:"ko-KR"
-			},
-			success:function(res){
-				$("#videos").html("");
-				if(res.results.length == 0){
-					$("#videos").html("등록된 트레일러가 없습니다.");
-				}
-				else{
-					let cnt = 0;
-					let videos="";
-					for(let i=(res.results.length-1); i>=0; i--){
-						let temp = '<div class="mr-2"><iframe width="380" height="250"src="';
-						temp += vidioSrc+"/"+res.results[i].key;
-						temp += '"></iframe></div>';
-						$("#videos").html($("#videos").html() + temp);
-						videos += res.results[i].key +"/";
-						if(cnt++ == 5) break;
-					}
-					videos = videos.substring(0,videos.length-1);
-					movieDetailTemp.videos = videos;
-				}
-				
-			},
-			error:function(err){
-				alert("전송 실패");
-			}
-		});
-		
-		$("#movieDetail").css("display","none");
-		$("#movieDetail").slideDown(1000);
 	}
 	
 	// 영화 올려두기
@@ -472,8 +481,14 @@
 					temp += '</div>';
 				}
 			}
-			
+			let e=  document.getElementById("movieSelectContent");
+			const test =e.clientHeight +e.scrollTop;
 			$("#movieSelected").html(temp);
+			
+			if(e.scrollHeight >= test){
+			console.log(e.scrollTop);
+				e.scrollTop = e.scrollHeight;
+			}
 		});
 		
 	}
@@ -588,7 +603,7 @@
 		  	<div class="col-2 dth">비고</div>
 	  	</div>
 	  	<hr/>
-			<div class="d-flex flex-column mb-3 contentScroll" style="height: 300px;">
+			<div class="d-flex flex-column mb-3 contentScroll" id="movieSelectContent" style="height: 300px;">
 			  <div class="p-2" id="movieSelected">
 			  	추가할 영화를 올려주세요
 			  </div>

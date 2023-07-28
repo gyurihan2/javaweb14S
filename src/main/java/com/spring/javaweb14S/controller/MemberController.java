@@ -275,6 +275,10 @@ public class MemberController {
 		MemberVO vo = memberService.getUserInfo(sMid);
 		model.addAttribute("vo", vo);
 		
+		//예약 정보 가져오기
+		String myReserJsonData = memberService.getMyReservationList(sMid);
+		model.addAttribute("myReserJsonData", myReserJsonData);
+		
 		return "userPage/member/myPage";
 	}
 	// 회원 프로필 이미지 변경 페이지
@@ -433,6 +437,14 @@ public class MemberController {
 		
 		if(imsiNum.equals(authNum)) return memberService.setMemberEmailUpdate(mid,email);
 		else return 0;
-
+	}
+	// 인증번호 왁인 및 이메일 수정
+	@RequestMapping(value = "/memberAddressChange",method = RequestMethod.POST)
+	@ResponseBody
+	public int memberAddressChange(HttpSession session,String address) {
+		String mid = (String)session.getAttribute("sMid");
+		System.out.println(address);
+		return memberService.setMemberAddressUpdate(mid,address);
+		
 	}
 }

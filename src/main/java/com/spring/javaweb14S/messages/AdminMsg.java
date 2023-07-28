@@ -65,6 +65,7 @@ public class AdminMsg {
 		else if(msgFlag.equals("theaterDetailChangeOk")){
 			model.addAttribute("msg", "상영관 수정 완료되었습니다.");
 			model.addAttribute("url", "/theater/theaterDetailPage?idx="+idx);
+			return "/include/messageClose";
 		}
 		else if(msgFlag.equals("theaterDetailChangeNo")){
 			model.addAttribute("msg", "상영관 수정 실패.");

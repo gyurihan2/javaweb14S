@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.spring.javaweb14S.vo.MemberVO;
+import com.spring.javaweb14S.vo.MyReservationVO;
 
 
 public interface MemberService {
@@ -53,6 +54,12 @@ public interface MemberService {
 
 	// 회원 이메일 수정 처리
 	public int setMemberEmailUpdate(String mid, String email);
+
+	// 회원 예약 전체 리스트
+	public String getMyReservationList(String sMid);
+
+	//회원 주소 수정
+	public int setMemberAddressUpdate(String mid, String address);
 
 	
 

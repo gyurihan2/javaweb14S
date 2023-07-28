@@ -274,6 +274,14 @@
 		    <artifactId>spring-tx</artifactId>
 		    <version>4.3.14.RELEASE</version>
 		</dependency>
+		
+		<!-- QR Code 사용을 위한 라이브러리(zxing javase) -->
+		<!-- https://mvnrepository.com/artifact/com.google.zxing/javase -->
+		<dependency>
+		    <groupId>com.google.zxing</groupId>
+		    <artifactId>javase</artifactId>
+		    <version>3.5.0</version>
+		</dependency>
 
 				        
 	</dependencies>

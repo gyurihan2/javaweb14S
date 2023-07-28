@@ -6,6 +6,8 @@ import java.util.UUID;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.javaweb14S.common.FileUploadProvide;
 import com.spring.javaweb14S.dao.MemberDAO;
 import com.spring.javaweb14S.vo.MemberVO;
+import com.spring.javaweb14S.vo.MyReservationVO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -83,7 +86,6 @@ public class MemberServiceImpl implements MemberService {
 	public ArrayList<MemberVO> getMemberIdSearch(String name, String identiNum, String email) {
 		ArrayList<MemberVO> vos = memberDAO.getMemberIdSearch(name, identiNum,email);
 		
-		
 		if(!vos.isEmpty()) return vos;
 		else return null;
 	}
@@ -91,7 +93,6 @@ public class MemberServiceImpl implements MemberService {
 	// 비밀번호 찾기(인증 번호 발송)
 	@Override
 	public String authCkeckMail(String mid, String identiNum, String email) {
-		
 		
 		MemberVO memberVO = memberDAO.getMemberMidChk(mid);
 		// 계정 정보가 일치할 경우
@@ -119,7 +120,7 @@ public class MemberServiceImpl implements MemberService {
 				content += "<p>인증번호: "+imsi+"</p>";
 				
 				messageHelper.setText(content, true);
-				//mailSender.send(message);
+				mailSender.send(message);
 				System.out.println("imsi: " + imsi);
 			} catch (MessagingException e) {
 				e.printStackTrace();
@@ -214,7 +215,7 @@ public class MemberServiceImpl implements MemberService {
 			content += "<p>인증번호: "+imsi+"</p>";
 			
 			messageHelper.setText(content, true);
-			//mailSender.send(message);
+			mailSender.send(message);
 			System.out.println("imsi: " + imsi);
 		} catch (MessagingException e) {
 			e.printStackTrace();
@@ -225,10 +226,48 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 
+	// 이메일 변경
 	@Override
 	public int setMemberEmailUpdate(String mid, String email) {
 		return memberDAO.setMemberEmailUpdate(mid,email);
 	}
+
+	// 예매내역
+	@SuppressWarnings("unchecked")
+	@Override
+	public String getMyReservationList(String sMid) {
+		ArrayList<MyReservationVO> vos = memberDAO.getMyReservationList(sMid);
+		System.out.println(vos);
+		JSONArray jsonArray = new JSONArray();
+		
+		for(MyReservationVO vo : vos) {
+			JSONObject jsonObject = new JSONObject();
+			jsonObject.put("reservationIdx",vo.getIdx());
+			jsonObject.put("scheduleIdx",vo.getScheduleIdx());
+			jsonObject.put("movieIdx",vo.getMovieIdx());
+			jsonObject.put("seatInfo",vo.getSeatInfo());
+			jsonObject.put("adultCnt",vo.getAdultCnt());
+			jsonObject.put("childCnt",vo.getChildCnt());
+			jsonObject.put("reserDate",vo.getReserDate());
+			jsonObject.put("screenOrder",vo.getScreenOrder());
+			jsonObject.put("playDate",vo.getPlayDate());
+			jsonObject.put("playTime",vo.getPlayTime());
+			jsonObject.put("endTime",vo.getEndTime());
+			jsonObject.put("theaterName",vo.getTheaterName());
+			jsonObject.put("themaName",vo.getThemaName());
+			jsonObject.put("movieName",vo.getMovieName());
+			jsonObject.put("moviePoster",vo.getMoviePoster());
+			jsonArray.add(jsonObject);
+		}
+		
+		return jsonArray.toJSONString();
+	}
+
+	@Override
+	public int setMemberAddressUpdate(String mid, String address) {
+		return memberDAO.setMemberAddressUpdate(mid,address);
+	}
+	
 	
 	
 
