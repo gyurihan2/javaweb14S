@@ -77,6 +77,14 @@ public class MemberMsg {
 			model.addAttribute("msg", "닉네임 수정 실패했습니다.");
 			model.addAttribute("url", "/member/nickNameChangePage");
 		}
+		else if(msgFlag.equals("duplicationLoginCheck")) {
+			model.addAttribute("dupliLoginSession", request.getParameter("dupliLoginSession"));
+			return "include/messageDuplicationLogin";
+		}
+		else if(msgFlag.equals("buplicationLoginDisconnectOk")) {
+			model.addAttribute("msg", "기존 로그인 유저를 로그 아웃 처리 했습니다.");
+			model.addAttribute("url", "/member/loginPage");
+		}
 		// validator 에러
 		else if(msgFlag.equals("validatorNo")) {
 			if(request.getParameter("validatorFlag").equals("NotNull")) {

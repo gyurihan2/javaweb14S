@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import com.spring.javaweb14S.vo.AgeStatisticsVO;
 import com.spring.javaweb14S.vo.GenderRatioVO;
 import com.spring.javaweb14S.vo.MyReservationVO;
+import com.spring.javaweb14S.vo.ReservationStaticsVO;
 import com.spring.javaweb14S.vo.ReservationVO;
+import com.spring.javaweb14S.vo.ScheduleVO;
 import com.spring.javaweb14S.vo.WeekReservationCntVO;
 
 public interface ReservationService {
@@ -32,5 +34,8 @@ public interface ReservationService {
 
 	// 일주일 간 예매 수
 	public ArrayList<WeekReservationCntVO> getWeekReservationCnt();
+
+	// 관리자 페이지 현재 상영중인 각 영화의 예약 건수
+	public ArrayList<ReservationStaticsVO> getTotalReserCntList();
 
 }

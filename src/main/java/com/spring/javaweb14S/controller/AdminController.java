@@ -18,6 +18,8 @@ import com.spring.javaweb14S.service.reservation.ReservationService;
 import com.spring.javaweb14S.service.schedule.ScheduleService;
 import com.spring.javaweb14S.service.theater.TheaterService;
 import com.spring.javaweb14S.vo.MovieVO;
+import com.spring.javaweb14S.vo.ReservationStaticsVO;
+import com.spring.javaweb14S.vo.ScheduleVO;
 import com.spring.javaweb14S.vo.TheaterVO;
 import com.spring.javaweb14S.vo.ThemaVO;
 import com.spring.javaweb14S.vo.WeekReservationCntVO;
@@ -45,7 +47,15 @@ public class AdminController {
 	public String adminMainPage(Model model) {
 		
 		ArrayList<WeekReservationCntVO> weekReserVOS = reservationService.getWeekReservationCnt();
+		ArrayList<ScheduleVO> scheduleVOS = scheduleService.getScheduleAdminList();
+		if(scheduleVOS.size() != 0) {
+			ArrayList<ReservationStaticsVO> reserStaticVOS = reservationService.getTotalReserCntList();
+			model.addAttribute("reserStaticVOS", reserStaticVOS);
+		
+		}
+		
 		model.addAttribute("weekReserVOS", weekReserVOS);
+		model.addAttribute("scheduleVOS", scheduleVOS);
 		return "adminPage/mainPage";
 	}
 	// 상영관 관리 페이지

@@ -18,6 +18,7 @@ import com.spring.javaweb14S.vo.AgeStatisticsVO;
 import com.spring.javaweb14S.vo.GenderRatioVO;
 import com.spring.javaweb14S.vo.MovieVO;
 import com.spring.javaweb14S.vo.MyReservationVO;
+import com.spring.javaweb14S.vo.ReservationStaticsVO;
 import com.spring.javaweb14S.vo.ReservationVO;
 import com.spring.javaweb14S.vo.ScheduleVO;
 import com.spring.javaweb14S.vo.TheaterVO;
@@ -205,7 +206,7 @@ public class ReservationServiceImpl implements ReservationService {
 	public ArrayList<WeekReservationCntVO> getWeekReservationCnt() {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.DATE, -6);
+		cal.add(Calendar.DATE, -3);
 		
 		ArrayList<WeekReservationCntVO> vos= new ArrayList<WeekReservationCntVO>();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -217,6 +218,19 @@ public class ReservationServiceImpl implements ReservationService {
 			vos.add(vo);
 			cal.add(Calendar.DATE, 1);
 		}
+		return vos;
+	}
+
+	//관리자 페이지 현재 상영중인 각 영화의 예약 건수
+	@Override
+	public ArrayList<ReservationStaticsVO> getTotalReserCntList() {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		ArrayList<ReservationStaticsVO> vos = reservationDAO.getTodayMovieList(sdf.format(cal.getTime()));
+		
+		if(vos.size() !=0)
+			for(ReservationStaticsVO vo : vos) vo.setCnt(reservationDAO.getTotalReserCntList(vo.getMovieIdx()));
 		
 		return vos;
 	}

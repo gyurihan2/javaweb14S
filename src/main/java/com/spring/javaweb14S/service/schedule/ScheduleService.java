@@ -1,5 +1,7 @@
 package com.spring.javaweb14S.service.schedule;
 
+import java.util.ArrayList;
+
 import com.spring.javaweb14S.vo.ScheduleVO;
 
 public interface ScheduleService {
@@ -18,5 +20,8 @@ public interface ScheduleService {
 
 	// 영화 상세보기 스케줄(메인페이지) 스케줄이 있을경우 예매하기 버튼 생성을 위한
 	public ScheduleVO getScheduleMoiveIdx(String movieIdx);
+
+	// 관리자 메인 화면 상영관 영화 리스트
+	public ArrayList<ScheduleVO> getScheduleAdminList();
 
 }

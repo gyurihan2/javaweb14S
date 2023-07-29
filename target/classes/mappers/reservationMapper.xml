@@ -54,6 +54,13 @@
 	<select id="getWeekReservationCnt" resultType="int">
 		select count(*) from reservation2 where groupId like concat(#{days},'_%');
 	</select>
+	<select id="getTotalReserCntList" resultType="int">
+		select count(*) from reservation2 where groupId like concat('%_%_%_',#{movieIdx});
+	</select>
+	<select id="getTodayMovieList" resultType="reservationStaticsVO">
+		select movieIdx,(select title from movie2 where idx=movieIdx) as movieTitle
+		from schedule2 where playDate='2023-07-29' group by movieIdx order by theaterIdx 
+	</select>
 		
 <!-- Insert -->
 	<insert id="setReservationInput">

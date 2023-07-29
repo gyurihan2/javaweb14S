@@ -14,6 +14,6 @@ public class ScheduleVO {
 	///
 	private String startDate, endDate;
 	private String theaterName, movieTitle, main_poster;
-	private int runtime, theaterWork;
+	private int runtime, theaterWork, reserTot;
 	private String themaName;
 }

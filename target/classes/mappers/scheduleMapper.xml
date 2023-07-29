@@ -35,6 +35,14 @@
 		select * from schedule2 where movieIdx=#{movieIdx} and playDate=#{today} group by movieIdx
 	</select>
 	
+	<!-- 관리자 메인 페이지 상영관 상영 리스트 -->
+	<select id="getScheduleAdminList" resultType="scheduleVO">
+		select movieIdx,(select title from movie2 where idx=movieIdx) as movieTitle, 
+		theaterIdx, (select name from theater2 where idx=theaterIdx) as theaterName,
+		(select work from theater2 where idx=theaterIdx) as theaterWork 
+		from schedule2 where playDate='2023-07-29' group by groupId  order by theaterIdx 
+	</select>
+	
 <!-- Insert -->
 	<!-- 일정 추가 -->
 	<insert id="setScheduleInput" parameterType="java.util.List">

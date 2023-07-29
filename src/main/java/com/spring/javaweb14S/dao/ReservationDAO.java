@@ -8,6 +8,7 @@ import com.spring.javaweb14S.vo.AgeStatisticsVO;
 import com.spring.javaweb14S.vo.GenderRatioVO;
 import com.spring.javaweb14S.vo.MovieVO;
 import com.spring.javaweb14S.vo.MyReservationVO;
+import com.spring.javaweb14S.vo.ReservationStaticsVO;
 import com.spring.javaweb14S.vo.ReservationVO;
 import com.spring.javaweb14S.vo.ScheduleVO;
 import com.spring.javaweb14S.vo.TheaterVO;
@@ -49,6 +50,12 @@ public interface ReservationDAO {
 
 	// 일주일간 예매 수
 	public int getWeekReservationCnt(@Param("days")String days);
+
+	//관리자 페이지 현재 상영중인 각 영화의 예약 건수
+	public int getTotalReserCntList(@Param("movieIdx")String movieIdx);
+
+	//관리자 페이지 현재 상영중인 각 영화의 예약 건수
+	public ArrayList<ReservationStaticsVO> getTodayMovieList(@Param("today")String today);
 	
 	
 	

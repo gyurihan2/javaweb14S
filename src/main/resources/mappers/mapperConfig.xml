@@ -12,5 +12,6 @@
  		<typeAlias alias="ageStatisticsVO" type="com.spring.javaweb14S.vo.AgeStatisticsVO"/>
  		<typeAlias alias="genderRatioVO" type="com.spring.javaweb14S.vo.GenderRatioVO"/>
  		<typeAlias alias="weekReservationCntVO" type="com.spring.javaweb14S.vo.WeekReservationCntVO"/>
+ 		<typeAlias alias="reservationStaticsVO" type="com.spring.javaweb14S.vo.ReservationStaticsVO"/>
  	</typeAliases>
 </configuration>

@@ -87,6 +87,8 @@ public class ReservationController {
 	public String reservationOkPost(ReservationVO vo, HttpSession session) {
 		try{
 			String res = reservationService.setReservationInput(vo);
+			session.setMaxInactiveInterval(60);
+			System.out.println("세션 유지 시간:"+session.getMaxInactiveInterval());
 			if(res != null && res.equals("-1")) {
 				session.setAttribute("sPaymentStatus", res+"_"+vo.getScheduleIdx()+"_"+(vo.getAdultCnt()+vo.getChildCnt()));
 			}

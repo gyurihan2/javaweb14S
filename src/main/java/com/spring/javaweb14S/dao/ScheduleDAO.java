@@ -1,6 +1,7 @@
 package com.spring.javaweb14S.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -25,6 +26,9 @@ public interface ScheduleDAO {
 
 	// 영화 IDX로 스케줄 있는지 확인
 	public ScheduleVO getScheduleMoiveIdx(@Param("movieIdx")String movieIdx, @Param("today")String today);
+
+	//관리자 페이지 메인화면 상영중인 영화 리스트
+	public ArrayList<ScheduleVO> getScheduleAdminList(@Param("today")String today);
 
 
 }

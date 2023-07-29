@@ -42,6 +42,13 @@ select * from movie2 as a ,(select movieIdx, theaterIdx from schedule2 where pla
 
 select * from schedule2 where movieIdx='783110' and playDate='2023-07-27' group by movieIdx
 
+/*관리자 메인 페이지 각 상영관 상영 영화 정보*/
+select movieIdx,(select title from movie2 where idx=movieIdx) as movieTitle
+from schedule2 where playDate='2023-07-29' group by movieIdx order by theaterIdx
+
+select * from reservation2
+select * from schedule2
+
 
 783110
 2023-07-27

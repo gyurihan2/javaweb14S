@@ -89,6 +89,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 			// 하루 증가
 			cal.add(Calendar.DATE,1);
 		}
+		System.out.println(vos);
 		return scheduleDAO.setScheduleInput(vos);
 	}
 
@@ -185,6 +186,15 @@ public class ScheduleServiceImpl implements ScheduleService{
 		String fmtNow = fmt.format(now);
 		
 		return scheduleDAO.getScheduleMoiveIdx(movieIdx,fmtNow);
+	}
+
+	// 관리자 페이지 메인화면 상영중인 영화 리스트
+	@Override
+	public ArrayList<ScheduleVO> getScheduleAdminList() {
+		Date now = new Date();
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+		String fmtNow = fmt.format(now);
+		return scheduleDAO.getScheduleAdminList(fmtNow);
 	}
 	
 	

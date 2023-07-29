@@ -1,6 +1,7 @@
 package com.spring.javaweb14S.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.spring.javaweb14S.common.SessionListener;
 import com.spring.javaweb14S.service.member.MemberService;
 import com.spring.javaweb14S.vo.MemberVO;
 
@@ -58,6 +60,12 @@ public class MemberController {
 		
 		// 로그인 성공
 		if(vo != null) {
+//			중복 로그인 방지
+//			String dupliLoginSession =  SessionListener.sessionLoginCheck(vo.getMid());
+//			if(dupliLoginSession.length() > 0) { model.addAttribute("dupliLoginSession",
+//			dupliLoginSession); return "redirect:/memberMsg/duplicationLoginCheck"; }
+			 
+			
 			// 세션 처리
 			session.setAttribute("sMid", vo.getMid());
 			session.setAttribute("sNickName", vo.getNickName());
@@ -102,6 +110,13 @@ public class MemberController {
 		else return "redirect:/memberMsg/loginNo";
 		
 	}	
+	// 중복 로그인 유저 로그아웃 처리
+	@RequestMapping(value = "/buplicationLoginDisconnect", method = RequestMethod.GET)
+	public String buplicationLoginDisconnectGet(String sessionId) {
+		//SessionListener.sessionDuplicateLogout(sessionId);
+		return "redirect:/memberMsg/buplicationLoginDisconnectOk";
+	}
+	
 	// 로그아웃 처리
 	@RequestMapping(value = "/loginOutOk", method = RequestMethod.GET)
 	public String loginOutOkGet(HttpSession session) {
