@@ -52,19 +52,31 @@
 
 </style>
 <script>
-    $(function(){
-		var navbar = document.getElementById("mainMenu");
-		var sticky = navbar.offsetTop;
-        window.onscroll = function() {myFunction()};
-        
-		function myFunction() {
-		  if (window.pageYOffset >= sticky) {
-		    navbar.classList.add("sticky")
-		  } else {
-		    navbar.classList.remove("sticky");
-		  }
+	'use strict';
+	
+	function searchMovieTitle(){
+		let movieTitle=$("#searchMovieTitle").val();
+		if(movieTitle == ""){
+			alert("검색할 영화를 입력하세요");
+			return false;
 		}
-    });
+		
+		location.href="${ctp}/memberMovie/movieSearchList?title="+movieTitle;
+	}
+	
+  $(function(){
+	var navbar = document.getElementById("mainMenu");
+	var sticky = navbar.offsetTop;
+      window.onscroll = function() {myFunction()};
+      
+	function myFunction() {
+	  if (window.pageYOffset >= sticky) {
+	    navbar.classList.add("sticky")
+	  } else {
+	    navbar.classList.remove("sticky");
+	  }
+	}
+  });
 </script>
 <div class="topMenu">
 	<div class="container-xl top_title  pt-3 pb-0">
@@ -131,8 +143,8 @@
 	        </div>
 	        <div class="col">
 	            <nav class="navbar navbar-expand-xl justify-content-end">
-	                  <input class="form-control me-2" type="search" placeholder="영화 검색" style="width: 200px">
-	                  <button class="btn btn-outline-success" type="submit">Search</button>
+	                  <input type="search" class="form-control me-2" id="searchMovieTitle" placeholder="영화 검색" style="width: 200px">
+	                  <button class="btn btn-outline-success" type="button" onclick="searchMovieTitle()">Search</button>
 	            </nav>
 	        </div>
 	    </div>  

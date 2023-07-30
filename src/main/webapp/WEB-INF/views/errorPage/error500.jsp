@@ -12,7 +12,11 @@
 <body>
 <p><br/></P>
 <div class="container">
-  <h2>현재 시스템 사정상 서비스가 중단 되었습니다. (500 에러)</h2>
+  <h2>현재 시스템 사정상 서비스가 중단 되었습니다. (500 에러:서버 트래픽 과부하, Timeout, 구문오류)</h2>
+  <div class="d-flex justify-content-center mt-2">
+  	<img src="${ctp}/emoticon/imageReady.gif">
+  </div>
+  <div class="d-flex justify-content-end"><a href="${ctp}" class="btn btn-success">돌아가기</a></div>
 </div>
 <p><br/></P>
 </body>

@@ -36,9 +36,8 @@ public class GuestInterceptor extends HandlerInterceptorAdapter{
 		if(session.getAttribute("sImsiAuth")!= null) {
 			
 			
-			// 회원 수정 페이지의 이메일 인증 발송시 제외
+			// 비밀번호 찾기 페이지의 이메일 인증 발송시 제외
 			if(!requestUrl.equals("/authNumSend")) {
-				System.out.println("실행");
 				session.removeAttribute("sImsiAuth");
 			}
 		}

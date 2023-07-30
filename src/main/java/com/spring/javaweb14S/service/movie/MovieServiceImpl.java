@@ -92,6 +92,12 @@ public class MovieServiceImpl implements MovieService {
 		
 		return movieDAO.getMovieTodaySchedule(todayFmt);
 	}
+
+	// top_nav 영화 검색 할경우
+	@Override
+	public ArrayList<MovieVO> getMovieSearchList(String title) {
+		return movieDAO.getMovieSearchList(title);
+	}
 	
 	
 	

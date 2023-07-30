@@ -21,6 +21,11 @@
 		select * from movie2 as a ,(select movieIdx, theaterIdx from schedule2 where playDate = #{todayFmt} group by movieidx) as b where a.idx = b.movieIdx  order by b.theaterIdx;
 	</select>
 	
+	<!-- top_nav에서 영화 검색 할경우 -->
+	<select id="getMovieSearchList" resultType="movieVO">
+		select * from movie2 where title like concat('%',#{title},'%') order by release_date desc;
+	</select>
+	
 <!-- Insert -->
 	<!-- 영화 생성 -->
 	<insert id="setMovieArrInput" parameterType="java.util.List">

@@ -458,7 +458,6 @@ public class MemberController {
 	@ResponseBody
 	public int memberAddressChange(HttpSession session,String address) {
 		String mid = (String)session.getAttribute("sMid");
-		System.out.println(address);
 		return memberService.setMemberAddressUpdate(mid,address);
 		
 	}

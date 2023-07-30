@@ -13,7 +13,11 @@
 <p><br/></P>
 <div class="container">
   <h2> 현재 제공되지 않는 페이지 입니다. (404 에러)</h2>
-  <a href="${ctp}/errorPage/errorMain" class="btn btn-success">돌아가기</a>
+  <div class="d-flex justify-content-center mt-2">
+  	<img src="${ctp}/emoticon/imageReady.gif">
+  </div>
+  <div class="d-flex justify-content-end"><a href="${ctp}" class="btn btn-success">돌아가기</a></div>
+  
 </div>
 <p><br/></P>
 </body>

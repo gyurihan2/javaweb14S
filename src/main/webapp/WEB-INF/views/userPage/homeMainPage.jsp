@@ -8,6 +8,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>MainPage</title>
+	<style>
+		.moviePoster{
+			cursor:pointer;
+		}
+	</style>
 	<script>
 		'use script';
 		let startPage=0;
@@ -51,6 +56,7 @@
 		        if(movieArr[start].title != null){
 		            if( movieChart[i].style.display =="none") movieChart[i].style.display="block"
 		            movieChart[i].src= "https://image.tmdb.org/t/p/w500"+movieArr[start].main_poster;
+		            movieChart[i].setAttribute("onclick","location.href='${ctp}/memberMovie/movieDetail?idx="+movieArr[start].idx+"'");
 		            moviename[i].innerText=movieArr[start].title;
 		            start++;
 		        }
@@ -70,6 +76,7 @@
 		    for(let i=0;i<4;i++){
 		        if(movieArr.length > start){
 		        	movieChart[i].src="https://image.tmdb.org/t/p/w500"+movieArr[start].main_poster;
+		        	movieChart[i].setAttribute("onclick","location.href='${ctp}/memberMovie/movieDetail?idx="+movieArr[start].idx+"'");
 			        moviename[i].innerText=movieArr[start].title;
 		        	start++;
 		        }
@@ -148,8 +155,8 @@
             <c:forEach var="index" begin="0" end="3">
             	<c:if test="${!empty vos[index] }">
             		<div class="col text-center moviecontent movienext" >
-                <a href="#"><img name="movieChartImg" src="https://image.tmdb.org/t/p/w500${vos[index].main_poster}"></a>
-                <br/><span name="movieChartName">${vos[index].title}</span>
+	                <img class="moviePoster" name="movieChartImg" src="https://image.tmdb.org/t/p/w500${vos[index].main_poster}" onclick="location.href='${ctp}/memberMovie/movieDetail?idx=${vos[index].idx}'">
+	                <br/><span name="movieChartName">${vos[index].title}</span>
             		</div>
             	</c:if>
             </c:forEach>

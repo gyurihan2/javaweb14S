@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spring.javaweb14S.common.SessionListener;
 import com.spring.javaweb14S.service.member.MemberService;
 import com.spring.javaweb14S.service.reservation.ReservationService;
 import com.spring.javaweb14S.vo.MemberVO;
@@ -39,7 +40,6 @@ public class ReservationController {
 	
 		if(mid != null) {
 			MemberVO memberVO = memberService.getUserInfo(mid);
-			System.out.println(memberVO.toString());
 			model.addAttribute("memberVO", memberVO);
 		}
 		
@@ -87,9 +87,8 @@ public class ReservationController {
 	public String reservationOkPost(ReservationVO vo, HttpSession session) {
 		try{
 			String res = reservationService.setReservationInput(vo);
-			session.setMaxInactiveInterval(60);
-			System.out.println("세션 유지 시간:"+session.getMaxInactiveInterval());
-			if(res != null && res.equals("-1")) {
+			
+			if(res != null && !res.equals("-1")) {
 				session.setAttribute("sPaymentStatus", res+"_"+vo.getScheduleIdx()+"_"+(vo.getAdultCnt()+vo.getChildCnt()));
 			}
 			return res;
@@ -104,7 +103,9 @@ public class ReservationController {
 	@RequestMapping(value = "/reservationConfirm", method = RequestMethod.POST)
 	@ResponseBody
 	public void reservationConfirmPost(HttpSession session) {
-		if(session.getAttribute("sPaymentStatus") != null) session.removeAttribute("sPaymentStatus");
+		if(session.getAttribute("sPaymentStatus") != null) {
+			session.removeAttribute("sPaymentStatus");
+		}
 	}
 	
 	//예약 처리 확정 취소(결제 취소할 경우)
@@ -113,7 +114,9 @@ public class ReservationController {
 	public void reservationCancelPost(HttpSession session,
 			String idx, int scheduleIdx, int peapleCnt) {
 		int res = reservationService.setReservationCansel(idx,scheduleIdx,peapleCnt);
-		if(res != 0) session.removeAttribute("sPaymentStatus");
+		if(res != 0) {
+			session.removeAttribute("sPaymentStatus");
+		}
 	}
 	
 	// 마이페이지 예약 상세 보기

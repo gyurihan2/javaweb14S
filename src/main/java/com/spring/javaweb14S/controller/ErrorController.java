@@ -14,6 +14,10 @@ public class ErrorController {
 	public String error404Get() {
 		return "errorPage/error404";
 	}
+	@RequestMapping(value="/error400", method = RequestMethod.GET)
+	public String error400Get() {
+		return "errorPage/error400";
+	}
 	// 에러 발생 폼
 	@RequestMapping(value="/error500", method = RequestMethod.GET)
 	public String error500Get() {

@@ -12,7 +12,10 @@
 <body>
 <p><br/></P>
 <div class="container">
-  <h2>현재 제공되지 않는 페이지 입니다. (400 에러)</h2>
+  <h2>현재 제공되지 않는 페이지 입니다. (400 에러:Bad Request)</h2>
+  <div class="d-flex justify-content-center">
+  	<img src="${ctp}/emoticon/imageReady.gif">
+  </div>
   <a href="${ctp}/errorPage/errorMain" class="btn btn-success">돌아가기</a>
 </div>
 <p><br/></P>

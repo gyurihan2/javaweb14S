@@ -211,7 +211,8 @@
 						<br/>
 						<div class="form-check-inline">
 					  <label class="form-check-label">
-					    <input type="checkbox" class="form-check-input" name="images" value="${imgFName}">${imageArr[st.index]}
+					  
+					    <input type="radio" class="form-check-input" name="images" value="${imgFName}" <c:if test="${vo.mainImg == imgFName }">checked</c:if>>${imageArr[st.index]}
 					  </label>
 						</div>
 					</div>

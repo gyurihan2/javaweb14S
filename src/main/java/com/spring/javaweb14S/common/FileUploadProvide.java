@@ -45,8 +45,10 @@ public class FileUploadProvide {
 		
 		// 업로드 된 파일 삭제
 		for(String fPath : temp) {
+			System.out.println(fPath);
 			File fileDelete = new File(realPath+fPath);
 			if(fileDelete.exists()) {
+				System.out.println("실행");
 				fileDelete.delete();
 			}
 		}

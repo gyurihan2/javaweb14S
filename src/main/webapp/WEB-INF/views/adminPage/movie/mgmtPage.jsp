@@ -119,7 +119,7 @@
  				with_release_type:3
  			},
  			success:function(res){
- 				
+ 				console.log(res);
  				let tempHtml = "";
  				for(let i=0;i<10;i++){
  					tempHtml += '<div class="row row_body">';

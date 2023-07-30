@@ -28,7 +28,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter{
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
 		HttpSession session = request.getSession();
-		
 		// 인증번호 관련 
 		if(session.getAttribute("sImsiAuth")!= null) {
 			String requestUrl = request.getRequestURI();

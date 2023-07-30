@@ -1,23 +1,18 @@
 package com.spring.javaweb14S.common;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionAttributeListener;
+import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.springframework.beans.factory.annotation.Autowired;
+public class SessionListener implements HttpSessionListener,HttpSessionAttributeListener {
 
-import com.spring.javaweb14S.service.reservation.ReservationService;
-
-public class SessionListener implements HttpSessionListener {
-
-	/*
-	 * @Autowired ReservationService reservationService;
-	 */
 	
-	//public static Map<String, HttpSession> sessionsMap =  new HashMap<String, HttpSession>();
+	//@Autowired ReservationService reservationService;
+	 
+	
+	//public static Map<String, HttpSession> SESSION_MAP =  new HashMap<String, HttpSession>();
+	//public static Map<String, String> SESSION_RESERST =  new HashMap<String, String>();
 	
 //  public synchronized static String sessionLoginCheck(String compareId){
 //    String result = "";
@@ -39,8 +34,7 @@ public class SessionListener implements HttpSessionListener {
 	
 	@Override
 	public void sessionCreated(HttpSessionEvent se) {
-		//sessionsMap.put(se.getSession().getId(), se.getSession());
-		System.out.println("세션 생성"+se.getSession().getId());
+		
 	}
 
 	@Override
@@ -50,19 +44,22 @@ public class SessionListener implements HttpSessionListener {
 //			sessionsMap.remove(se.getSession().getId());	
 //		}
 		
-		/*
-		 * HttpSession session = se.getSession();
-		 * if(sessionsMap.get(se.getSession().getId()) != null) { HttpSession value =
-		 * sessionsMap.get(se.getSession().getId());
-		 * System.out.println(value.getAttribute("sPaymentStatus")); String[] res =
-		 * ((String)session.getAttribute("sPaymentStatus")).split("_");
-		 * 
-		 * int i =reservationService.setReservationCansel(res[0],
-		 * Integer.parseInt(res[1]), Integer.parseInt(res[2]));
-		 * System.out.println("결재 취소 상태: " + i);
-		 * sessionsMap.get(se.getSession().getId()).invalidate(); }
-		 */
 
+	}
+
+	@Override
+	public void attributeAdded(HttpSessionBindingEvent se) {
+		
+	}
+
+	@Override
+	public void attributeRemoved(HttpSessionBindingEvent se) {
+		
+	}
+
+	@Override
+	public void attributeReplaced(HttpSessionBindingEvent se) {
+		
 	}
 
 	

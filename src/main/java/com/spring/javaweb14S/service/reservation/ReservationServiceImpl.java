@@ -98,9 +98,7 @@ public class ReservationServiceImpl implements ReservationService {
 	@Override
 	public int setReservationCansel(String idx, int scheduleIdx, int peapleCnt) {
 		int res=0;
-		if(reservationDAO.setReservationDelete(idx) != 0) {
-			res =reservationDAO.setLeftSeatAdd(scheduleIdx,peapleCnt);
-		};
+		if(reservationDAO.setReservationDelete(idx) != 0) res =reservationDAO.setLeftSeatAdd(scheduleIdx,peapleCnt);
 		
 		return res;
 	}

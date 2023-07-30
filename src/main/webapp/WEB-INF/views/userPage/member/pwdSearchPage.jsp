@@ -79,7 +79,7 @@
 	let startTime;
 	
 	function countDown(){
-		startTime=20;
+		startTime=100;
 		function shwoRemaining(){
 			
 			if(startTime == 0){

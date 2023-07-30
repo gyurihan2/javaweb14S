@@ -31,7 +31,7 @@ public class HomeController {
 	public String home(Model model) {
 		ArrayList<MovieVO> vos =  movieService.getMovieTodaySchedule();
 		ArrayList<TheaterVO> themaVOS = theaterService.getThemaDisplayList();
-		
+		System.out.println(vos);
 		try {
 			String jsonData = jsonProcess.parseToString(vos);
 			String jsonData2 = jsonProcess.parseToString(themaVOS);

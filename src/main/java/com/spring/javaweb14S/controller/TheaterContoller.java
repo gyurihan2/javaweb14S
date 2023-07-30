@@ -168,7 +168,7 @@ public class TheaterContoller {
 	@RequestMapping(value = "themMainContentUpdate",method = RequestMethod.POST)
 	public String themMainContentUpdate(ThemaVO vo,HttpSession session) {
 		String contextPath=session.getServletContext().getContextPath();
-		String saved_Path=contextPath+"/thema/image";
+		String saved_Path=contextPath+"/ckeditorUpload";
 
 		int res = theaterService.setThemMainContentUpdate(vo,saved_Path);
 		

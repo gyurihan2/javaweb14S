@@ -81,6 +81,7 @@ $(function(){
 					$.ajax({
 						type:"get",
 						url:"https://noembed.com/embed?url=https://www.youtube.com/watch?v="+videoArr[i],
+						async:false,
 						success:function(res){
 							let resData=JSON.parse(res)
 							let html = '<font class="mr-2" size="1em" color="#2A6FB6"><span style="border: 1px solid #2A6FB6"><b>HD</b></span></font>';

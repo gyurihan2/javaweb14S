@@ -44,3 +44,4 @@ select * from (select * from member2 as a, (select memberMid from reservation2 w
 
 select count(*) from reservation2 where groupId like '2023-07-28_%' ;
 
+select * from movie2 where title like concat('%','a','%') order by release_date desc;

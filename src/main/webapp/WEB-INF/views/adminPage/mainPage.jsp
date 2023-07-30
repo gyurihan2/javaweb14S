@@ -42,7 +42,7 @@
           title: '${weekReserVOS[0].day} ~ ${weekReserVOS[6].day}',
         },
         focusTarget : 'category',
-        width: 350,
+        width: 400,
         height: 350
       };
 
@@ -60,14 +60,17 @@
         var data = google.visualization.arrayToDataTable([
           ['Task', 'Hours per Day'],
           <c:forEach var="vo" items="${reserStaticVOS}">
-          	["${vo.movieTitle}",${vo.cnt}],
+          	[
+        		<c:if test="${fn:length(vo.movieTitle) > 10}">"${fn:substring(vo.movieTitle,0,10)}.."</c:if>
+          	<c:if test="${fn:length(vo.movieTitle) <= 10}">"${vo.movieTitle}"</c:if>
+          	,${vo.cnt}],
           </c:forEach>
         ]);
 
         var options = {
           title: '상영 중인 영화 예약 비율',
           pieHole: 0.4,
-          width: 300,
+          width: 450,
           height: 350
         };
 
@@ -81,7 +84,6 @@
 <%-- <jsp:include page="/include/header.jsp"/> --%>
 <p><br/></p>
 <body id="wrapper">
-
 <div class="d-flex flex-row justify-content-center">
 	<div class="content p-4 text-center" style="width: 700px; height: 400px" >
 		<div class="row mt-1">
@@ -123,7 +125,7 @@
 		</c:if>
 		</div>
 	</div>
-	<div class="content ml-5 d-flex justify-content-center align-items-center" style="width: 700px; height: 400px">
+	<div class="content ml-5 d-flex justify-content-center align-items-center" style="width: 900px; height: 400px">
 		<div id="donutchart"></div>
 		<div class="mt-3" id="linechart_material"></div>
 	</div>

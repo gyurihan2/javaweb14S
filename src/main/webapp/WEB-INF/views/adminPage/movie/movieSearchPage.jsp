@@ -430,6 +430,7 @@
 							alert("전송 실패");
 						}
 					}).then(function(){
+						console.log(movieDetailTemp);
 						$("#movieDetail").css("display","none");
 						$("#movieDetail").slideDown(1000);
 					});
@@ -486,7 +487,6 @@
 			$("#movieSelected").html(temp);
 			
 			if(e.scrollHeight >= test){
-			console.log(e.scrollTop);
 				e.scrollTop = e.scrollHeight;
 			}
 		});

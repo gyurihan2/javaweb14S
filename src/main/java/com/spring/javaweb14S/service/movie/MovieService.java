@@ -30,4 +30,7 @@ public interface MovieService {
 	// 메인 화면에 표시할 영화 리스트
 	public ArrayList<MovieVO> getMovieTodaySchedule();
 
+	// top_nav에서 영화 검색 할경우
+	public ArrayList<MovieVO> getMovieSearchList(String title);
+
 }

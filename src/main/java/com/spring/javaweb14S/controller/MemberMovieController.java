@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.javaweb14S.common.JsonProcess;
@@ -34,7 +35,7 @@ public class MemberMovieController {
 	@Autowired
 	JsonProcess jsonProcess;
 	
-	@RequestMapping("/movieAllList")
+	@RequestMapping(value="/movieAllList",method = RequestMethod.GET)
 	public String movieAllListGet(Model model) {
 		
 		ArrayList<MovieVO> vos = movieService.getMovieList();
@@ -43,7 +44,7 @@ public class MemberMovieController {
 		return "userPage/memberMovie/movieAllList";
 	}
 	
-	@RequestMapping("/movieDetail")
+	@RequestMapping(value="/movieDetail",method = RequestMethod.GET)
 	public String movieDeatilGet(Model model,
 			@RequestParam(name = "idx", defaultValue = "-1", required = false) String idx) {
 		
@@ -70,6 +71,17 @@ public class MemberMovieController {
 		model.addAttribute("genderRatioVO", genderRatioVO);
 		
 		return "userPage/memberMovie/movieDeatilPage";
+	}
+	
+	//영화 검색(top nav)
+	@RequestMapping(value="/movieSearchList",method = RequestMethod.GET)
+	public String movieSearchListGet(@RequestParam(value="title",defaultValue = "",required = false) String title,
+			Model model) {
+		
+		ArrayList<MovieVO> vos = movieService.getMovieSearchList(title);
+		model.addAttribute("vos", vos);
+		
+		return "userPage/memberMovie/movieSearchList";
 	}
 
 }

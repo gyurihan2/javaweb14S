@@ -30,7 +30,7 @@ public class CkeditorUpload {
 			String origFilePath = REALPATH+"ckeditor"+imgFile;
 			String copyFilePath = REALPATH+savePath+imgFile;
 			
-			//ckeditor 파일을 board폴더로 복사
+			//ckeditor 파일을 thema폴더로 복사
 			fileCopyCheck(origFilePath,copyFilePath,true);
 			
 			if(nextImg.indexOf("src=\"/") == -1) sw=false;
@@ -45,6 +45,7 @@ public class CkeditorUpload {
 	//원본 파일을 다른곳으로 복사 처리 후 원본 파일 삭제
 	private void fileCopyCheck(String origFilePath, String copyFilePath,Boolean delete) {
 		try {
+			
 			FileInputStream fis = new FileInputStream(new File(origFilePath));
 			
 			FileOutputStream fos = new FileOutputStream(new File(copyFilePath));
@@ -79,15 +80,18 @@ public class CkeditorUpload {
 	public int fileUploadImsiPathChange(String saved_Path, String flag, String content) {
 		// 이미지가 없을 경우 리턴
 		if(content.indexOf("src=\"/") == -1) return 0;
-		
+		System.out.println(content);
 		String nextImg = content.substring(content.indexOf(saved_Path)+saved_Path.length());
-		
+		System.out.println(nextImg);
 		boolean sw=true;
 		while(sw) {
 			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
+			System.out.println(imgFile);
 			String origFilePath = REALPATH+flag+imgFile;
 			String copyFilePath = REALPATH+"ckeditor"+imgFile;
 			
+			System.out.println("origFilePath: "+origFilePath);
+			System.out.println("copyFilePath: "+copyFilePath);
 			//ckeditor 파일을 board폴더로 복사
 			fileCopyCheck(origFilePath, copyFilePath, true);
 			

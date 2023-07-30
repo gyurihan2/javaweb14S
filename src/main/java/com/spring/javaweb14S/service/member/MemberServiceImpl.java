@@ -237,7 +237,6 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String getMyReservationList(String sMid) {
 		ArrayList<MyReservationVO> vos = memberDAO.getMyReservationList(sMid);
-		System.out.println(vos);
 		JSONArray jsonArray = new JSONArray();
 		
 		for(MyReservationVO vo : vos) {
