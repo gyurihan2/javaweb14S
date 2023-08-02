@@ -87,11 +87,9 @@ public class CkeditorUpload {
 		while(sw) {
 			String imgFile = nextImg.substring(0,nextImg.indexOf("\""));
 			System.out.println(imgFile);
-			String origFilePath = REALPATH+flag+imgFile;
+			String origFilePath = REALPATH+imgFile;
 			String copyFilePath = REALPATH+"ckeditor"+imgFile;
 			
-			System.out.println("origFilePath: "+origFilePath);
-			System.out.println("copyFilePath: "+copyFilePath);
 			//ckeditor 파일을 board폴더로 복사
 			fileCopyCheck(origFilePath, copyFilePath, true);
 			

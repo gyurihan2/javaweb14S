@@ -184,7 +184,7 @@ public class TheaterServiceImpl implements TheaterService {
 		//  설명(content)가  수정 될 경우
 		if(!orgVO.getContent().equals(vo.getContent())) {
 			// 저장된 파일 임시 폴더로 이동
-			ckUpload.fileUploadImsiPathChange(saved_Path, flag, vo.getContent());
+			ckUpload.fileUploadImsiPathChange(saved_Path, flag, orgVO.getContent());
 			
 			//저장된 파일 경로 변경
 			String contextPath = saved_Path.split("/")[0];
